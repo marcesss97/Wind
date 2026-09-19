@@ -1,0 +1,25 @@
+{
+  "name": "Windsack – Wind, Föhn & Bise",
+  "short_name": "Windsack",
+  "description": "Live-Wind, Föhnindex und Föhn/Bise-Druckdifferenzen der Schweiz für Gleitschirmpiloten.",
+  "lang": "de-CH",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1e2a",
+  "theme_color": "#0f1e2a",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
