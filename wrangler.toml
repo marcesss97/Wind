@@ -1,6 +1,6 @@
 # Windsack-Relais: Einstellungen für Cloudflare.
 # Gehört zusammen mit windsack-relais.js ins GitHub-Repository (neben index.html).
 # Der Name muss mit dem Projektnamen bei Cloudflare übereinstimmen.
-name = "windsack-relais"
+name = "wind"
 main = "windsack-relais.js"
 compatibility_date = "2026-09-01"
