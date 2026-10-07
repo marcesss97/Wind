@@ -1404,7 +1404,7 @@ a { color: var(--accent); }
 .pin-m svg { width: 34px; height: 34px; display: block; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3)); }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-lg); }
 .leaflet-popup-content-wrapper { border-radius: 14px; position: relative; }
-.leaflet-popup-content { margin: 12px 14px; font: 14px/1.4 var(--font-ui); min-width: 190px; }
+.leaflet-popup-content { margin: 12px 14px; font: 14px/1.4 var(--font-ui); min-width: 190px; max-width: calc(100vw - 52px); } /* schmale Bildschirme: nie breiter als das Bild */
 .leaflet-container a.leaflet-popup-close-button { color: var(--muted); font-size: 20px; width: 28px; height: 28px; }
 .cam-pop h3 { margin: 0 22px 2px 0; font: 700 17px/1.2 var(--font-display); }
 .cam-pop .src { font-size: 11.5px; color: var(--muted); margin-bottom: 6px; }
@@ -1516,6 +1516,42 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
 .rn-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .rn-map .tiles-img { filter: var(--tile-map-filter); }
 .sec-t.out { margin: 2px 2px -2px; }
+/* Tagesbericht */
+.tg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 0 2px; }
+.tg-head .btn { flex: none; padding: 8px 14px; }
+.tg-ov { gap: 8px; }
+.tg-card { gap: 0; padding-bottom: 6px; }
+.tg-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding-bottom: 4px; }
+.tg-top .card-title { font-size: 20px; margin: 0; }
+.tg-top small { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+.tg-top .chip-l { flex: none; }
+.tg-sec { border-top: 1px solid var(--hair); padding: 10px 0 9px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tg-h { margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 700 11px/1.3 var(--font-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.tg-more { border: 0; background: none; padding: 2px 0 2px 8px; font: 600 12.5px/1 var(--font-ui); letter-spacing: 0; text-transform: none; color: var(--tci); }
+.tg-note { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+.tg-bull, .tg-wx, .tg-row { display: flex; align-items: center; gap: 11px; width: 100%; border: 0; background: none; padding: 4px 0; text-align: left; color: var(--ink); min-width: 0; }
+.tg-bull > svg, .tg-wx > svg, .tg-row > svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
+.tg-bt { flex: 1; min-width: 0; }
+.tg-bt b { display: block; font-size: 15px; font-weight: 650; line-height: 1.25; overflow-wrap: anywhere; }
+.tg-bt small { display: block; font-size: 12.5px; line-height: 1.35; color: var(--ink-2); margin-top: 1px; }
+.tg-bull .tg-lvl { padding: 0; width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font: 800 18px/1 var(--font-display); font-style: normal; border: 1px solid rgba(0, 0, 0, 0.25); flex: none; }
+.tg-wi { width: 40px; height: 40px; flex: none; }
+.tg-wi svg { width: 40px; height: 40px; display: block; }
+.tg-list { display: flex; flex-direction: column; }
+.tg-row { padding: 5px 0; }
+.tg-row .row-w { flex: none; }
+.tg-row .tg-bt b { font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tg-row .tg-bt small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tg-dot { width: 12px; height: 12px; border-radius: 50%; flex: none; margin: 0 4px; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px rgba(0, 0, 0, 0.12); }
+.tg-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.tg-tbl thead th { font: 600 11px/1.2 var(--font-ui); color: var(--muted); text-align: right; padding: 0 0 4px 8px; }
+.tg-tbl thead th:first-child { text-align: left; padding-left: 0; }
+.tg-tbl tbody th { text-align: left; font-weight: 400; padding: 5px 0; min-width: 0; }
+.tg-tbl tbody th b { display: block; font-weight: 600; font-size: 14px; }
+.tg-tbl tbody th small { display: block; font-size: 11.5px; color: var(--muted); }
+.tg-tbl td { text-align: right; padding: 5px 0 5px 8px; white-space: nowrap; font-weight: 600; vertical-align: top; }
+.tg-tbl tbody tr + tr th, .tg-tbl tbody tr + tr td { border-top: 1px solid var(--hair); }
+.tg-sw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
 .rep-acts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .rep-acts .btn { padding-left: 6px; padding-right: 6px; }
 
@@ -1661,6 +1697,36 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
 
 /* SLF-Messstationen */
 .slf-m { background: none; border: 0; }
+/* Schnee-Messwerte: Auswahl und Farbskala oben, Werte in Kreisen (Beobachter) und Quadraten (automatisch) */
+.sn-top { display: flex; flex-direction: column; gap: 6px; }
+.sn-top .chips { gap: 5px; }
+.sn-top .chip-b { flex: 1 1 auto; justify-content: center; text-align: center; padding-left: 9px; padding-right: 9px; font-size: 13.5px; }
+.mbot.away, .mtop.away, #fabs.away { display: none; }
+@media (max-width: 359px) { .sn-top .chips { gap: 4px; } .sn-top .chip-b { font-size: 12px; padding-left: 6px; padding-right: 6px; } }
+.leaflet-popup-scrolled { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.sn-scale { display: flex; align-items: flex-start; background: var(--glass); border-radius: 12px; padding: 8px 10px 5px; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.sn-scale:empty { display: none; }
+.sn-scale .c { flex: 1 1 0; min-width: 0; }
+.sn-scale .c i { display: block; height: 8px; }
+.sn-scale .c:first-child i { border-radius: 4px 0 0 4px; }
+.sn-scale .c:nth-last-child(2) i { border-radius: 0 4px 4px 0; }
+.sn-scale .c b { display: block; margin-top: 3px; font: 500 11.5px/1.2 var(--font-ui); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.sn-scale em { flex: none; align-self: flex-end; font: 500 11.5px/1.2 var(--font-ui); font-style: normal; color: var(--ink-2); padding-left: 6px; }
+.sn-mk { position: absolute; left: 0; top: 0; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid #10202c; box-sizing: border-box; font: 700 12.5px/1 var(--font-ui); font-variant-numeric: tabular-nums; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+.sn-mk.sq { border-radius: 2px; }
+.sn-mk.ms { border-color: #1d5fb8; border-width: 2px; }
+.sn-mk.na { border-color: #4b4f52; box-shadow: none; }
+.sn-mk.wide { font-size: 10.5px; letter-spacing: -0.03em; }
+.sn-mk.fav { font-size: 15px; border-width: 2px; }
+.sn-nm { position: absolute; left: 50%; top: 100%; transform: translate(-50%, 3px); background: #fff; color: #10202c; border: 1.5px solid #10202c; border-radius: 8px; padding: 2px 7px 3px; white-space: nowrap; font: 500 10.5px/1.25 var(--font-ui); text-align: center; pointer-events: none; }
+.sn-nm b { display: block; font-size: 12px; font-weight: 700; }
+.snk { width: 12px; height: 12px; border-radius: 50%; background: #97e8af; display: inline-block; border: 1.5px solid #10202c; box-sizing: border-box; }
+.snk.sq { border-radius: 2px; }
+.snk.ms { border-color: #1d5fb8; border-width: 2px; }
+.snk.na { background: #74787b; border-color: #4b4f52; }
+.sn-per { display: flex; gap: 6px; margin-bottom: 6px; }
+.sn-per .chip-b { box-shadow: none; background: var(--surface-2); font-size: 13px; padding: 6px 13px; }
+.sn-per .chip-b[aria-pressed="true"] { background: var(--slate); color: var(--on-slate); }
 .slf-v {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; display: inline-flex; align-items: center; gap: 1px;
   font: 700 11.5px/1 var(--font-ui); padding: 3px 5px; border-radius: 6px; color: #fff; border: 1.5px solid #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1754,6 +1820,21 @@ details .as-desc { margin-top: 6px; }
 .as-links { display: grid; gap: 6px; margin-top: 12px; }
 .as-links .btn { justify-content: flex-start; text-align: left; font-size: 13.5px; padding: 9px 12px; min-width: 0; }
 .as-links .btn span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Alertswiss: Übersichtskarte der betroffenen Gebiete (über der Liste) */
+.as-mapcard { padding: 0; overflow: hidden; gap: 0; }
+.as-map { aspect-ratio: 1.45; background: var(--surface-2); position: relative; overflow: hidden; }
+.as-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.as-map .tiles-img { filter: var(--tile-map-filter); }
+.as-map .mm-tint { display: none; }
+.as-a { fill-opacity: 0.3; stroke-width: 1.5; stroke-linejoin: round; }
+.as-pt { stroke: #fff; stroke-width: 2; }
+.as-map .as-a, .as-map .as-pt, .as-map [data-asmap] { cursor: pointer; }
+.as-lb { font: 700 12px/1 var(--font-ui); fill: #1b2a38; paint-order: stroke; stroke: rgba(255, 255, 255, 0.85); stroke-width: 3px; pointer-events: none; }
+.as-map-f { margin: 0; padding: 9px 14px 10px; font-size: 12.5px; color: var(--muted); }
+.tile-map .as-a { fill-opacity: 0.4; stroke-width: 1.2; }
+.as-karte { margin-top: 12px; width: 100%; }
+.as-pop .eyebrow { margin-bottom: 2px; }
+.as-pop .btn { margin-top: 6px; width: 100%; font-size: 13.5px; padding: 9px 10px; }
 
 /* Flugverkehr */
 .ac-m { background: none; border: 0; }
@@ -1798,9 +1879,7 @@ details .as-desc { margin-top: 6px; }
 #pf-where .chip-b svg { width: 14px; height: 14px; }
 
 /* PeakFinder */
-.pfwrap, .mswrap { flex-direction: column; }
-.ms-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px calc(var(--safe-r) + 12px) 7px calc(var(--safe-l) + 12px); flex: none; font-size: 12px; color: var(--muted); border-top: 1px solid var(--hair); background: var(--surface); }
-.mswrap iframe { flex: 1; }
+.pfwrap { flex-direction: column; }
 .pf-bar { display: flex; align-items: center; gap: 10px; padding: 8px calc(var(--safe-r) + 12px) 8px calc(var(--safe-l) + 12px); overflow-x: auto; flex: none; scrollbar-width: none; }
 .pf-bar::-webkit-scrollbar { display: none; }
 .pf-l { font-size: 12px; color: var(--muted); white-space: nowrap; }
@@ -2007,7 +2086,10 @@ details .as-desc { margin-top: 6px; }
           </button>
         </div>
         <div class="mtop an-note" id="an-note" data-ui="anim" data-cond hidden></div>
-        <div class="mtop chips" id="sn-fields" data-ui="schnee-mess" role="group" aria-label="Messwert" hidden></div>
+        <div class="mtop sn-top" data-ui="schnee-mess" hidden>
+          <div class="chips" id="sn-fields" role="group" aria-label="Messwert"></div>
+          <div class="sn-scale" id="sn-scale" role="img" aria-label="Farbskala"></div>
+        </div>
         <div class="mtop chips" id="sn-tours" data-ui="schnee-touren" role="group" aria-label="Skitouren-Karte" hidden></div>
         <div class="mtop chips" id="fl-bar" data-ui="flug" role="group" aria-label="Filter Flugverkehr" hidden></div>
         <!-- Karte über den ganzen Bildschirm: Knöpfe oben links (zurück, suchen) und oben rechts (Norden, Standort) -->
@@ -2146,18 +2228,15 @@ details .as-desc { margin-top: 6px; }
       <!-- Bericht für einen Ort oder eine Station -->
       <div class="vpage" id="page-ort" hidden><div class="page" id="ort-body"></div></div>
 
+      <!-- Tagesbericht: Umgebung der Orte aus «Meine Orte» -->
+      <div class="vpage" id="page-tag" hidden><div class="page" id="tag-body"></div></div>
+
       <!-- Orte suchen und verwalten -->
       <div class="vpage" id="page-orte" hidden>
         <div class="page">
           <label class="search lg"><span class="s-ic" data-ic="search"></span><input id="orte-q" type="search" placeholder="Ort, PLZ, Gipfel oder Station" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button class="s-clear" id="orte-clear" aria-label="Suche leeren" data-ic="close" hidden></button></label>
           <div id="orte-body"></div>
         </div>
-      </div>
-
-      <!-- Radar von MeteoSchweiz (1:1 eingebettet) -->
-      <div class="xcwrap mswrap" id="mswrap" hidden>
-        <iframe id="ms-frame" title="Niederschlagsradar von MeteoSchweiz" allow="geolocation; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        <div class="ms-bar"><span>Seite von MeteoSchweiz</span><button class="chip-l" id="ms-open">In Safari öffnen</button></div>
       </div>
 
       <!-- XC Therm -->
@@ -8840,7 +8919,7 @@ pako/dist/pako.esm.mjs:
 (() => {
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
-  const APP_VERSION = '8 · 07.10.2026';
+  const APP_VERSION = '9 · 07.10.2026';
   const GEO = 'https://data.geo.admin.ch/';
   const LAYER = {
     wind: 'ch.meteoschweiz.messwerte-windgeschwindigkeit-kmh-10min',
@@ -8860,8 +8939,6 @@ pako/dist/pako.esm.mjs:
   const EXAPP = 'app=windsack&version=1.0';
   const stationLink = (id) => `https://www.meteoschweiz.admin.ch/service-und-publikationen/applikationen/messwerte-und-messnetze.html#param=messnetz-automatisch&station=${encodeURIComponent(id)}`;
   const XC_URL = 'https://xctherm.com/icon?lang=de&lat=46.75&lon=8.25&zoom=7';
-  // Niederschlagsradar von MeteoSchweiz (deren eigene Seite, 1:1 eingebettet)
-  const MS_RADAR_URL = 'https://www.meteoschweiz.admin.ch/service-und-publikationen/applikationen/niederschlag.html';
   // Weitere Netze über winds.mobi (CORS offen): Holfuy, SLF-IMIS, Pioupiou …
   const WM = 'https://winds.mobi/api/2.3/';
   const EXTRA_FIXED = ['holfuy-1638', 'slf-ZER4']; // ZFC Riffelberg (Holfuy), Stafelalp (SLF IMIS ZER4)
@@ -8952,7 +9029,8 @@ pako/dist/pako.esm.mjs:
     luftbild: { name: 'Luftbild', id: 'ch.swisstopo.swissimage', ext: 'jpeg', max: 19 },
   };
   // Ebenen-Typen: (ohne) = swisstopo-WMTS (PNG, Rückfall auf WMS) · xyz = fremde Kacheln (url) · huts = Hütten aus OpenStreetMap
-  //               quake = Erdbeben (SED). Schnee, Lawinenbulletin, SLF-Messnetz und Lawinengelände: Blatt «Schnee & Lawinen».
+  //               quake = Erdbeben (SED) · alert = Gebiete der Alertswiss-Meldungen.
+  //               Schnee, Lawinenbulletin, SLF-Messnetz und Lawinengelände: Blatt «Schnee & Lawinen».
   const SLF_TILES = (id) => `https://map.slf.ch/public/mapcache/wmts/1.0.0/${id}/default/GoogleMapsCompatible/{z}/{y}/{x}.png`;
   // Skitourenguru: Kartenebenen als WMTS (Web-Mercator, Zoom 9–15), veröffentlicht für map.geo.admin.ch; privat, nicht kommerziell
   const SG_TILES = (n) => `https://map.skitourenguru.com/${n}.tms?x={x}&y={y}&z={z}`;
@@ -8970,13 +9048,14 @@ pako/dist/pako.esm.mjs:
     { g: 'Winter: Gelände & Wildschutz', id: 'ch.bafu.bundesinventare-jagdbanngebiete', name: 'Wildtierschutzgebiete (Jagdbanngebiete)', short: 'Jagdbanngebiete', src: 'BAFU', op: 0.7 },
     { g: 'Winter: Gelände & Wildschutz', id: 'sg-corridors', type: 'xyz', url: SG_TILES('CH_SG_CORRIDORS'), minZ: 9, maxN: 15, quiet: true, leg: 'sg', name: 'Skitourenguru: Skitouren-Korridore', short: 'Skitourenguru', src: 'Skitourenguru · automatisch erzeugte Skitouren, ab Zoom 9', op: 0.85 },
     { g: 'Naturgefahren', id: 'quakes', type: 'quake', name: 'Erdbeben (30 Tage)', short: 'Erdbeben', src: 'Schweizerischer Erdbebendienst SED · ab Magnitude 1' },
+    { g: 'Naturgefahren', id: 'alerts', type: 'alert', name: 'Alertswiss: betroffene Gebiete', short: 'Alertswiss', src: 'Alertswiss · Gebiete der aktuellen Meldungen von Bund und Kantonen' },
     { g: 'Gelände & Geologie', id: 'ch.swisstopo.geologie-geocover', name: 'GeoCover – geologische Vektordaten', short: 'GeoCover', src: 'swisstopo', op: 0.7 },
     { g: 'Luftfahrt', id: 'ch.bazl.luftfahrthindernis', wms: true, name: 'Luftfahrthindernisse', short: 'Hindernisse', src: 'BAZL (Kabel, Masten)', op: 1 },
     { g: 'Luftfahrt', id: 'ch.bazl.luftraeume-kontrollzonen', name: 'Kontrollzonen (CTR)', short: 'CTR', src: 'BAZL', op: 0.8 },
     { g: 'Luftfahrt', id: 'ch.bazl.luftraeume-nahkontrollbezirke', name: 'Nahkontrollbezirke (TMA)', short: 'TMA', src: 'BAZL', op: 0.8 },
   ];
   // Point-/Vektorebenen ohne Deckkraft-Regler
-  const K_POINTS = new Set(['huts', 'quake']);
+  const K_POINTS = new Set(['huts', 'quake', 'alert']);
   const SLF_BULLETIN = 'https://aws.slf.ch/api/bulletin/caaml/de/geojson';
 
   /* ───── Animationen ───── */
@@ -9220,6 +9299,7 @@ pako/dist/pako.esm.mjs:
     camera: svgI('<path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6"/>'),
     r360: svgI('<ellipse cx="12" cy="12" rx="9.5" ry="4.2"/><path d="M16.6 17.2 19 16l-1.6-2"/><path d="M12 7.8v8.4"/>'),
     wx: svgI('<circle cx="8.2" cy="8.4" r="3.1"/><path d="M8.2 2.6v1.2M3.6 4.6l.9.9M2.4 8.9h1.2M12.4 4.2l-.6.7"/><path d="M8.6 19.6h8.3a3.6 3.6 0 0 0 .5-7.2 5 5 0 0 0-9.5 1.2 3 3 0 0 0 .7 6z"/>'),
+    report: svgI('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.6V3.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1.1M8.6 10h6.8M8.6 13.5h6.8M8.6 17h4.2"/>'),
     radar: svgI('<path d="M4.2 17.8A9.5 9.5 0 1 1 12 21.5"/><path d="M7.6 15.2A5.3 5.3 0 1 1 12 17.3"/><path d="M12 12 18.6 6.4"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>'),
   };
   // Windsack-Logo (Schlauch in Rot/Weiss)
@@ -9370,7 +9450,80 @@ pako/dist/pako.esm.mjs:
     return { thr, kpNow: last ? last.kp : null, kpAt: last ? last.t : null, high, alt, dark, now: (high || !!alt) && dark, nights: [...nights.values()], watch, maxFc };
   }
 
-  /* ───── Alertswiss: Meldungen vereinheitlichen (ohne Flächen) ───── */
+  /* ───── Alertswiss: Meldungen vereinheitlichen; die betroffenen Gebiete vereinfacht (für die Karte) ───── */
+  // Linienzug vereinfachen (Douglas–Peucker ohne Rekursion): pts = [[Breite, Länge], …], tol in Grad Breite
+  function shSimplify(pts, tol) {
+    const n = pts.length;
+    if (n < 4) return pts;
+    const kx = Math.cos((pts[0][0] * Math.PI) / 180), keep = new Uint8Array(n), st = [[0, n - 1]];
+    keep[0] = keep[n - 1] = 1;
+    while (st.length) {
+      const [a, b] = st.pop();
+      const ay = pts[a][0], ax = pts[a][1] * kx, dx = pts[b][1] * kx - ax, dy = pts[b][0] - ay, len2 = dx * dx + dy * dy;
+      let md = 0, mi = -1;
+      for (let i = a + 1; i < b; i++) {
+        const py = pts[i][0], px = pts[i][1] * kx;
+        const t = len2 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len2)) : 0;
+        const d = Math.hypot(px - ax - t * dx, py - ay - t * dy);
+        if (d > md) { md = d; mi = i; }
+      }
+      if (mi > 0 && md > tol) { keep[mi] = 1; st.push([a, mi], [mi, b]); }
+    }
+    return pts.filter((_, i) => keep[i]);
+  }
+  // Ein Ring aus der Meldung ([["46.57", "9.23"], …]) → flache Zahlenliste [Breite, Länge, Breite, …]; diag = Ausdehnung in Grad
+  // maxPts: Obergrenze der Punkte – eine sehr fein gezeichnete Grenze wird gröber, bis sie passt (nie weggelassen)
+  function shAsRing(coords, maxPts = 1500) {
+    const pts = [];
+    for (const c of Array.isArray(coords) ? coords : []) {
+      const lat = Number(c && c[0]), lon = Number(c && c[1]);
+      if (Number.isFinite(lat) && Number.isFinite(lon) && lat > 40 && lat < 52 && lon > 0 && lon < 16) pts.push([lat, lon]);
+    }
+    if (pts.length < 3) return null;
+    let la0 = 90, la1 = -90, lo0 = 180, lo1 = -180;
+    for (const [la, lo] of pts) { if (la < la0) la0 = la; if (la > la1) la1 = la; if (lo < lo0) lo0 = lo; if (lo > lo1) lo1 = lo; }
+    const diag = Math.hypot(la1 - la0, (lo1 - lo0) * 0.69);
+    // Genauigkeit nach Grösse: kleine Sperrzonen auf rund 5 m, ein ganzer Kanton auf rund 150 m
+    let tol = Math.max(0.00005, Math.min(0.0013, diag * 0.004)), sim = shSimplify(pts, tol);
+    for (let k = 0; k < 12 && sim.length > maxPts; k++) { tol *= 2; sim = shSimplify(pts, tol); }
+    if (sim.length < 3) return null;
+    const m = diag < 0.05 ? 1e5 : 1e4, flat = [];
+    for (const [la, lo] of sim) flat.push(Math.round(la * m) / m, Math.round(lo * m) / m);
+    return { flat, diag };
+  }
+  // Gebiete einer Meldung: p = Flächen (je [Aussenring, Aussparung, …]), c = Kreise [Breite, Länge, Radius km]
+  function shAsGeo(areas) {
+    const p = [], c = [], polys = [];
+    for (const ar of Array.isArray(areas) ? areas : []) {
+      for (const pg of Array.isArray(ar && ar.polygons) ? ar.polygons : []) { const o = shAsRing(pg && pg.coordinates); if (o) polys.push({ pg, o }); }
+    }
+    /* Höchstens 3000 Punkte und 40 Flächen je Meldung. Grosse Flächen zuerst (fällt etwas weg, dann die kleinsten); jede
+       Fläche bekommt ihren Anteil am Rest – eine zu feine Grenze wird vereinfacht statt verworfen. */
+    polys.sort((a, b) => b.o.diag - a.o.diag);
+    if (polys.length > 40) polys.length = 40;
+    let budget = 3000;
+    polys.forEach(({ pg, o }, i) => {
+      const cap = Math.max(8, Math.floor(budget / (polys.length - i)));
+      const outer = o.flat.length / 2 > cap ? shAsRing(pg.coordinates, cap) : o;
+      if (!outer) return;
+      const rings = [outer.flat];
+      budget -= outer.flat.length / 2;
+      for (const ex of Array.isArray(pg.excludes) ? pg.excludes : []) {
+        const h = shAsRing(ex && ex.coordinates, 200);
+        if (!h || h.diag < 0.0027 || rings.length >= 12 || budget < h.flat.length / 2) continue; // Aussparungen unter rund 300 m weglassen
+        rings.push(h.flat);
+        budget -= h.flat.length / 2;
+      }
+      p.push(rings);
+    });
+    for (const ar of Array.isArray(areas) ? areas : []) {
+      for (const ci of Array.isArray(ar && ar.circles) ? ar.circles : []) {
+        const cp = (ci && ci.centerPosition) || [], la = Number(cp[0]), lo = Number(cp[1]), r = Number(ci && ci.radius);
+        if (Number.isFinite(la) && Number.isFinite(lo) && la > 40 && la < 52 && lo > 0 && lo < 16 && r > 0 && r < 300 && c.length < 20) c.push([Math.round(la * 1e5) / 1e5, Math.round(lo * 1e5) / 1e5, Math.round(r * 1000) / 1000]);
+      }
+    }
+    return p.length || c.length ? { p, c } : null;
+  }
   const SH_AS_LEVEL = { minor: 'Information', moderate: 'Warnung', severe: 'Alarm', extreme: 'Alarm' };
   const SH_AS_RANK = { Alarm: 0, Warnung: 1, Information: 2, Entwarnung: 3 };
   // Weblink einer Meldung: nur https (http wird angehoben), «www.kanton.ch» ohne Schema ergänzt,
@@ -9411,6 +9564,7 @@ pako/dist/pako.esm.mjs:
         level, rank: SH_AS_RANK[level], allClear: !!a.allClear,
         regions: a.nationWide ? ['CH'] : regions.slice(0, 30), area: area.slice(0, 400), pub: shPlain(a.publisherName).slice(0, 120),
         contact: shPlain(a.contact && a.contact.contact).slice(0, 800), links, link: links.length ? links[0].url : '', icon,
+        geo: a.nationWide ? null : shAsGeo(a.areas),
       };
     }).sort((x, y) => x.rank - y.rank || (y.t || 0) - (x.t || 0));
   }
@@ -9453,6 +9607,7 @@ pako/dist/pako.esm.mjs:
   const S = {
     view: '', seg: '', arg: '',     // aktuelle Ansicht (Router)
     mode: null,                     // aktiver Kartenmodus
+    mapOwner: null,                 // Ansicht, für die der Kartenausschnitt zuletzt eingerichtet wurde
     live: null, liveLoading: false, liveErr: null,
     fc: {}, fcLoading: {}, fcErr: {},
     dp: null, dpLoading: false, dpErr: null,
@@ -9541,6 +9696,9 @@ pako/dist/pako.esm.mjs:
   const WMTS = (id, ext = 'jpeg') => `https://wmts.geo.admin.ch/1.0.0/${id}/default/current/3857/{z}/{x}/{y}.${ext}`;
   const mapEl = $('#map');
   const MAP_BOUNDS = L.latLngBounds([44.6, 4.2], [48.9, 12.4]);
+  /* Geltende Grenzen der Schweizer Karten: MAP_BOUNDS, erweitert um den Ausschnitt «ganze Schweiz» dieses Bildschirms
+     (boundsSync). Im Hochformat ist der höher als MAP_BOUNDS – Leaflet schöbe die Karte sonst aus der Mitte zurück. */
+  const MAPB = { cur: MAP_BOUNDS };
   // zoomSnap 0: stufenloser Zoom – die Karte bleibt nach dem Spreizen genau dort stehen (wie in einer Karten-App)
   // maxZoom 18: grösste Stufe der Karte; jede Kartenansicht setzt ihre eigene Grenze (setMapMode) – so stellt ein
   // Neustart auch einen tief gezoomten, gemerkten Ausschnitt der Karte wieder her
@@ -9733,8 +9891,90 @@ pako/dist/pako.esm.mjs:
   const markers = new Map();
   let meMarker = null;
 
-  function fitCH(pad = {}) {
-    map.fitBounds(CH_BOUNDS, { paddingTopLeft: [8, pad.top || 16], paddingBottomRight: [8, pad.bottom || 60] });
+  /* Ganze Schweiz in den freien Teil der Karte einpassen: Kopfzeile und Leisten oben (Höhenwahl, Föhnanzeigen …) sowie
+     Legende oder Zeitleiste unten bleiben frei. So öffnen Wind, Föhn, Webcams, Schnee und Flugverkehr – jedes Mal. */
+  /* Ausschnitt «ganze Schweiz» für den freien Teil der Karte errechnen (ohne die Karte zu bewegen; unabhängig von der
+     Grösse des Kartenbehälters, der gedreht grösser ist als der Bildschirm). Schmale Leisten – die Legende oder die
+     Föhnanzeigen im Querformat – dürfen auch neben der Schweiz liegen statt darüber oder darunter: Gewählt wird die
+     Anordnung, in der die Schweiz am grössten erscheint. */
+  function chFit() {
+    const mw = $('#mapwrap'), mr = mw.getBoundingClientRect(), W = mr.width, H = mr.height;
+    if (!W || !H) return null;
+    let top = Math.max(0, $('#vh').getBoundingClientRect().bottom - mr.top), bot = 0;
+    const part = [];
+    for (const e of mw.querySelectorAll('.mtop, .mbot')) {
+      if (e.hidden || !e.offsetHeight) continue;
+      const r = e.getBoundingClientRect(), isTop = e.classList.contains('mtop'), v = isTop ? r.bottom - mr.top : mr.bottom - r.top;
+      // «schmal» = daneben bleiben mindestens 120 Punkte Breite frei (sonst zählt die Leiste über die ganze Breite)
+      const left = r.left + r.width / 2 < mr.left + W / 2, h = left ? r.right - mr.left : mr.right - r.left;
+      if (W - h - 12 < 120 || part.length >= 3) { if (isTop) top = Math.max(top, v); else bot = Math.max(bot, v); continue; }
+      part.push({ isTop, v, left, h });
+    }
+    const sw = map.project(L.latLng(CH_BOUNDS[0]), 0), ne = map.project(L.latLng(CH_BOUNDS[1]), 0), bw = ne.x - sw.x, bh = sw.y - ne.y;
+    let best = null;
+    for (let m = 0; m < 1 << part.length; m++) {
+      let t = top, b = bot, l = 0, r = 0;
+      part.forEach((p, i) => { if ((m >> i) & 1) { if (p.left) l = Math.max(l, p.h); else r = Math.max(r, p.h); } else if (p.isTop) t = Math.max(t, p.v); else b = Math.max(b, p.v); });
+      // unter den Leisten oben stehen noch Quelle und Zeit der Karte (eine Zeile); oben und unten je höchstens 40 %,
+      // neben einer Leiste müssen mindestens 120 Punkte Breite bleiben
+      const pt = Math.min(t + 26, H * 0.4), pb = Math.min(b + 10, H * 0.4), pl = l + 6, pr = r + 6;
+      if (m && W - pl - pr < 120) continue;
+      const k = Math.min((W - pl - pr) / bw, (H - pt - pb) / bh);
+      // gekürzter Rand = die Schweiz läge teils unter einer Leiste: nur, wenn keine Anordnung ohne Kürzen passt
+      const cut = t + 26 > H * 0.4 || b + 10 > H * 0.4;
+      if (!(k > 0) || (best && (cut === best.cut ? k <= best.k : cut))) continue;
+      best = { k, pt, pb, pl, pr, cut };
+    }
+    if (!best) return null;
+    const zoom = clamp(Math.log2(best.k), map.getMinZoom(), map.getMaxZoom());
+    const c = map.project(L.latLng(CH_BOUNDS[0]), zoom).add(map.project(L.latLng(CH_BOUNDS[1]), zoom)).divideBy(2).add([(best.pr - best.pl) / 2, (best.pb - best.pt) / 2]);
+    const half = L.point(W / 2, H / 2);
+    return { center: map.unproject(c, zoom), zoom, bounds: L.latLngBounds(map.unproject(c.subtract(half), zoom), map.unproject(c.add(half), zoom)) };
+  }
+  function fitCH() {
+    const f = chFit();
+    if (f) map.setView(f.center, f.zoom, { animate: false });
+    else map.setView([46.8, 8.23], 7.5, { animate: false });
+  }
+  /* Nach dem Öffnen passt sich der Ausschnitt «ganze Schweiz» noch an, wenn Leisten oder Legende erst danach erscheinen
+     oder wachsen (Föhnanzeigen, Karte des Flugverkehrs, Legende mit Messwerten) – bis man die Karte selbst bewegt oder
+     etwas anderes sie verschiebt, längstens einige Sekunden. */
+  const AUTOFIT = { until: 0, fresh: false, self: false }; // fresh: seit dem Einpassen unberührt (dann auch nach dem Drehen des Geräts)
+  const autoFitOff = () => { AUTOFIT.until = 0; AUTOFIT.fresh = false; };
+  for (const ev of ['touchstart', 'mousedown', 'wheel', 'keydown']) mapEl.addEventListener(ev, autoFitOff, { passive: true, capture: true });
+  map.on('movestart zoomstart popupopen', () => { if (!AUTOFIT.self) autoFitOff(); });
+  // true = eingepasst (oder stand schon richtig) und die Grenzen sind nachgeführt
+  function refitNow() {
+    if (!AUTOFIT.fresh || Date.now() > AUTOFIT.until || !S.mode || S.mode === 'anim') return false;
+    const f = chFit();
+    if (!f) return false;
+    const z = map.getZoom(), same = Math.abs(z - f.zoom) < 0.01 && map.project(f.center, z).distanceTo(map.project(map.getCenter(), z)) < 2;
+    const was = AUTOFIT.self;
+    AUTOFIT.self = true; // die eigenen Bewegungen beenden das Nachführen nicht
+    try {
+      if (!same) {
+        mapSettle();
+        map._enforcingBounds = true; // nicht in die Grenzen des vorigen Ausschnitts zurückschieben
+        map.setView(f.center, f.zoom, { animate: false });
+        map._enforcingBounds = false;
+      }
+      boundsSync();
+      mapSettle();
+    } finally { map._enforcingBounds = false; AUTOFIT.self = was; }
+    return true;
+  }
+  const mapRefit = debounce(refitNow, 80);
+  if (window.ResizeObserver) { const ro = new ResizeObserver(() => mapRefit()); document.querySelectorAll('#mapwrap .mtop, #mapwrap .mbot').forEach((e) => ro.observe(e)); }
+  /* Grenzen an den Bildschirm anpassen: Der Ausschnitt «ganze Schweiz» muss darin Platz haben (sonst rutscht die Karte
+     gleich nach dem Öffnen aus der Mitte). Gedreht rechnet das Kartentool seine Grenzen selbst (rotBounds). */
+  function boundsSync() {
+    if (!S.mode || S.mode === 'anim') return;
+    const f = chFit(), b = L.latLngBounds(MAP_BOUNDS.getSouthWest(), MAP_BOUNDS.getNorthEast());
+    if (f) b.extend(f.bounds);
+    MAPB.cur = b;
+    if (ROT.on) { rotBounds(); return; }
+    POPB.held = false; // eine für eine Sprechblase aufgehobene Grenze (popLift) gilt damit wieder
+    map.setMaxBounds(b);
   }
   // Anfangsausschnitt (die Karte ist beim Start noch unsichtbar; eingepasst wird beim ersten Anzeigen)
   (() => {
@@ -9742,10 +9982,9 @@ pako/dist/pako.esm.mjs:
     if (v && v.c && Number.isFinite(v.z)) map.setView(v.c, v.z, { animate: false });
     else map.setView([46.8, 8.23], 7.5, { animate: false });
   })();
-  function restoreView() { if (!store.get('view', null)) fitCH(); }
-  // Ausschnitt merken (gemeinsam für alle Karten ausser den Animationen: die öffnen immer mit der ganzen Schweiz)
-  // S.viewHold: nach den Animationen, bis die nächste Karte ihren gemerkten Ausschnitt wieder gesetzt hat
-  function viewStore() { if (!S.mode || S.mode === 'anim' || S.viewHold) return; const c = map.getCenter(); store.set('view', { c: [+c.lat.toFixed(4), +c.lng.toFixed(4)], z: +map.getZoom().toFixed(2) }); }
+  /* Ausschnitt merken: nur das Kartentool («Karte») merkt sich, wo man war – alle anderen Karten öffnen mit der ganzen
+     Schweiz. S.viewHold: solange eine Karte gerade geöffnet wird und ihr Ausschnitt noch nicht steht. */
+  function viewStore() { if (S.mode !== 'karte' || S.viewHold) return; const c = map.getCenter(); store.set('view', { c: [+c.lat.toFixed(4), +c.lng.toFixed(4)], z: +map.getZoom().toFixed(2) }); }
   map.on('moveend', viewStore);
 
   function zoomClass() {
@@ -11514,10 +11753,26 @@ pako/dist/pako.esm.mjs:
 /* ── 62-grid.js ── */
   /* ═════════════════════════ Modellgitter (ICON-CH1/CH2 via Open-Meteo) und Gelände für die Animationen ═════════════════════════
      MGRID (Build: mgrid.mjs): regelmässiges Lat/Lon-Gitter (≈ 13 km) über der Schweiz, dazu die Landesgrenze.
-     Werte −25 h … +50 h, stündlich. Temperatur wird mit einem Höhenmodell (≈ 0.8 km) auf das Gelände umgerechnet. */
+     Werte −25 h … +50 h, stündlich. Temperatur wird mit einem Höhenmodell (≈ 0.8 km) auf das Gelände umgerechnet.
+     OG: zweites, gröberes Gitter (≈ 37 km) über dem ganzen Gebiet des Radarverbunds – damit die Niederschlagsprognose
+     nicht an der Landesgrenze endet, sondern so weit reicht wie das gemessene Radarbild. */
   const FC_HOURS = 48; // so weit reicht die Zeitleiste in die Zukunft
   const MG_VARS = ['temperature_2m', 'precipitation', 'precipitation_probability', 'cloud_cover', 'wind_speed_10m', 'wind_direction_10m'];
-  const MG = { data: null, at: 0, loading: null, err: null };
+  const MG = { data: null, at: 0, netAt: 0, loading: null, err: null };
+  /* Open-Meteo zählt jeden Gitterpunkt als Abruf (höchstens 600 je Minute): Zwischen zwei Gitterabrufen – innen 287,
+     aussen 418 Punkte – liegen darum mindestens 65 s. Der Zeitpunkt des letzten Abrufs wird gemerkt, auch über einen
+     Neustart der App hinweg (sonst folgten sich beide nach dem Neuladen unmittelbar). */
+  const OMG = { at: 0 };
+  const omGridMark = () => { OMG.at = Date.now(); store.set('omGridAt', OMG.at); };
+  function omGridWait() {
+    const now = Date.now(), last = Math.max(OMG.at, +store.get('omGridAt', 0) || 0);
+    return last > now ? 0 : Math.max(0, last + 65e3 - now); // Uhr des Geräts zurückgestellt: nicht warten
+  }
+  // Gebiet des Radarverbunds in Grad (710 × 640 km im Schweizer Netz: 43.62–49.47 N, 2.69–12.46 E) mit etwas Rand
+  const COMP_LL = { lat0: 43.58, lat1: 49.5, lon0: 2.66, lon1: 12.5 };
+  const OG = { lat0: 43.5, lon0: 2.6, dlat: 0.34, dlon: 0.48, nr: 19, nc: 22 }; // bis 49.62 N und 12.68 E, 418 Punkte
+  const OG_VARS = ['precipitation', 'precipitation_probability', 'temperature_2m'];
+  const MGO = { data: null, at: 0, netAt: 0, loading: null, err: null, errAt: 0, timer: 0, snap: new Map(), atc: new Map() };
   const MG_IDX = new Int32Array(MGRID.nr * MGRID.nc).fill(-1); // Gitterzelle → Punktnummer
   MGRID.cells.forEach((c, i) => { MG_IDX[c] = i; });
   const mgLat = (c) => MGRID.lat0 + Math.floor(c / MGRID.nc) * MGRID.dlat;
@@ -11543,6 +11798,10 @@ pako/dist/pako.esm.mjs:
       }
       const lat = MGRID.cells.map((c) => mgLat(c).toFixed(3)).join(','), lon = MGRID.cells.map((c) => mgLon(c).toFixed(3)).join(',');
       let lastErr = null;
+      // nicht in derselben Minute wie der letzte Gitterabruf: mit älteren Werten weiter, sonst kurz warten
+      const gap = omGridWait();
+      if (gap) { if (MG.data) return MG.data; await new Promise((r) => setTimeout(r, gap)); }
+      MG.netAt = Date.now(); omGridMark();
       for (const model of ['meteoswiss_icon_seamless', null]) {
         try {
           const url = `${OM}?latitude=${lat}&longitude=${lon}&hourly=${MG_VARS.join(',')}${model ? '&models=' + model : ''}&past_hours=25&forecast_hours=${FC_HOURS + 2}&wind_speed_unit=kmh&timeformat=unixtime`;
@@ -11620,6 +11879,99 @@ pako/dist/pako.esm.mjs:
     return s;
   }
   const mgIndex = (t) => { const d = MG.data; if (!d) return -1; let best = -1, bd = Infinity; d.times.forEach((x, k) => { const dd = Math.abs(x - t); if (dd < bd) { bd = dd; best = k; } }); return bd <= 45 * 60e3 ? best : -1; };
+
+  /* ───── Äusseres Gitter (Niederschlag, Wahrscheinlichkeit, Temperatur): −2 h … +50 h, alle 2 Stunden neu ─────
+     Ein Abruf zählt bei Open-Meteo wie 418 Einzelabfragen (Grenzen: 600 je Minute, 5000 je Stunde, 10 000 je Tag).
+     Darum: zeitlich getrennt vom inneren Gitter, Zwischenspeicher auf dem Gerät, nach einem Fehler 10 min Pause. */
+  // net = false: nur der Gerätespeicher (kein Abruf)
+  async function mgoLoad(force = false, net = true) {
+    if (MGO.loading) return MGO.loading;
+    if (!force && MGO.data && Date.now() - MGO.at < 2 * 36e5) return MGO.data;
+    MGO.loading = (async () => {
+      if (!MGO.data && !MGO.idbTried) {
+        MGO.idbTried = true;
+        const c = await IDB.get('mgo');
+        if (c && c.times && c.n === OG.nr * OG.nc && Date.now() - (c.fetchedAt || 0) < 6 * 36e5) {
+          MGO.data = c; MGO.at = c.fetchedAt; MGO.snap.clear(); MGO.atc.clear();
+          if (!force && Date.now() - MGO.at < 2 * 36e5) return MGO.data;
+        }
+      }
+      if (!net) return MGO.data;
+      const n = OG.nr * OG.nc, la = [], lo = [];
+      for (let i = 0; i < OG.nr; i++) for (let j = 0; j < OG.nc; j++) { la.push((OG.lat0 + i * OG.dlat).toFixed(2)); lo.push((OG.lon0 + j * OG.dlon).toFixed(2)); }
+      let lastErr = null;
+      if (omGridWait()) { if (MGO.data) return MGO.data; throw new Error('Gitterabruf zu früh'); } // mgoSoon wartet die Minute ab
+      MGO.netAt = Date.now(); omGridMark();
+      // ein Abruf je Versuch (zwei hintereinander wären 836 Punkte in einer Minute): Versagt das Modell der MeteoSchweiz,
+      // nimmt der nächste Versuch die Standardauswahl von Open-Meteo
+      for (const model of [MGO.alt ? null : 'meteoswiss_icon_seamless']) {
+        try {
+          const url = `${OM}?latitude=${la.join(',')}&longitude=${lo.join(',')}&hourly=${OG_VARS.join(',')}${model ? '&models=' + model : ''}&past_hours=2&forecast_hours=${FC_HOURS + 2}&timeformat=unixtime`;
+          const j = await getJSON(url, 45000);
+          const arr = Array.isArray(j) ? j : [j];
+          if (!arr.length || arr[0].error) throw new Error((arr[0] && arr[0].reason) || 'leere Antwort');
+          const times = ((arr[0].hourly && arr[0].hourly.time) || []).map((t) => t * 1000), nt = times.length;
+          if (!nt) throw new Error('keine Zeitschritte');
+          const out = { times, n, nt, model: model || 'best_match', fetchedAt: Date.now() };
+          for (const v of OG_VARS) out[v] = new Float32Array(n * nt).fill(NaN);
+          let any = 0;
+          arr.forEach((o, i) => {
+            if (i >= n || !o || !o.hourly) return;
+            for (const v of OG_VARS) {
+              const a = o.hourly[v];
+              if (!a) continue;
+              for (let k = 0; k < nt; k++) { const x = a[k]; if (x != null && Number.isFinite(x)) { out[v][i * nt + k] = x; any++; } }
+            }
+          });
+          if (!any) throw new Error('Modell liefert keine Werte');
+          MGO.data = out; MGO.at = out.fetchedAt; MGO.err = null;
+          MGO.snap.clear(); MGO.atc.clear();
+          IDB.set('mgo', out);
+          return out;
+        } catch (e) {
+          lastErr = e;
+          if (e.status !== 429 && e.name !== 'AbortError') MGO.alt = !MGO.alt;
+        }
+      }
+      MGO.err = lastErr; MGO.errAt = Date.now();
+      throw lastErr;
+    })().finally(() => { MGO.loading = null; });
+    return MGO.loading;
+  }
+  // Werte aller Punkte des äusseren Gitters zur Zeit t (wie mgAt: linear zwischen den Modellstunden)
+  function mgoAt(v, t) {
+    const d = MGO.data;
+    if (!d || !d[v]) return null;
+    const key = v + ':' + t;
+    let s = MGO.atc.get(key);
+    if (s) return s;
+    const T = d.times, tt = t + (v === 'temperature_2m' ? 0 : 30 * 60e3);
+    if (tt < T[0] - 5 * 60e3 || tt > T[T.length - 1] + 5 * 60e3) return null;
+    let k = 0;
+    while (k < T.length - 2 && T[k + 1] <= tt) k++;
+    const k2 = Math.min(k + 1, T.length - 1), w = clamp((tt - T[k]) / (T[k2] - T[k] || 1), 0, 1), a = d[v], nt = d.nt;
+    s = new Float32Array(d.n);
+    for (let i = 0; i < d.n; i++) {
+      const x = a[i * nt + k], y = a[i * nt + k2];
+      s[i] = x !== x ? y : y !== y ? x : x + (y - x) * w;
+    }
+    MGO.atc.set(key, s);
+    if (MGO.atc.size > 120) MGO.atc.delete(MGO.atc.keys().next().value);
+    return s;
+  }
+  // Bilinear im äusseren Gitter (regelmässig, alle Punkte vorhanden); ausserhalb oder ohne Werte: NaN
+  function obil(s, fi, fj) {
+    if (!(fi >= 0 && fj >= 0 && fi <= OG.nr - 1 && fj <= OG.nc - 1)) return NaN;
+    const i0 = Math.min(OG.nr - 2, Math.floor(fi)), j0 = Math.min(OG.nc - 2, Math.floor(fj)), di = fi - i0, dj = fj - j0, p = i0 * OG.nc + j0;
+    const a = s[p], b = s[p + 1], c = s[p + OG.nc], d = s[p + OG.nc + 1];
+    if (a === a && b === b && c === c && d === d) return (a * (1 - dj) + b * dj) * (1 - di) + (c * (1 - dj) + d * dj) * di;
+    let acc = 0, ws = 0, w;
+    w = (1 - di) * (1 - dj); if (a === a) { acc += a * w; ws += w; }
+    w = (1 - di) * dj; if (b === b) { acc += b * w; ws += w; }
+    w = di * (1 - dj); if (c === c) { acc += c * w; ws += w; }
+    w = di * dj; if (d === d) { acc += d * w; ws += w; }
+    return ws > 0.2 ? acc / ws : NaN;
+  }
 
   // Bilinear im Gitter; fehlende Ecken werden ausgelassen. Rückgabe: Wert (NaN) und Abdeckung (0…1)
   const BIL = { v: NaN, w: 0 };
@@ -11894,22 +12246,35 @@ pako/dist/pako.esm.mjs:
     return drawn;
   }
 
-  /* ───── Modellfelder als Stufenraster (Web-Mercator-Ausschnitt um das Modellgitter, ≈ 2 km) ───── */
-  const MBOX = { lat0: MGRID.lat0 - 1.3 * MGRID.dlat, lat1: MGRID.lat0 + (MGRID.nr - 1 + 1.3) * MGRID.dlat, lon0: MGRID.lon0 - 1.3 * MGRID.dlon, lon1: MGRID.lon0 + (MGRID.nc - 1 + 1.3) * MGRID.dlon, W: 224 };
+  /* ───── Modellfelder als Stufenraster: Web-Mercator-Ausschnitt über dem ganzen Radarverbund (≈ 2 km) ─────
+     Innen (Schweiz) zählt das feine Gitter, aussen das grobe; am Rand des feinen gehen beide weich ineinander über
+     (MBOX.cov = Gewicht des feinen Gitters, 0…255). Fehlt das grobe Gitter, endet die Prognose wie bisher am Rand
+     des feinen (cov blendet sie aus). */
+  const MBOX = { ...COMP_LL, W: 360 };
   (() => {
     const merc = (lat) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
     MBOX.m0 = merc(MBOX.lat1); MBOX.m1 = merc(MBOX.lat0);
     MBOX.H = Math.round((MBOX.W * (MBOX.m0 - MBOX.m1)) / (((MBOX.lon1 - MBOX.lon0) * Math.PI) / 180));
     MBOX.fi = new Float32Array(MBOX.H); MBOX.fj = new Float32Array(MBOX.W); MBOX.lat = new Float32Array(MBOX.H); MBOX.lon = new Float32Array(MBOX.W);
-    for (let y = 0; y < MBOX.H; y++) { const my = MBOX.m0 + ((y + 0.5) / MBOX.H) * (MBOX.m1 - MBOX.m0); MBOX.lat[y] = ((2 * Math.atan(Math.exp(my)) - Math.PI / 2) * 180) / Math.PI; MBOX.fi[y] = fiOf(MBOX.lat[y]); }
-    for (let x = 0; x < MBOX.W; x++) { MBOX.lon[x] = MBOX.lon0 + ((x + 0.5) / MBOX.W) * (MBOX.lon1 - MBOX.lon0); MBOX.fj[x] = fjOf(MBOX.lon[x]); }
-    // Deckung: wie weit eine Zelle im Modellgebiet liegt (am Rand weich auslaufend)
+    MBOX.ofi = new Float32Array(MBOX.H); MBOX.ofj = new Float32Array(MBOX.W);
+    for (let y = 0; y < MBOX.H; y++) { const my = MBOX.m0 + ((y + 0.5) / MBOX.H) * (MBOX.m1 - MBOX.m0); MBOX.lat[y] = ((2 * Math.atan(Math.exp(my)) - Math.PI / 2) * 180) / Math.PI; MBOX.fi[y] = fiOf(MBOX.lat[y]); MBOX.ofi[y] = (MBOX.lat[y] - OG.lat0) / OG.dlat; }
+    for (let x = 0; x < MBOX.W; x++) { MBOX.lon[x] = MBOX.lon0 + ((x + 0.5) / MBOX.W) * (MBOX.lon1 - MBOX.lon0); MBOX.fj[x] = fjOf(MBOX.lon[x]); MBOX.ofj[x] = (MBOX.lon[x] - OG.lon0) / OG.dlon; }
+    // Deckung: wie weit eine Zelle im feinen Gitter liegt (am Rand weich auslaufend); bb = Bereich mit Deckung
     const ones = new Float32Array(MGRID.cells.length).fill(1), cov = new Uint8Array(MBOX.W * MBOX.H);
-    for (let y = 0; y < MBOX.H; y++) for (let x = 0; x < MBOX.W; x++) {
-      const w = bil(ones, MBOX.fi[y], MBOX.fj[x]).w, f = clamp((w - 0.08) / 0.84, 0, 1);
-      cov[y * MBOX.W + x] = Math.round(f * f * (3 - 2 * f) * 255);
+    let x0 = MBOX.W, y0 = MBOX.H, x1 = -1, y1 = -1;
+    for (let y = 0; y < MBOX.H; y++) {
+      const fi = MBOX.fi[y];
+      if (fi < -1 || fi > MGRID.nr) continue;
+      for (let x = 0; x < MBOX.W; x++) {
+        const fj = MBOX.fj[x];
+        if (fj < -1 || fj > MGRID.nc) continue;
+        const w = bil(ones, fi, fj).w, f = clamp((w - 0.08) / 0.84, 0, 1), c = Math.round(f * f * (3 - 2 * f) * 255);
+        if (!c) continue;
+        cov[y * MBOX.W + x] = c;
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
     }
-    MBOX.cov = { g: cov, w: MBOX.W, h: MBOX.H };
+    MBOX.cov = { g: cov, w: MBOX.W, h: MBOX.H, bb: [x0, y0, x1, y1] };
   })();
   const BAND_SPEC = {
     precip: { v: 'precipitation', thr: null, cap: 100 }, // Schwellen wie das Radar (65-radar.js)
@@ -11917,28 +12282,36 @@ pako/dist/pako.esm.mjs:
   };
   const MBAND = new Map();
   function mbandGrid(kind, t) {
-    const sp = BAND_SPEC[kind], key = kind + ':' + t + ':' + MG.at;
+    const sp = BAND_SPEC[kind], key = kind + ':' + t + ':' + MG.at + ':' + MGO.at;
     let r = MBAND.get(key);
     if (r) return r;
-    const snap = mgAt(sp.v, t);
-    if (!snap) return null;
+    const snap = mgAt(sp.v, t), osnap = mgoAt(sp.v, t);
+    if (!snap && !osnap) return null;
     const thr = sp.thr || (sp.thr = RADAR_COLORS.map((c) => c[0]));
-    const W = MBOX.W, H = MBOX.H, g = new Uint8Array(W * H);
+    /* Stufenwert × QS ungerundet (Float32): Das grobe äussere Gitter fällt flach ab – auf ganze Schritte gerundet
+       spränge die Klassengrenze dort von Rasterzelle zu Rasterzelle (Treppen statt glatter Ränder). */
+    const W = MBOX.W, H = MBOX.H, g = new Float32Array(W * H), cov = MBOX.cov.g;
+    // ohne äusseres Gitter genügt der Bereich des feinen
+    const [cx0, cy0, cx1, cy1] = osnap ? [0, 0, W - 1, H - 1] : MBOX.cov.bb;
     let wet = 0, x0 = W, y0 = H, x1 = -1, y1 = -1;
-    for (let y = 0; y < H; y++) {
-      const fi = MBOX.fi[y];
-      for (let x = 0; x < W; x++) {
-        const b = bil(snap, fi, MBOX.fj[x]);
-        if (b.v !== b.v || b.w < 0.08) continue;
-        const q = Math.round(levelOf(b.v, thr, sp.cap) * QS);
-        if (!q) continue;
-        g[y * W + x] = q;
+    for (let y = cy0; y <= cy1; y++) {
+      const fi = MBOX.fi[y], ofi = MBOX.ofi[y];
+      for (let x = cx0; x <= cx1; x++) {
+        const i = y * W + x, c = cov[i];
+        let v = NaN, f = 0;
+        if (c && snap) { const b = bil(snap, fi, MBOX.fj[x]); if (b.v === b.v && b.w >= 0.08) { v = b.v; f = c / 255; } }
+        if (osnap && f < 1) { const o = obil(osnap, ofi, MBOX.ofj[x]); if (o === o) v = f > 0 ? v * f + o * (1 - f) : o; }
+        if (v !== v) continue;
+        const q = levelOf(v, thr, sp.cap) * QS;
+        if (q < 0.5) continue;
+        g[i] = q;
         if (q >= QS) { wet++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
       }
     }
-    r = { g, wet, bb: wet ? [x0, y0, x1, y1] : null };
+    // full: Das äussere Gitter deckt alles – dann blendet nichts am Rand des feinen aus
+    r = { g, wet, bb: wet ? [x0, y0, x1, y1] : null, full: !!osnap };
     MBAND.set(key, r);
-    if (MBAND.size > 60) MBAND.delete(MBAND.keys().next().value);
+    if (MBAND.size > 24) MBAND.delete(MBAND.keys().next().value);
     return r;
   }
 
@@ -11970,29 +12343,37 @@ pako/dist/pako.esm.mjs:
   }
   function ptypeGrid(t) {
     const tt = Math.round(t / 6e5) * 6e5, dem = mboxDem();
-    const key = MG.at + ':' + tt + ':' + (dem ? 1 : 0);
+    const key = MG.at + ':' + MGO.at + ':' + tt + ':' + (dem ? 1 : 0);
     if (PT_GRID.has(key)) return PT_GRID.get(key);
-    const snapT = mgAt('temperature_2m', tt) || mgAt('temperature_2m', t), d = MG.data;
-    if (!snapT) return null;
-    const W = MBOX.W, H = MBOX.H, g = new Uint8Array(W * H).fill(255);
+    const snapT = mgAt('temperature_2m', tt) || mgAt('temperature_2m', t), osnap = mgoAt('temperature_2m', tt) || mgoAt('temperature_2m', t), d = MG.data;
+    if (!snapT && !osnap) return null;
+    const W = MBOX.W, H = MBOX.H, g = new Uint8Array(W * H).fill(255), cov = MBOX.cov.g;
+    const [cx0, cy0, cx1, cy1] = osnap ? [0, 0, W - 1, H - 1] : MBOX.cov.bb;
     let min = 255;
-    for (let y = 0; y < H; y++) {
-      const fi = MBOX.fi[y];
-      for (let x = 0; x < W; x++) {
-        const fj = MBOX.fj[x];
-        const b = bil(snapT, fi, fj);
-        if (b.v !== b.v || b.w < 0.08) continue;
-        let T = b.v;
-        if (dem) { const zz = dem[y * W + x], z = bil(d.z, fi, fj).v; if (z === z && zz === zz) T += LAPSE * (z - zz); }
+    for (let y = cy0; y <= cy1; y++) {
+      const fi = MBOX.fi[y], ofi = MBOX.ofi[y];
+      for (let x = cx0; x <= cx1; x++) {
+        const i = y * W + x, c = cov[i], fj = MBOX.fj[x];
+        let T = NaN, f = 0;
+        if (c && snapT) {
+          const b = bil(snapT, fi, fj);
+          if (b.v === b.v && b.w >= 0.08) {
+            T = b.v; f = c / 255;
+            if (dem) { const zz = dem[i], z = bil(d.z, fi, fj).v; if (z === z && zz === zz) T += LAPSE * (z - zz); }
+          }
+        }
+        // aussen: Modelltemperatur ohne Umrechnung auf das Gelände (das Höhenmodell reicht nur über die Schweiz)
+        if (osnap && f < 1) { const o = obil(osnap, ofi, MBOX.ofj[x]); if (o === o) T = f > 0 ? T * f + o * (1 - f) : o; }
+        if (T !== T) continue;
         const q = clamp(Math.round(TQ(T)), 0, 254);
-        g[y * W + x] = q;
+        g[i] = q;
         if (q < min) min = q;
       }
     }
     // cold: irgendwo kalt genug für Schnee oder Schneeregen (sonst lohnt sich die Abfrage je Bildpunkt nicht)
     const res = { g, w: W, h: H, cold: min < TQ_MIX + 1 };
     PT_GRID.set(key, res);
-    if (PT_GRID.size > 30) PT_GRID.delete(PT_GRID.keys().next().value);
+    if (PT_GRID.size > 24) PT_GRID.delete(PT_GRID.keys().next().value);
     return res;
   }
 
@@ -12007,7 +12388,7 @@ pako/dist/pako.esm.mjs:
   // Hagelwahrscheinlichkeit POH (%)
   const HAIL_COLORS = [[50, [255, 214, 0, 235]], [70, [255, 140, 0, 245]], [90, [220, 20, 60, 250]]];
   // Ausschnitt = ganzer Radarverbund (710 × 640 km im Schweizer Netz; in Grad 43.62–49.47 N, 2.69–12.46 E), Raster ≈ 1 km
-  const RBOX = { lat0: 43.58, lat1: 49.5, lon0: 2.66, lon1: 12.5, W: 700 };
+  const RBOX = { ...COMP_LL, W: 700 };
   (() => {
     const merc = (lat) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
     RBOX.m0 = merc(RBOX.lat1); RBOX.m1 = merc(RBOX.lat0);
@@ -12663,8 +13044,9 @@ pako/dist/pako.esm.mjs:
     RUL.set({
       frames: F, idx: startIdx(F), rows: animRows(F), legend: animLegend(),
       playFrom: Math.max(0, F.findIndex((f) => f.t >= F[startIdx(F)].t - 3 * 36e5)),
-      // Abspielen: Messbilder einzeln (5 min), Modellschritte in 10-min-Sprüngen
-      speed: 120, stride: (i) => (F[i] && F[i].kind !== 'obs' ? 2 : 1),
+      // Abspielen. Niederschlag (Radar und Prognose): jedes Bild einzeln, also 5-Minuten-Sprünge, je 240 ms.
+      // Übrige Reiter: Messbilder einzeln, Modellschritte in 10-Minuten-Sprüngen, je 120 ms.
+      speed: AN.tab === 'precip' ? 240 : 120, stride: (i) => (AN.tab !== 'precip' && F[i] && F[i].kind !== 'obs' ? 2 : 1),
       onChange: animShow, ready: frameReady,
     }, { keep });
     placeFabs();
@@ -12766,7 +13148,7 @@ pako/dist/pako.esm.mjs:
     let n = 0;
     if (cur.kind === 'prob') {
       const mb = mbandGrid('prob', cur.t);
-      if (mb && mb.wet) n = drawBands(px, cw, ch, mb.g, MBOX.W, MBOX.H, mm, PROB_PAL, PROB_COLORS.length, mb.bb, null, { g: MBOX.cov.g, w: MBOX.W, h: MBOX.H, m: mm }, null, Hs);
+      if (mb && mb.wet) n = drawBands(px, cw, ch, mb.g, MBOX.W, MBOX.H, mm, PROB_PAL, PROB_COLORS.length, mb.bb, null, mb.full ? null : { g: MBOX.cov.g, w: MBOX.W, h: MBOX.H, m: mm }, null, Hs);
     } else {
       // Niederschlagstyp samt Muster (das Muster liegt fest auf der Karte: Versatz aus den Kartenpunkten der Bildecke)
       const pt = S.animOpt.ptype && MG.data ? ptypeGrid(cur.t) : null;
@@ -12778,7 +13160,7 @@ pako/dist/pako.esm.mjs:
         if (G && cur.radar.wet) n = drawBands(px, cw, ch, G, RBOX.W, RBOX.H, gridMap(RBOX, cw, ch, nw.lng, se.lng, nwM, seM), RAD_PAL, RADAR_COLORS.length, cur.radar.bb, T, null, F, Hs);
       } else {
         const mb = mbandGrid('precip', cur.t);
-        if (mb && mb.wet) n = drawBands(px, cw, ch, mb.g, MBOX.W, MBOX.H, mm, RAD_PAL, RADAR_COLORS.length, mb.bb, T, { g: MBOX.cov.g, w: MBOX.W, h: MBOX.H, m: mm }, F, Hs);
+        if (mb && mb.wet) n = drawBands(px, cw, ch, mb.g, MBOX.W, MBOX.H, mm, RAD_PAL, RADAR_COLORS.length, mb.bb, T, mb.full ? null : { g: MBOX.cov.g, w: MBOX.W, h: MBOX.H, m: mm }, F, Hs);
       }
     }
     AN.rctx.putImageData(img, 0, 0);
@@ -13198,7 +13580,40 @@ pako/dist/pako.esm.mjs:
     if (cfg.model) {
       mgLoad().then(() => { if (S.mode === 'anim' && AN.tab === tab && MG.at !== had.mg) animRebuild(true); })
         .catch((e) => { if (S.mode === 'anim') { toast(MG.data ? `Prognose nicht aktualisiert (${errText(e)}) – Stand ${hm(MG.at)}` : 'Prognose nicht verfügbar: ' + errText(e), 3500); animRebuild(true); } });
+      mgoSoon();
     }
+  }
+  /* Äusseres Gitter nachladen (Niederschlagsprognose über die Landesgrenze hinaus): nur für Niederschlag und
+     Wahrscheinlichkeit, höchstens alle 2 Stunden. Erst der Gerätespeicher; ein Abruf frühestens 65 s nach dem des
+     inneren Gitters, weil Open-Meteo die Abfragen auch je Minute zählt. */
+  const mgoWanted = () => S.mode === 'anim' && (AN.tab === 'precip' || AN.tab === 'prob');
+  function mgoShown() {
+    const fr = AN.frames[RUL.idx];
+    if (mgoWanted() && fr && fr.src === 'model' && !RUL.playing) animShow(RUL.idx);
+  }
+  async function mgoSoon() {
+    if (!mgoWanted() || MGO.busy) return;
+    if (MGO.data && Date.now() - MGO.at < 2 * 36e5) return;
+    if (MGO.err && Date.now() - MGO.errAt < 10 * 60e3) return;
+    MGO.busy = true;
+    try {
+      const had = MGO.at;
+      await mgoLoad(false, false).catch(() => null);
+      if (MGO.at !== had) mgoShown();
+      if (MGO.data && Date.now() - MGO.at < 2 * 36e5) return;
+      // mindestens 65 s nach dem letzten Gitterabruf (auch wenn inzwischen das innere Gitter neu geladen hat)
+      for (let n = 0; n < 4; n++) {
+        await (MG.loading || Promise.resolve()).catch(() => null);
+        const wait = omGridWait();
+        if (!wait) break;
+        await new Promise((r) => { MGO.timer = setTimeout(r, wait + 50); });
+        if (!mgoWanted()) return;
+      }
+      if (!mgoWanted() || omGridWait()) return;
+      const at = MGO.at;
+      await mgoLoad().catch(() => null);
+      if (MGO.at !== at) mgoShown();
+    } finally { MGO.busy = false; }
   }
   // Regelmässig: neue Radarbilder, Satellitenzeiten und Modelllauf
   function animTick() {
@@ -13216,7 +13631,9 @@ pako/dist/pako.esm.mjs:
       });
     }
     const backoff = MG.err && Date.now() - (MG.errAt || 0) < 5 * 60e3;
-    if (!backoff && (!MG.data || Date.now() - MG.at > 40 * 60e3)) mgLoad().then(() => animRebuild(true)).catch(() => null);
+    // nicht in derselben Minute wie das äussere Gitter (Zählung je Minute bei Open-Meteo)
+    if (!backoff && (!MG.data || Date.now() - MG.at > 40 * 60e3) && !MGO.loading && !omGridWait()) mgLoad().then(() => animRebuild(true)).catch(() => null);
+    mgoSoon();
   }
 
 /* ── 70-cams.js ── */
@@ -13426,7 +13843,8 @@ pako/dist/pako.esm.mjs:
   // Popups so verschieben, dass sie nicht unter den Kartenelementen (oben/unten/rechts) landen
   function popPad() {
     const mr = $('#mapwrap').getBoundingClientRect(); // der sichtbare Rahmen (der Kartenbehälter ist gedreht grösser)
-    let top = 12, bottom = 12;
+    // die Kopfzeile überlappt die Karte; direkt darunter stehen Quelle und Zeit (eine Zeile)
+    let top = Math.max(12, Math.round($('#vh').getBoundingClientRect().bottom - mr.top + 28)), bottom = 12;
     document.querySelectorAll('#mapwrap .mtop:not([hidden]), #mapwrap .kfabs.k-tl').forEach((e) => { const r = e.getBoundingClientRect(); if (r.height) top = Math.max(top, Math.round(r.bottom - mr.top + 10)); });
     document.querySelectorAll('#mapwrap .mbot:not([hidden]), #kpanel:not([hidden])').forEach((e) => { const r = e.getBoundingClientRect(); if (r.height) bottom = Math.max(bottom, Math.round(mr.bottom - r.top + 10)); });
     return { autoPanPaddingTopLeft: [10, top], autoPanPaddingBottomRight: [62, bottom] };
@@ -14084,7 +14502,7 @@ pako/dist/pako.esm.mjs:
     return t;
   }
   // Farbe für Schneehöhen (Blatt «Schnee & Lawinen»)
-  const snowColor = (v) => (v == null ? '#9aa6b0' : v < 1 ? '#a9b8c4' : v < 20 ? '#79aede' : v < 50 ? '#3f86d0' : v < 100 ? '#2a5fb0' : v < 200 ? '#4b3fa6' : '#7b2d8e');
+  const snowColor = (v) => snCol(v, 'HS'); // Stufen der Schneehöhe (76-slf.js)
   /* ───── SAC: Hütten und Biwaks (OpenStreetMap) ───── */
   const HUT_Q = '[out:json][timeout:40];area["ISO3166-1"="CH"][admin_level=2]->.ch;(nwr["tourism"="alpine_hut"](area.ch);nwr["tourism"="wilderness_hut"](area.ch););out center tags;';
   const SAC_RE = /(^|[^a-z])(sac|cas)([^a-z]|$)|alpen-?club|club alpin suisse|club alpino svizzero/i;
@@ -14239,7 +14657,7 @@ pako/dist/pako.esm.mjs:
     KLAYERS.forEach((d, z) => {
       const on = S.karteOn.has(d.id);
       if (K_POINTS.has(d.type)) {
-        if (on) pointLayer(d).then((g) => { if (g && S.mode === 'karte' && S.karteOn.has(d.id)) { g.addTo(map); if (d.type === 'quake') quakeOpenPending(); } });
+        if (on) pointLayer(d).then((g) => { if (g && S.mode === 'karte' && S.karteOn.has(d.id)) { g.addTo(map); if (d.type === 'quake') quakeOpenPending(); if (d.type === 'alert') alertOpenPending(); } });
         else { const g = K.snow.get(d.id); if (g) map.removeLayer(g); }
         return;
       }
@@ -14465,13 +14883,26 @@ pako/dist/pako.esm.mjs:
   const SLF_BASE = 'https://measurement-api.slf.ch/public/api/';
   const SLFD = { d: null, at: 0, p: null, err: null, ser: null, serAt: 0, serP: null, one: new Map() };
   const SLF_TYPE = { SNOW_FLAT: 'Schneestation', WIND: 'Windstation', FLOWCAPT: 'Schneetransport-Station', SNOW_SLOPE: 'Hangstation' };
+  // Reihenfolge wie in der App White Risk des SLF: Neuschnee, Schneehöhe, Wind, Temperatur
   const SLF_FIELDS = {
-    HS: { name: 'Schneehöhe', short: 'Schnee', unit: 'cm' },
-    HN: { name: 'Neuschnee 24 h', short: 'Neuschnee', unit: 'cm' },
-    TA: { name: 'Lufttemperatur', short: 'Temperatur', unit: '°C' },
+    HN: { name: 'Neuschnee', short: 'Neuschnee', unit: 'cm' },
+    HS: { name: 'Schneehöhe', short: 'Schneehöhe', unit: 'cm' },
     VW: { name: 'Wind', short: 'Wind', unit: 'km/h' },
+    TA: { name: 'Lufttemperatur', short: 'Temperatur', unit: '°C' },
   };
   const slfField = () => (SLF_FIELDS[store.get('slfField', 'HS')] ? store.get('slfField', 'HS') : 'HS');
+  // Neuschnee: Summe über 1, 3 oder 7 Tage
+  const SN_DAYS = [1, 3, 7];
+  const snDays = () => (SN_DAYS.includes(store.get('snDays', 1)) ? store.get('snDays', 1) : 1);
+  const snDaysTxt = (n) => (n === 1 ? '1 Tag' : n + ' Tage');
+  /* Farbstufen wie in White Risk (je acht Stufen, hell = wenig): Neuschnee 0–100 cm, Schneehöhe 0–400 cm.
+     Der Wert steht in der Marke; ab der fünften Stufe in Weiss. Ohne Messwert: grau. */
+  const SN_COLS = ['#c9f7ce', '#97e8af', '#58c09e', '#3696b7', '#1074b9', '#0a4d94', '#5e0b40', '#4a0a1c'];
+  const SN_STEPS = { HS: [0, 20, 50, 80, 120, 200, 300, 400], HN: [0, 10, 20, 30, 40, 60, 80, 100] };
+  const SN_NA = '#74787b';
+  const snCls = (v, f) => { const st = SN_STEPS[f] || SN_STEPS.HS; let k = 0; while (k + 1 < st.length && v >= st[k + 1]) k++; return k; };
+  const snCol = (v, f = 'HS') => (v == null ? SN_NA : SN_COLS[snCls(v, f)]);
+  const snInk = (v, f = 'HS') => (v == null || snCls(v, f) >= 4 ? '#ffffff' : '#10202c');
   const nn = (v) => (v == null || v === '' || !Number.isFinite(+v) ? null : +v);
   const secMs = (t) => (t == null ? null : t > 1e12 ? t : t * 1000);
 
@@ -14543,20 +14974,36 @@ pako/dist/pako.esm.mjs:
   /* ───── Werte, Farben, Beschriftung ───── */
   const tempRgb = (v) => { const i = clamp(Math.round((v - T_MIN) / T_STEP), 0, 287) * 4; return [T_LUT[i], T_LUT[i + 1], T_LUT[i + 2]]; };
   const inkOn = ([r, g, b]) => (0.299 * r + 0.587 * g + 0.114 * b > 150 ? '#14202a' : '#ffffff');
-  function slfVal(d, s, f) {
-    if (s.kind === 'ms') return s.f === f ? s.v : null;
+  // days: Zeitraum für den Neuschnee (Vorgabe: der in der Schneekarte gewählte)
+  function slfVal(d, s, f, days = f === 'HN' ? snDays() : 1) {
+    if (s.kind === 'ms') return s.f === f && (f !== 'HN' || days === 1) ? s.v : null;
     if (!d) return null;
     const l = d.last.get(s.code), fresh = l && l.t && Date.now() - l.t < 6 * 36e5 ? l : null;
     const sp = d.spm.get(s.code), spOk = sp && Date.now() - sp.t < 36 * 36e5 ? sp : null;
     const day = d.daily.get(s.code), dl = day && day.length ? day[day.length - 1] : null, dOk = dl && Date.now() - dl[0] < 50 * 36e5 ? dl : null;
     if (f === 'HS') return fresh && fresh.HS != null ? fresh.HS : spOk && spOk.HS != null ? spOk.HS : dOk ? dOk[1] : null;
-    if (f === 'HN') { const h = d.hn.get(s.code); return h && h.HN != null && Date.now() - h.t < 50 * 36e5 ? h.HN : spOk ? spOk.HN : null; }
+    if (f === 'HN') {
+      if (days === 1) { const h = d.hn.get(s.code); return h && h.HN != null && Date.now() - h.t < 50 * 36e5 ? h.HN : spOk ? spOk.HN : null; }
+      // Summe der Tageswerte (Messung am Morgen); fehlt mehr als ein Fünftel der Tage, gibt es keinen Wert
+      if (!dOk || Date.now() - dOk[0] > 30 * 36e5) return null; // die Reihe muss bis heute (oder gestern früh) reichen
+      let sum = 0, n = 0;
+      for (const r of day) if (r[0] > dOk[0] - (days - 0.5) * 864e5 && r[2] != null) { sum += r[2]; n++; }
+      return n >= Math.ceil(days * 0.8) ? sum : null;
+    }
     if (f === 'TA') return fresh ? fresh.TA : null;
     if (f === 'VW') return fresh && fresh.VW != null ? fresh.VW * 3.6 : null;
     return null;
   }
   function slfIcon(d, s, f) {
     const v = slfVal(d, s, f), sp = s.kind === 'sp' ? ' sp' : s.kind === 'ms' ? ' ms' : '';
+    if (f === 'HS' || f === 'HN') {
+      // Schnee: Quadrat = automatische Station, Kreis = Messfeld eines Beobachters bzw. der MeteoSchweiz; «Meine Orte»
+      // grösser und mit Namen
+      const fav = s.kind !== 'ms' && FAV.has('s:slf-' + s.code), w = v == null ? 18 : fav ? 34 : 26, lab = v == null ? '' : String(Math.round(v));
+      const name = fav ? `<span class="sn-nm"><b>${esc(shortName(s.name))}</b>${s.ele != null ? Math.round(s.ele) + ' m ü. M.' : ''}</span>` : '';
+      const html = `<span class="sn-mk${s.kind === 'imis' ? ' sq' : ''}${s.kind === 'ms' ? ' ms' : ''}${v == null ? ' na' : ''}${fav ? ' fav' : ''}${lab.length > 2 ? ' wide' : ''}" style="width:${w}px;height:${w}px;background:${snCol(v, f)};color:${snInk(v, f)}">${lab}</span>${name}`;
+      return { icon: L.divIcon({ className: 'slf-m', html, iconSize: [w, w], iconAnchor: [w / 2, w / 2] }), v, w, h: w + (fav ? 30 : 0) };
+    }
     if (v == null) return { icon: L.divIcon({ className: 'slf-m', html: `<i class="slf-dot${sp}"></i>`, iconSize: [10, 10], iconAnchor: [5, 5] }), v, w: 10 };
     let html, w;
     if (f === 'TA') {
@@ -14566,10 +15013,7 @@ pako/dist/pako.esm.mjs:
       const l = d.last.get(s.code), dir = l ? l.DW : null, col = windColor(v);
       const arrow = dir != null ? `<svg viewBox="-10 -10 20 20" style="transform:rotate(${Math.round(dir + 180)}deg)"><path d="M0 7V-4" stroke="${col}" stroke-width="3" stroke-linecap="round"/><path d="M0-9-4.5-2.5h9z" fill="${col}"/></svg>` : '';
       html = `<span class="slf-v wind" style="background:${col}">${arrow}${Math.round(v)}</span>`; w = 40;
-    } else {
-      const lab = String(Math.round(v));
-      html = `<span class="slf-v${sp}" style="background:${snowColor(v)}">${lab}</span>`; w = lab.length * 7 + 12;
-    }
+    } else { const lab = String(Math.round(v)); html = `<span class="slf-v${sp}">${lab}</span>`; w = lab.length * 7 + 12; }
     return { icon: L.divIcon({ className: 'slf-m', html, iconSize: [w, 20], iconAnchor: [w / 2, 10] }), v, w };
   }
 
@@ -14605,19 +15049,31 @@ pako/dist/pako.esm.mjs:
       if (s.kind === 'ms' && ic.v == null) continue;
       items.push({ s, ic, p: map.latLngToContainerPoint([s.lat, s.lon]) });
     }
-    // Stationen mit Wert zuerst, dann höher gelegene; überlappende Beschriftungen fallen weg (ab Zoom 11 alle)
-    items.sort((a, b2) => (b2.ic.v != null) - (a.ic.v != null) || (b2.s.ele || 0) - (a.s.ele || 0));
-    const boxes = [];
+    // «Meine Orte» zuerst, dann Stationen mit Wert, dann höher gelegene; überlappende Marken fallen weg (ab Zoom 11 alle)
+    const isFav = (s) => (s.kind !== 'ms' && FAV.has('s:slf-' + s.code) ? 1 : 0);
+    items.sort((a, b2) => isFav(b2.s) - isFav(a.s) || (b2.ic.v != null) - (a.ic.v != null) || (b2.s.ele || 0) - (a.s.ele || 0));
+    const boxes = [], snow = f === 'HS' || f === 'HN', pad = popPad();
+    // Angaben einer Station: Auswahl, Farbskala und Zeichenerklärung weichen so lange (snAway) – das Fenster darf den
+    // ganzen Raum unter der Kopfzeile nutzen und rollt innen, wenn auch der nicht reicht (Querformat)
+    const mr = $('#mapwrap').getBoundingClientRect(), top = Math.max(12, Math.round($('#vh').getBoundingClientRect().bottom - mr.top + 28));
+    // 58: Rand und Spitze der Blase. Schmale Bildschirme: Die Blase braucht die ganze Breite, die Knöpfe rechts weichen
+    const narrow = mr.width < 384;
+    const stPad = { maxHeight: Math.max(150, Math.round(mr.height - top - 12 - 58)), maxWidth: Math.min(290, Math.round(mr.width - 50)), minWidth: Math.min(250, Math.round(mr.width - 50)), padRight: narrow ? 10 : null };
     for (const it of items) {
-      const w = it.ic.w + 2, h = 22, x = it.p.x - w / 2, y = it.p.y - h / 2;
+      const w = it.ic.w + 2, h = snow ? it.ic.w + 2 : 22, x = it.p.x - w / 2, y = it.p.y - h / 2;
       if (z < 11 && boxes.some((q) => x < q[2] && x + w > q[0] && y < q[3] && y + h > q[1])) continue;
-      boxes.push([x, y, x + w, y + h]);
-      const m = L.marker([it.s.lat, it.s.lon], { icon: it.ic.icon, keyboard: true, title: it.s.name, zIndexOffset: it.ic.v != null ? 400 : 0, bubblingMouseEvents: false });
-      if (it.s.kind === 'ms') m.bindPopup(() => msPopup(it.s), { maxWidth: 250, ...popPad() });
-      else {
-        m.bindPopup(slfPopupHtml(it.s, null), { maxWidth: 290, minWidth: 250, ...popPad() });
-        m.on('popupopen', (e) => { slfPop = true; slfPopupFill(it.s, e.popup); });
+      boxes.push([x, y, x + w, y + (it.ic.h ? it.ic.h + 2 : h)]);
+      const m = L.marker([it.s.lat, it.s.lon], { icon: it.ic.icon, keyboard: true, title: it.s.name, zIndexOffset: isFav(it.s) ? 800 : it.ic.v != null ? 400 : 0, bubblingMouseEvents: false });
+      if (it.s.kind === 'ms') {
+        // auch hier nicht neu zeichnen, solange die Blase offen ist: Ihr Auto-Pan löst «moveend» aus – die Marke samt Blase verschwände
+        m.bindPopup(() => msPopup(it.s), { maxWidth: 250, ...pad });
+        m.on('popupopen', () => { slfPop = true; });
         m.on('popupclose', () => { slfPop = false; slfSoon(); });
+      }
+      else {
+        m.bindPopup(slfPopupHtml(it.s, null), { ...pad, ...stPad });
+        m.on('popupopen', (e) => { slfPop = true; snAway(true, narrow); slfPopupFill(it.s, e.popup); });
+        m.on('popupclose', () => { slfPop = false; snAway(false); slfSoon(); });
       }
       m.addTo(slfGrp);
     }
@@ -14640,7 +15096,7 @@ pako/dist/pako.esm.mjs:
     const d = SLFD.d;
     const l = d && d.last.get(s.code), fresh = l && l.t && Date.now() - l.t < 6 * 36e5 ? l : null;
     const sp = d && d.spm.get(s.code), h = d && d.hn.get(s.code);
-    const hs = d ? slfVal(d, s, 'HS') : null, hn = d ? slfVal(d, s, 'HN') : null;
+    const hs = d ? slfVal(d, s, 'HS') : null, hn = d ? slfVal(d, s, 'HN', 1) : null;
     const cells = [];
     if (hs != null || s.type !== 'WIND') cells.push([f1(hs, 'cm'), 'Schneehöhe']);
     if (hn != null) cells.push([f1(hn, 'cm'), 'Neuschnee 1 Tag']);
@@ -14817,24 +15273,65 @@ pako/dist/pako.esm.mjs:
     const el = $('#sn-bot');
     el.innerHTML = html || '';
     el.hidden = !html;
+    if (!html) { el.classList.remove('away'); document.querySelector('.sn-top').classList.remove('away'); $('#fabs').classList.remove('away'); }
     el.classList.toggle('card', !!card);
+    placeFabs();
+  }
+  // Auswahl, Farbskala und Zeichenerklärung weichen, solange die Angaben einer Station offen sind (sonst ist auf
+  // kleinen Bildschirmen kein Platz dafür)
+  function snAway(on, narrow = false) {
+    const a = !!on && S.mode === 'schnee-mess';
+    $('#sn-bot').classList.toggle('away', a);
+    document.querySelector('.sn-top').classList.toggle('away', a);
+    $('#fabs').classList.toggle('away', a && narrow);
     placeFabs();
   }
   const snScale = (stops) => `<div class="legend-scale">${stops.map(([, c]) => `<span style="background:${c}"></span>`).join('')}</div><div class="legend-lab">${stops.map(([v]) => `<b>${v < 0 ? '−' + Math.abs(v) : v}</b>`).join('')}</div>`;
   const snErr = (e, what) => (e && e.setup ? mirrorHint(what) : `<div class="msg err">${esc(what)} nicht verfügbar: ${esc(errText(e))}</div>`);
+  // Farbskala oben (unter der Auswahl), unten Zeichenerklärung und – beim Neuschnee – der Zeitraum
+  function snScaleBar(cols, labs, unit) {
+    return cols.map((c, i) => `<span class="c"><i style="background:${c}"></i><b>${labs[i]}</b></span>`).join('') + `<em>${esc(unit)}</em>`;
+  }
   function snLegend() {
     if (S.mode !== 'schnee-mess') return;
-    const f = slfField(), F = SLF_FIELDS[f];
-    const sc = f === 'TA' ? snScale([-15, -10, -5, 0, 5, 10].map((v) => [v, `rgb(${tempRgb(v).join(',')})`]))
-      : f === 'VW' ? snScale(BINS.slice(0, 6).map((b) => [b.from, b.c]))
-        : snScale([[0, '#a9b8c4'], [1, '#79aede'], [20, '#3f86d0'], [50, '#2a5fb0'], [100, '#4b3fa6'], [200, '#7b2d8e']]);
-    const ms = f === 'HS' || f === 'HN';
-    snBot(`<div class="legend-t">${esc(F.name)} · ${esc(F.unit)}</div>${sc}
-      <div class="legend-f"><span><i class="slfk"></i>SLF automatisch</span><span><i class="slfk sp"></i>Beobachter</span>${ms ? '<span><i class="slfk ms"></i>MeteoSchweiz</span>' : ''}</div>
+    const f = slfField(), F = SLF_FIELDS[f], snow = f === 'HS' || f === 'HN';
+    $('#sn-scale').innerHTML = snow ? snScaleBar(SN_COLS, SN_STEPS[f], 'cm')
+      : f === 'TA' ? snScaleBar([-20, -15, -10, -5, 0, 5, 10, 15].map((v) => `rgb(${tempRgb(v + 2.5).join(',')})`), [-20, -15, -10, -5, 0, 5, 10, 15].map((v) => (v < 0 ? '−' + -v : v)), '°C')
+        : snScaleBar(BINS.map((b) => b.c), BINS.map((b) => b.from), 'km/h');
+    $('#sn-scale').setAttribute('aria-label', `Farbskala ${F.name} in ${F.unit}`);
+    const days = snDays();
+    snBot(`${f === 'HN' ? `<div class="sn-per" role="group" aria-label="Zeitraum Neuschnee">${SN_DAYS.map((n) => `<button class="chip-b" data-snd="${n}" aria-pressed="${n === days}">${snDaysTxt(n)}</button>`).join('')}</div>` : ''}
+      <div class="legend-f">${snow ? `<span><i class="snk sq"></i>automatisch</span><span><i class="snk"></i>Beobachter</span><span><i class="snk ms"></i>MeteoSchweiz</span><span><i class="snk sq na"></i>kein Wert</span>`
+    : '<span><i class="slfk"></i>automatische Stationen des SLF (IMIS)</span>'}</div>
+      ${f === 'HN' && days > 1 ? '<div class="legend-f"><span>Summe der Tageswerte – nur automatische Stationen</span></div>' : ''}
       ${SLFD.err && !SLFD.d ? snErr(SLFD.err, 'Die SLF-Messwerte') : ''}`);
   }
+  // Zeitpunkt der gezeigten Messungen (der jüngste Wert des gewählten Felds)
+  function snMeasAt(f) {
+    const d = SLFD.d;
+    let t = 0;
+    if (d) {
+      if (f === 'HN') { for (const h of d.hn.values()) if (h && h.HN != null && h.t > t) t = h.t; for (const p of d.spm.values()) if (p && p.HN != null && p.t > t) t = p.t; }
+      else { const k = f === 'VW' ? 'VW' : f; for (const l of d.last.values()) if (l && l[k] != null && l.t > t) t = l.t; if (f === 'HS' && !t) for (const p of d.spm.values()) if (p && p.HS != null && p.t > t) t = p.t; }
+    }
+    if (!t && (f === 'HS' || f === 'HN')) for (const s of MSS.d[f] || []) if (s.t > t) t = s.t;
+    return t && Date.now() - t < 4 * 864e5 ? t : 0;
+  }
+  // Kopfzeile wie in White Risk: was gezeigt wird und von wann die Messungen sind
+  function snTitleTxt() {
+    const f = slfField();
+    return SLF_FIELDS[f].name + (f === 'HN' ? ' ' + snDaysTxt(snDays()) : '');
+  }
+  function snSubTxt() {
+    const t = snMeasAt(slfField());
+    return t ? `Messungen vom ${innerWidth < 360 ? '' : wd(t) + ', '}${fDM.format(t)} ${hm(t)}${innerWidth < 360 ? '' : ' Uhr'}` : 'Messwerte der Schneestationen';
+  }
   function snStamp() {
-    if (S.mode === 'schnee-mess') { const t = SLFD.d && SLFD.d.at; setStamp(t ? `SLF · Stand ${hm(t)}` : 'MeteoSchweiz'); }
+    if (S.mode !== 'schnee-mess') return;
+    const f = slfField();
+    $('#vh-title').textContent = snTitleTxt();
+    $('#vh-sub').textContent = snSubTxt();
+    setStamp(SLFD.d ? `SLF${f === 'HS' || f === 'HN' ? ' · MeteoSchweiz' : ''}` : 'MeteoSchweiz');
   }
   function snFieldBar() {
     const f = slfField();
@@ -14847,7 +15344,15 @@ pako/dist/pako.esm.mjs:
     snFieldBar();
     const f = slfField();
     snLegend();
+    snStamp();
     Promise.allSettled([slfLoad(), msSnowLoad(f)]).then(() => { if (S.mode === 'schnee-mess') { slfRender(); snStamp(); } });
+  });
+  // Zeitraum für den Neuschnee (1, 3 oder 7 Tage)
+  $('#sn-bot').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-snd]');
+    if (!b || S.mode !== 'schnee-mess') return;
+    store.set('snDays', +b.dataset.snd);
+    snLegend(); slfRender(); snStamp();
   });
   function snBulletinUi() {
     if (BULL.n == null) { snBot(`<b class="sn-t">Lawinenbulletin nicht verfügbar</b><span>${esc(errText(BULL.err))}</span>`, true); setStamp(''); return; }
@@ -14881,6 +15386,7 @@ pako/dist/pako.esm.mjs:
     } else if (mode === 'schnee-mess') {
       snFieldBar();
       snLegend();
+      snStamp();
       setStamp('Messwerte laden …');
       slfGrp.addTo(map);
       Promise.allSettled([slfLoad(), msSnowLoad(slfField())]).then(() => { if (!alive()) return; slfRender(); snStamp(); });
@@ -15033,7 +15539,7 @@ pako/dist/pako.esm.mjs:
     if (d) {
       const pts = [];
       for (const st of d.st.values()) {
-        const v = slfVal(d, st, 'HS'), h = slfVal(d, st, 'HN');
+        const v = slfVal(d, st, 'HS'), h = slfVal(d, st, 'HN', 1);
         if (h != null && (hn == null || h > hn)) hn = h;
         if (v == null) continue;
         n++;
@@ -16062,6 +16568,107 @@ ${wpts}
     })().catch((e) => { MELD.alErr = e; MELD.alErrAt = Date.now(); throw e; }).finally(() => { MELD.alP = null; });
     return MELD.alP;
   }
+  /* ───── Betroffene Gebiete ─────
+     Jede Meldung trägt ihre Gebiete als geo = { p: [[Aussenring, Aussparung, …], …], c: [[Breite, Länge, Radius km], …] },
+     Ringe als flache Liste [Breite, Länge, …] (shAlerts). Der eigene Datenspiegel liefert sie mit, sobald dort das
+     Skript ab Version 9 läuft; fehlen sie (geo === undefined), kommen sie aus dem öffentlichen Spiegel desselben Feeds. */
+  async function alertsGeo() {
+    const al = MELD.al;
+    if (!al || al.geoTried || !al.list.some((a) => a.geo === undefined)) return;
+    al.geoTried = true;
+    for (const u of AS_ALT) {
+      try {
+        const j = await getJSON(`${u}?t=${Math.floor(Date.now() / 3e5)}`, 15000);
+        if (!j || !Array.isArray(j.alerts)) continue;
+        const by = new Map(shAlerts(j).map((a) => [a.id, a.geo]));
+        for (const a of al.list) if (a.geo === undefined && by.has(a.id)) a.geo = by.get(a.id);
+        return;
+      } catch { /* nächster Spiegel */ }
+    }
+  }
+  const asHasGeo = (a) => !!(a && a.geo && ((a.geo.p && a.geo.p.length) || (a.geo.c && a.geo.c.length)));
+  const asNation = (a) => !!(a && a.regions && a.regions[0] === 'CH');
+  const asLatLngs = (flat) => { const out = []; for (let i = 0; i + 1 < flat.length; i += 2) out.push([flat[i], flat[i + 1]]); return out; };
+  // Umriss [[Süd, West], [Nord, Ost]] aller Gebiete einer Meldung
+  function asBounds(a) {
+    if (!asHasGeo(a)) return null;
+    let s0 = 90, n0 = -90, w0 = 180, e0 = -180;
+    const add = (la, lo) => { if (la < s0) s0 = la; if (la > n0) n0 = la; if (lo < w0) w0 = lo; if (lo > e0) e0 = lo; };
+    for (const pg of a.geo.p || []) { const r = pg[0]; for (let i = 0; i + 1 < r.length; i += 2) add(r[i], r[i + 1]); }
+    for (const [la, lo, r] of a.geo.c || []) { const d = r / 111.2, dx = d / Math.cos((la * Math.PI) / 180); add(la - d, lo - dx); add(la + d, lo + dx); }
+    return [[s0, w0], [n0, e0]];
+  }
+  function inFlat(r, lat, lon) {
+    let c = false;
+    for (let i = 0, j = r.length - 2; i + 1 < r.length; j = i, i += 2) {
+      const yi = r[i], xi = r[i + 1], yj = r[j], xj = r[j + 1];
+      if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  }
+  // Abstand eines Punktes zum Gebiet der Meldung in km (0 = liegt darin); ohne Gebiet: Infinity
+  function asDistKm(a, lat, lon) {
+    if (!asHasGeo(a)) return Infinity;
+    const kx = 111.3 * Math.cos((lat * Math.PI) / 180), ky = 111.2;
+    let best = Infinity;
+    for (const pg of a.geo.p || []) {
+      if (inFlat(pg[0], lat, lon) && !pg.slice(1).some((h) => inFlat(h, lat, lon))) return 0;
+      for (const r of pg) {
+        for (let i = 0, j = r.length - 2; i + 1 < r.length; j = i, i += 2) {
+          const ax = (r[j + 1] - lon) * kx, ay = (r[j] - lat) * ky, bx = (r[i + 1] - lon) * kx, by = (r[i] - lat) * ky, dx = bx - ax, dy = by - ay;
+          const t = clamp(-(ax * dx + ay * dy) / (dx * dx + dy * dy || 1), 0, 1), d = Math.hypot(ax + t * dx, ay + t * dy);
+          if (d < best) best = d;
+        }
+      }
+    }
+    for (const [la, lo, r] of a.geo.c || []) { const d = Math.max(0, distKm(lat, lon, la, lo) - r); if (d < best) best = d; }
+    return best;
+  }
+  // Meldungen, die einen Ort betreffen: Er liegt im Gebiet oder höchstens km davon entfernt; landesweite immer
+  const alertsNear = (lat, lon, km = 5) => (MELD.al ? MELD.al.list : []).map((a) => ({ a, d: asNation(a) ? 0 : asDistKm(a, lat, lon) })).filter((x) => x.d <= km);
+  // Meldungen, deren Gebiet nicht bekannt ist (alter Datenspiegel und öffentlicher Spiegel nicht erreichbar, oder die Meldung
+  // nennt keine Flächen): Ob sie einen Ort betreffen, lässt sich nicht sagen – also auch nicht «keine Meldung in der Nähe»
+  const alertsNoGeo = () => (MELD.al ? MELD.al.list : []).filter((a) => !asNation(a) && !asHasGeo(a));
+
+  /* Übersichtskarte über der Liste (und klein auf der Startkachel): Gebiete in der Farbe ihrer Stufe, grosse zuunterst,
+     damit kleine antippbar bleiben; sehr kleine Gebiete und Kreise bekommen zusätzlich einen Punkt. */
+  function asShapes(list, { labels = true, tap = true } = {}) {
+    const items = [];
+    for (const a of list) {
+      if (!asHasGeo(a)) continue;
+      const col = AS_COL[a.level] || AS_COL.Information, attr = tap ? ` data-asmap="${esc(a.id)}"` : '';
+      for (const pg of a.geo.p || []) {
+        let d = '', x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9, ar = 0;
+        pg.forEach((r, k) => {
+          let px = 0, py = 0;
+          for (let i = 0; i + 1 < r.length; i += 2) {
+            const x = wx(r[i + 1]), y = wy(r[i]);
+            d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+            if (!k) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; if (i) ar += px * y - x * py; }
+            px = x; py = y;
+          }
+          d += 'Z';
+        });
+        const w = x1 - x0, h = y1 - y0, area = Math.max(Math.abs(ar) / 2, 1);
+        let svg = `<path class="as-a"${attr} d="${d}" fill="${col}" stroke="${col}" fill-rule="evenodd"/>`;
+        if (Math.max(w, h) < 9) svg += `<circle class="as-pt"${attr} cx="${((x0 + x1) / 2).toFixed(1)}" cy="${((y0 + y1) / 2).toFixed(1)}" r="6.5" fill="${col}"/>`;
+        else if (labels && w > 30 && h > 20 && a.regions && a.regions.length === 1 && /^[A-Z]{2}$/.test(a.regions[0])) svg += `<text class="as-lb" x="${((x0 + x1) / 2).toFixed(1)}" y="${((y0 + y1) / 2 + 4.5).toFixed(1)}" text-anchor="middle">${esc(a.regions[0])}</text>`;
+        items.push({ area, svg });
+      }
+      for (const [la, lo] of a.geo.c || []) items.push({ area: 0, svg: `<circle class="as-pt"${attr} cx="${wx(lo).toFixed(1)}" cy="${wy(la).toFixed(1)}" r="6.5" fill="${col}"/>` });
+    }
+    return items.sort((p, q) => q.area - p.area).map((x) => x.svg).join('');
+  }
+  function asMapHtml(list) {
+    const shapes = asShapes(list), nat = list.filter(asNation).sort((a, b) => a.rank - b.rank)[0];
+    if (!shapes && !nat) return '';
+    // landesweite Meldung: die ganze Schweiz in ihrer Farbe
+    const all = nat ? `<path d="${CH_PATH}" fill="${AS_COL[nat.level] || AS_COL.Information}" fill-opacity="0.16"${` data-asmap="${esc(nat.id)}"`}/>` : '';
+    const n = list.filter(asHasGeo).length;
+    return `<article class="card as-mapcard"><div class="as-map" id="as-map" aria-label="Karte der betroffenen Gebiete">${miniMap('hill', null, all + shapes)}</div>
+      <p class="as-map-f">${n ? `${n} ${n === 1 ? 'Gebiet' : 'Gebiete'} · antippen zeigt die Meldung` : 'Meldung für die ganze Schweiz'}${nat && n ? ' · dazu eine Meldung für die ganze Schweiz' : ''}</p></article>`;
+  }
+
   // Gelesen-Markierung für die Startkachel (Zahl = noch nicht angeschaute Meldungen)
   const asSeen = () => new Set(store.get('asSeen', []));
   const asMarkSeen = () => { if (MELD.al) store.set('asSeen', MELD.al.list.map((a) => a.id).slice(0, 300)); };
@@ -16114,6 +16721,7 @@ ${wpts}
       return;
     }
     try { await alertsLoad(); } catch (e) { if (alive()) body.innerHTML = alertsErrHtml(e); return; }
+    await alertsGeo().catch(() => null);
     if (alive()) { body.innerHTML = alertsHtml(); meldFocus(); asMarkSeen(); }
   }
   // Mitteilung angetippt: #/meldungen/alert?id → Meldung aufklappen und hinscrollen
@@ -16146,6 +16754,7 @@ ${wpts}
       teaser !== flat ? `<p class="as-desc">${esc(desc)}</p>` : '',
       a.instr && a.instr.length ? `<h4 class="as-sub">Verhaltensempfehlungen</h4><ul class="as-list">${a.instr.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '',
       a.area || regs.length ? `<h4 class="as-sub">Gebiet</h4><p class="as-desc">${esc([a.area, regs.length ? `(${regs.join(', ')})` : ''].filter(Boolean).join(' '))}</p>` : '',
+      asHasGeo(a) ? `<button class="btn as-karte" data-as-karte="${esc(a.id)}">${IC.map}Gebiet auf der Karte</button>` : '',
       a.contact ? `<h4 class="as-sub">Kontakt</h4><p class="as-desc">${telLinks(esc(a.contact))}</p>` : '',
       links.length ? `<div class="as-links">${links.map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${IC.ext}<span>${esc(l.text || hostOf(l.url))}</span></a>`).join('')}</div>` : '',
     ].join('');
@@ -16162,14 +16771,14 @@ ${wpts}
     const counts = asCounts(list);
     const head = `<div class="as-sum">${counts.length ? counts.map(([l, n]) => `<span style="--as:${AS_COL[l]}"><i></i><b>${n}</b>&nbsp;${n === 1 ? l : AS_PLURAL[l]}</span>`).join('') : '<span>Keine aktuellen Meldungen</span>'}<span class="as-at">Stand ${d.at ? hm(d.at) : '–'}</span></div>`;
     if (!list.length) return head + '<div class="msg">Zurzeit hat Alertswiss keine Meldung für die Schweiz veröffentlicht.</div>' + asFoot();
-    return head + list.map(asCard).join('') + asFoot();
+    return head + asMapHtml(list) + list.map(asCard).join('') + asFoot();
   }
   const asFoot = () => {
     const al = MELD.al || {};
     const via = al.src === 'mirror' ? `Über den Datenspiegel, alle 10 Minuten aktualisiert${al.via ? ` (Alertswiss war direkt nicht erreichbar – Ersatz: ${esc(al.via)})` : ''}.`
       : al.src === 'alt' ? 'Über den öffentlichen Spiegel <a href="https://github.com/michaelkurath/TRMNL-AlertSwiss" target="_blank" rel="noopener">TRMNL-AlertSwiss</a> (bis 15 Minuten verzögert). Mit der eigenen GitHub-Aktion (Glocke oben) kommen die Meldungen direkt und auf Wunsch als Mitteilung.' : '';
     return `<p class="note">Quelle: www.alertswiss.ch – Meldungen von Bund und Kantonen, sortiert nach Stufe (Alarm, Warnung, Information, Entwarnung). ${via} Massgebend sind die Meldungen auf alert.swiss und in der Alertswiss-App.</p>
-      <a class="link" href="${AS_HOME}" target="_blank" rel="noopener"><span>alert.swiss<small>Alle Meldungen mit Karte der betroffenen Gebiete</small></span>${IC.ext}</a>`;
+      <a class="link" href="${AS_HOME}" target="_blank" rel="noopener"><span>alert.swiss<small>Alle Meldungen im Original</small></span>${IC.ext}</a>`;
   };
 
   /* ───── Nordlicht ───── */
@@ -16256,21 +16865,89 @@ ${wpts}
       <p class="note">Schweiz und Grenzgebiet. Rot = letzte 24 Stunden, orange = letzte 7 Tage. Ab etwa Magnitude 2.5 werden Beben in der Nähe oft verspürt. Quelle: Schweizerischer Erdbebendienst (SED) an der ETH Zürich.</p>
       <a class="link" href="${SED_LIST}" target="_blank" rel="noopener"><span>Erdbeben der letzten 90 Tage<small>seismo.ethz.ch – mit Meldeformular «Erdbeben verspürt?»</small></span>${IC.ext}</a>`;
   }
+  // Meldung in der Liste zeigen: aufklappen, hinrollen, kurz hervorheben
+  function asShowCard(id) {
+    const el = document.querySelector(`#meld-body .as-card[data-as="${CSS.escape(id)}"]`);
+    if (!el) return;
+    document.querySelectorAll('#meld-body .as-card.focus').forEach((c) => c.classList.remove('focus'));
+    el.querySelectorAll('details').forEach((d) => { d.open = true; });
+    el.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    el.classList.add('focus');
+  }
+  // Gebiet einer Meldung im Kartentool zeigen (Ebene «Alertswiss» einschalten, auf das Gebiet zoomen, Meldung öffnen)
+  function asOnMap(id) {
+    const a = MELD.al && MELD.al.list.find((x) => x.id === id), b = a && asBounds(a);
+    if (!b) return;
+    S.karteOn.add('alerts'); store.set('karteOn', [...S.karteOn]);
+    S.pendingView = { b, z: 15 };
+    S.alertFocus = id;
+    navigate('karte');
+  }
   $('#meld-body').addEventListener('click', (e) => {
+    const sm = e.target.closest('[data-asmap]');
+    if (sm) { asShowCard(sm.dataset.asmap); return; }
+    const km = e.target.closest('[data-as-karte]');
+    if (km) { asOnMap(km.dataset.asKarte); return; }
     const q = e.target.closest('[data-qk]');
     if (q) { quakeShow(q.dataset.qk); return; }
     if (e.target.closest('[data-qk-map]')) { S.karteOn.add('quakes'); store.set('karteOn', [...S.karteOn]); S.pendingView = { c: [46.8, 8.2], z: 7.5 }; navigate('karte'); }
   });
 
+  /* ───── Ebene im Kartentool: Gebiete der Meldungen ───── */
+  function asPopup(a) {
+    const col = AS_COL[a.level] || AS_COL.Information, when = a.t ? `${wd(a.t)}, ${fDM.format(a.t)} ${hm(a.t)}` : a.sent;
+    return `<div class="cam-pop as-pop"><div class="eyebrow" style="color:${col}">${esc(a.level)}${a.event ? ' · ' + esc(a.event) : ''}</div><h3>${esc(a.title || 'Meldung')}</h3>
+      <div class="src">${esc([a.pub, when].filter(Boolean).join(' · '))}</div>
+      ${a.area ? `<div class="src">${esc(a.area)}</div>` : ''}
+      <button class="btn" data-nav="meldungen/alert?as=${encodeURIComponent(a.id)}">${IC.alert}Meldung lesen</button>
+      <div class="src">Quelle: www.alertswiss.ch</div></div>`;
+  }
+  const AS_LYR = { by: new Map(), key: '' };
+  async function alertLayer(d) {
+    let grp = K.snow.get(d.id);
+    if (!grp) { grp = L.featureGroup(); K.snow.set(d.id, grp); }
+    try {
+      const al = await alertsLoad();
+      await alertsGeo().catch(() => null);
+      const key = al.at + ':' + al.list.map((a) => a.id + (asHasGeo(a) ? '+' : '')).join(',');
+      if (AS_LYR.key === key) return grp;
+      grp.clearLayers(); AS_LYR.by.clear();
+      const withGeo = al.list.filter(asHasGeo).map((a) => { const b = asBounds(a); return { a, size: (b[1][0] - b[0][0]) * (b[1][1] - b[0][1]) }; }).sort((x, y) => y.size - x.size);
+      for (const { a } of withGeo) {
+        const col = AS_COL[a.level] || AS_COL.Information, st = { color: col, weight: 2.2, opacity: 0.95, fillColor: col, fillOpacity: 0.16, bubblingMouseEvents: false };
+        const g = L.featureGroup();
+        for (const pg of a.geo.p || []) L.polygon(pg.map(asLatLngs), st).addTo(g);
+        for (const [la, lo, r] of a.geo.c || []) L.circle([la, lo], { ...st, radius: Math.max(20, r * 1000) }).addTo(g);
+        g.bindPopup(() => asPopup(a), { maxWidth: 280, ...popPad() });
+        g.addTo(grp);
+        AS_LYR.by.set(a.id, g);
+      }
+      AS_LYR.key = key;
+      if (!withGeo.length) toast(al.list.length ? 'Alertswiss: Die Gebiete der Meldungen sind gerade nicht verfügbar.' : 'Alertswiss: zurzeit keine Meldungen', 3200);
+    } catch (e) { toast(`Alertswiss nicht verfügbar: ${e && e.setup ? 'Datenspiegel einrichten (Meldungen → Glocke)' : errText(e)}`, 4000); return null; }
+    return grp;
+  }
+  // Nach «Gebiet auf der Karte»: die Sprechblase der Meldung öffnen
+  function alertOpenPending() {
+    const id = S.alertFocus;
+    if (!id) return;
+    S.alertFocus = null;
+    const g = AS_LYR.by.get(id);
+    if (!g) return;
+    setTimeout(() => { if (S.mode === 'karte' && map.hasLayer(g)) { const b = g.getBounds(); if (b.isValid()) g.openPopup(b.getCenter()); } }, 350);
+  }
+  POINT_FN.alert = alertLayer;
+  K_NOTE.alert = () => 'Gebiete in der Farbe der Stufe: rot = Alarm, orange = Warnung, blau = Information, grün = Entwarnung. Tippe für die Meldung.';
+
   /* ───── Startkachel ───── */
   function meldTile() {
     if (Date.now() - MELD.tileAt > 10 * 60e3) {
       MELD.tileAt = Date.now();
-      Promise.allSettled([quakesLoad(), alertsLoad(), auroraLoad()]).then(() => rerenderHome());
+      Promise.allSettled([quakesLoad(), alertsLoad().then(() => alertsGeo()), auroraLoad()]).then(() => rerenderHome());
     }
     const qs = (QK.list || []).filter((q) => q.lat > 45.6 && q.lat < 48.1 && q.lon > 5.6 && q.lon < 10.8);
     const dots = [...qs].sort((a, b) => a.t - b.t).map((q) => dotAt(q.lat, q.lon, clamp(2.5 + q.mag * 2.2, 3.5, 12), qCol(q.t))).join('');
-    $('#tm-meld').innerHTML = miniMap('hill', null, dots);
+    $('#tm-meld').innerHTML = miniMap('hill', null, (MELD.al ? asShapes(MELD.al.list, { labels: false, tap: false }) : '') + dots);
     const al = MELD.al ? MELD.al.list.length : null, au = MELD.au ? shAurora(MELD.au, 6.67) : null, q0 = qs[0];
     const b = al != null ? (al ? 'Alertswiss: ' + asCounts(MELD.al.list).slice(0, 2).map(([l, n]) => `${n} ${n === 1 ? l : AS_PLURAL[l]}`).join(', ') : 'Keine Alertswiss-Meldung')
       : q0 ? `Erdbeben M ${q0.mag.toFixed(1)} · ${shortName(q0.place)}` : 'Alertswiss · Erdbeben';
@@ -16556,10 +17233,10 @@ ${wpts}
     { k: 'meld', t: 'Meldungen', s: 'Alarme, Nordlicht, Erdbeben', ic: 'bell' },
   ];
   const TILES = [
+    { k: 'tag', th: 'wetter', ic: 'report', nav: 'tag', t: 'Tagesbericht', s: 'Umgebung meiner Orte', map: 'grau' },
     { k: 'wind', th: 'wetter', ic: 'wind', nav: 'wind', t: 'Wind', s: 'Messung und Prognose', map: 'grau' },
     { k: 'foehn', th: 'wetter', ic: 'foehn', nav: 'foehn', t: 'Föhn & Bise', s: 'Föhnindex · Druck', map: 'grau' },
     { k: 'anim', th: 'wetter', ic: 'drops', nav: 'anim/precip', t: 'Animationen', s: 'Radar · Prognose 48 h', map: 'grau' },
-    { k: 'msr', th: 'wetter', ic: 'radar', nav: 'msradar', t: 'Radar 1:1', s: 'Seite MeteoSchweiz', map: null },
     { k: 'cams', th: 'wetter', ic: 'cam', nav: 'cams/map', t: 'Webcams', s: 'Live-Bilder', map: 'grau' },
     { k: 'karte', th: 'karten', ic: 'map', nav: 'karte', t: 'Karte', s: 'swisstopo', map: 'farbe' },
     { k: 'peak', th: 'karten', ic: 'pano', nav: 'peak', t: 'Panorama', s: 'Gipfel · Kamera', map: null },
@@ -16569,7 +17246,7 @@ ${wpts}
     { k: 'meld', th: 'meld', ic: 'alert', nav: 'meldungen/alert', t: 'Meldungen', s: 'Alertswiss · Nordlicht · Erdbeben', map: 'grau' },
   ];
   // Thema einer Ansicht (bestimmt deren Farbe)
-  const VIEW_TOPIC = { wind: 'wetter', foehn: 'wetter', anim: 'wetter', msradar: 'wetter', cams: 'wetter', ort: 'wetter', orte: 'wetter', karte: 'karten', peak: 'karten', schnee: 'winter', xc: 'fliegen', flug: 'fliegen', meldungen: 'meld' };
+  const VIEW_TOPIC = { tag: 'wetter', wind: 'wetter', foehn: 'wetter', anim: 'wetter', cams: 'wetter', ort: 'wetter', orte: 'wetter', karte: 'karten', peak: 'karten', schnee: 'winter', xc: 'fliegen', flug: 'fliegen', meldungen: 'meld' };
   // Eigene Reihenfolge (lange drücken und ziehen, innerhalb eines Themas); neue Blätter erscheinen an ihrer Standardstelle
   function tileOrder() {
     const def = TILES.map((d) => d.k), saved = store.get('tileOrder', null);
@@ -16669,31 +17346,14 @@ ${wpts}
     schneeTile();
     meldTile();
     flugTile();
+    tagTile();
     // Panorama (PeakFinder) für den gewählten Ort
     $('#tm-peak').innerHTML = PF_ART;
     $('#tf-peak').innerHTML = '<b>Gipfel ringsum</b><span>Rundblick ab Standort · Gipfel im Kamerabild</span>';
-    // Radar von MeteoSchweiz (eingebettete Seite)
-    $('#tm-msr').innerHTML = MS_ART;
-    $('#tf-msr').innerHTML = '<b>Niederschlagsradar</b><span>Original, eingebettet</span>';
     // XC Therm
     $('#tm-xc').innerHTML = XC_ART;
     $('#tf-xc').innerHTML = '<b>Thermik & Wind</b><span>Karte von xctherm.com</span>';
   }
-  // Stilisiertes Radarbild (eigene Zeichnung)
-  const MS_ART = `<svg class="art" viewBox="0 0 200 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <rect width="200" height="180" fill="#e9eef2"/>
-    <g fill="none" stroke="#cbd6de" stroke-width="1.2"><circle cx="100" cy="96" r="26"/><circle cx="100" cy="96" r="52"/><circle cx="100" cy="96" r="78"/>
-      <path d="M100 18v156M22 96h156"/></g>
-    <g opacity="0.92">
-      <path d="M52 66q16-16 34-6t10 24-26 16-30-12 12-22z" fill="#8fd3f4"/>
-      <path d="M60 70q10-9 20-3t6 15-16 10-18-8 8-14z" fill="#3aa0e0"/>
-      <path d="M126 112q14-12 28-3t6 22-24 12-22-10 12-21z" fill="#8fd3f4"/>
-      <path d="M132 118q8-7 16-2t3 13-14 7-11-6 6-12z" fill="#f2c14a"/>
-      <path d="M137 122q5-4 9-1t2 7-8 4-6-3 3-7z" fill="#e2562c"/>
-      <path d="M88 138q10-8 20-2t4 15-17 8-15-7 8-14z" fill="#b9e3f7"/>
-    </g>
-    <path d="M100 96 L168 62 A76 76 0 0 1 174 104 Z" fill="#1d5fa6" opacity="0.10"/>
-    <circle cx="100" cy="96" r="3.2" fill="#33495c"/></svg>`;
   // Stilisierte Thermik mit Gleitschirm (eigene Zeichnung)
   const XC_ART = `<svg class="art" viewBox="0 0 200 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <defs><linearGradient id="xcsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fbde8"/><stop offset="1" stop-color="#dbeaf5"/></linearGradient></defs>
@@ -17419,7 +18079,7 @@ ${wpts}
     const w = mapWrap.clientWidth, h = mapWrap.clientHeight, a = (ROT.b * Math.PI) / 180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a));
     // zTo = Zoomstufe, auf die gleich gezoomt wird (auf die erlaubten Stufen begrenzt: an der Grenze folgt kein «zoomend»)
     const ex = Math.max(0, (ROT.size - (w * c + h * s)) / 2), ey = Math.max(0, (ROT.size - (w * s + h * c)) / 2), z = Number.isFinite(zTo) ? map._limitZoom(zTo) : map.getZoom();
-    const sw = map.project(MAP_BOUNDS.getSouthWest(), z).add([-ex, ey]), ne = map.project(MAP_BOUNDS.getNorthEast(), z).add([ex, -ey]);
+    const sw = map.project(MAPB.cur.getSouthWest(), z).add([-ex, ey]), ne = map.project(MAPB.cur.getNorthEast(), z).add([ex, -ey]);
     ROT.bounds = map.options.maxBounds = L.latLngBounds(map.unproject(sw, z), map.unproject(ne, z));
   }
   // Die Grösse des Kartenbehälters hat sich geändert (Drehen beginnt oder endet, Bildschirm gedreht)
@@ -17464,7 +18124,7 @@ ${wpts}
     mapEl.classList.remove('rot');
     for (const k of ['left', 'top', 'right', 'bottom', 'width', 'height', 'transform']) mapEl.style[k] = '';
     mapEl.style.removeProperty('--kb');
-    if (map.options.maxBounds === ROT.bounds) map.options.maxBounds = MAP_BOUNDS;
+    if (map.options.maxBounds === ROT.bounds) map.options.maxBounds = MAPB.cur;
     ROT.bounds = null;
     rotResize();
     rotUi();
@@ -17554,11 +18214,35 @@ ${wpts}
   /* Sprechblasen: Abstände zu den Bedienelementen im Augenblick des Öffnens messen (nicht beim Anlegen der Marke);
      in der gedrehten Karte am Bildschirm ausrichten statt am Behälter. Der Schliessen-Knopf wandert in die Blase,
      damit er sich mit ihr aufrecht dreht. */
+  /* Zeigt die Karte die ganze Schweiz, füllt der Ausschnitt die Kartengrenzen im Hochformat ganz aus: Verschieben ist
+     dann gesperrt, und eine Sprechblase weit oben bliebe unter der Kopfzeile. Braucht sie mehr Platz, als die Grenzen
+     hergeben, gelten diese nicht, solange sie offen ist – beim Schliessen gleitet die Karte zurück. */
+  const POPB = { held: false };
+  function popLift(off) {
+    const mb = map.options.maxBounds;
+    if (!mb || POPB.held) return;
+    const z = map.getZoom(), p = map.project(map.getCenter(), z).add(L.point(off));
+    if (map.project(map._limitCenter(map.unproject(p, z), z, mb), z).distanceTo(p) < 2) return;
+    POPB.held = true;
+    map.setMaxBounds(null);
+  }
+  function popDrop() {
+    if (!POPB.held) return;
+    POPB.held = false;
+    if (!S.mode) return;
+    if (S.mode === 'anim') map.setMaxBounds(ANIM_BOUNDS);
+    else if (ROT.on) { rotBounds(); map.setMaxBounds(ROT.bounds); }
+    else map.setMaxBounds(MAPB.cur);
+  }
+  map.on('popupclose', popDrop);
   const popPan = L.Popup.prototype._adjustPan;
   L.Popup.prototype._adjustPan = function () {
     if (this._map !== map || !this.options.autoPan) return popPan.call(this);
     const pad = popPad();
-    if (!ROT.on || !this._wrapper) { Object.assign(this.options, pad); return popPan.call(this); }
+    if (this.options.padRight != null) pad.autoPanPaddingBottomRight[0] = this.options.padRight; // die Knöpfe rechts sind dann weg
+    if (!this._wrapper) { Object.assign(this.options, pad); return popPan.call(this); }
+    /* Am Bildschirm gemessen (gedreht wie ungedreht). Eine laufende Animation erst anhalten: Schliesst eben eine andere
+       Sprechblase, gleitet die Karte gerade in ihre Grenzen zurück – gemessen wird, wo sie jetzt steht. */
     if (map._panAnim) map._panAnim.stop();
     const w = this._wrapper.getBoundingClientRect(), m = mapWrap.getBoundingClientRect();
     const l = m.left + pad.autoPanPaddingTopLeft[0], t = m.top + pad.autoPanPaddingTopLeft[1], r = m.right - pad.autoPanPaddingBottomRight[0], bt = m.bottom - pad.autoPanPaddingBottomRight[1];
@@ -17567,37 +18251,53 @@ ${wpts}
     if (w.left - dx < l) dx = w.left - l;
     if (w.bottom + 14 > bt) dy = w.bottom + 14 - bt; // 14: Spitze der Blase
     if (w.top - dy < t) dy = w.top - t;
-    if (dx || dy) map.fire('autopanstart').panBy(rotVec(dx, dy));
+    if (dx || dy) { const off = rotVec(dx, dy); popLift(off); map.fire('autopanstart').panBy(off); }
+    // hat schon Platz, die Karte steht aber noch ausserhalb der Grenzen (sie glitte sonst samt Sprechblase zurück): dort halten
+    else { popLift([0, 0]); if (POPB.held && map._panAnim) map._panAnim.stop(); }
   };
   map.on('popupopen', (e) => {
     const p = e.popup, x = p && p._container && p._container.querySelector(':scope > .leaflet-popup-close-button');
     if (x && p._wrapper) p._wrapper.appendChild(x);
   });
 
-  // Zwei Finger drehen (ab 10° Verdrehung, damit reines Zoomen die Karte nicht kippt); nahe Norden rastet sie ein
+  /* Zwei Finger drehen – bewusst träge, damit Zoomen und Schieben die Karte nicht kippen (wie in Karten-Apps):
+     Die Drehung greift erst, wenn die Finger einen deutlichen Bogen beschrieben haben (TWIST_PX Bildpunkte auf dem
+     Kreis durch beide Finger: je näher sie beisammen liegen, desto grösser der nötige Winkel), beim gleichzeitigen
+     Spreizen oder Kneifen noch später. Norden rastet ein: Im Bereich von ±TWIST_SNAP° bleibt die Karte genordet. */
+  const TWIST_PX = 32, TWIST_MIN = 16, TWIST_MAX = 48, TWIST_SNAP = 4, TWIST_HOME = 8, TWIST_ZOOM = 0.15; // HOME = 2 · SNAP: Wer gedreht loslässt, steht ausserhalb des Rastbereichs
+  // Rastbereich ohne Sprung: bis ±TWIST_SNAP bleibt es 0, danach holt die Karte bis zum doppelten Winkel auf
+  const twistSnap = (b) => { const a = Math.abs(b); return a < TWIST_SNAP ? 0 : a < 2 * TWIST_SNAP ? Math.sign(b) * (a - TWIST_SNAP) * 2 : b; };
   let twist = null, tap2 = null;
   const touchAng = (t) => (Math.atan2(t[1].clientY - t[0].clientY, t[1].clientX - t[0].clientX) * 180) / Math.PI;
+  const touchDist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  // nötige Verdrehung in Grad: Bogen von TWIST_PX auf dem Kreis mit dem kleinsten Fingerabstand der Geste als Durchmesser
+  function twistNeed(tw, d) {
+    tw.dMin = Math.min(tw.dMin, d);
+    let need = clamp((TWIST_PX / (Math.PI * Math.max(40, tw.dMin))) * 360, TWIST_MIN, TWIST_MAX);
+    if (Math.abs(d / tw.d0 - 1) > TWIST_ZOOM) need = Math.min(TWIST_MAX, need * 1.5); // die Finger zoomen: erst bei klarer Drehung
+    return need;
+  }
   mapEl.addEventListener('touchstart', (e) => {
     if (e.touches.length === 2) {
-      const [p, q] = e.touches;
-      tap2 = { t: Date.now(), x: p.clientX + q.clientX, y: p.clientY + q.clientY, d: Math.hypot(p.clientX - q.clientX, p.clientY - q.clientY), a: touchAng(e.touches), z: map.getZoom(), moved: false };
-      twist = S.mode === 'karte' ? { last: tap2.a, acc: 0, b0: ROT.b, off: 0, active: false } : null;
+      const [p, q] = e.touches, d = touchDist(e.touches);
+      tap2 = { t: Date.now(), x: p.clientX + q.clientX, y: p.clientY + q.clientY, d, a: touchAng(e.touches), z: map.getZoom(), moved: false };
+      twist = S.mode === 'karte' ? { last: tap2.a, acc: 0, b0: ROT.b, off: 0, active: false, d0: Math.max(1, d), dMin: d } : null;
       if (twist) rotStop();
     } else { twist = null; if (e.touches.length > 2) tap2 = null; }
   }, { passive: true });
   mapEl.addEventListener('touchmove', (e) => {
     if (e.touches.length !== 2) return;
-    const a = touchAng(e.touches);
+    const a = touchAng(e.touches), d = touchDist(e.touches);
     if (tap2) {
-      const [p, q] = e.touches, x = p.clientX + q.clientX, y = p.clientY + q.clientY, d = Math.hypot(p.clientX - q.clientX, p.clientY - q.clientY);
+      const [p, q] = e.touches, x = p.clientX + q.clientX, y = p.clientY + q.clientY;
       if (Math.abs(x - tap2.x) > 24 || Math.abs(y - tap2.y) > 24 || Math.abs(d - tap2.d) > 14 || Math.abs(norm180(a - tap2.a)) > 6) tap2.moved = true;
     }
     if (!twist) return;
     twist.acc += norm180(a - twist.last);
     twist.last = a;
     // Wer selbst dreht, übernimmt: «Blickrichtung oben» endet, die Karte bleibt, wie sie steht
-    if (!twist.active && Math.abs(twist.acc) > 10) { twist.active = true; twist.off = twist.acc; twist.b0 = ROT.b; if (LOC.mode === 2) locMode(1); }
-    if (twist.active) rotSet(twist.b0 - (twist.acc - twist.off));
+    if (!twist.active && Math.abs(twist.acc) > twistNeed(twist, d)) { twist.active = true; twist.off = twist.acc; twist.b0 = ROT.b; if (LOC.mode === 2) locMode(1); }
+    if (twist.active) rotSet(twistSnap(norm180(twist.b0 - (twist.acc - twist.off))));
   }, { passive: true });
   const twistEnd = (e) => {
     // Zwei-Finger-Tipp (kurz, ohne Bewegung): eine Stufe herauszoomen – wie in Karten-Apps. Erst nach Leaflets eigener
@@ -17610,7 +18310,7 @@ ${wpts}
       tap2 = null;
     }
     if (twist && e.touches.length < 2) {
-      if (twist.active && Math.abs(ROT.b) < 7) rotTo(0, 160);
+      if (twist.active && Math.abs(ROT.b) < TWIST_HOME) rotTo(0, 160);
       twist = null;
     }
     setTimeout(rotIdle, 0);
@@ -17781,12 +18481,39 @@ ${wpts}
     // Querformat: Der Kompass gilt für die Oberkante des Geräts → Drehung des Bildschirms dazu. window.orientation ist
     // die auf dem iPhone dokumentierte Angabe (90 = Home-Knopf rechts); sonst die neuere screen.orientation.
     h += Number.isFinite(window.orientation) ? window.orientation : screen.orientation && Number.isFinite(screen.orientation.angle) ? screen.orientation.angle : 0;
-    const r = (h * Math.PI) / 180, k = LOC.head == null ? 1 : 0.25;
+    // Glätten über die Zeit (rund 0.4 s), nicht je Meldung: Das iPhone meldet den Kompass bis 60-mal pro Sekunde
+    const r = (h * Math.PI) / 180, now = performance.now(), dt = LOC.headAt ? Math.min(1000, now - LOC.headAt) : 0;
+    const k = LOC.head == null ? 1 : 1 - Math.exp(-Math.max(8, dt) / HEAD_TAU);
+    LOC.headAt = now;
     LOC.hx += (Math.sin(r) - LOC.hx) * k; LOC.hy += (Math.cos(r) - LOC.hy) * k;
     LOC.head = ((Math.atan2(LOC.hx, LOC.hy) * 180) / Math.PI + 360) % 360;
-    // Karte nur nachdrehen, wenn sich die Richtung merklich ändert (ruhiges Bild trotz zitterndem Kompass); nicht,
-    // solange zwei Finger drehen oder die Karte gerade weich in die Blickrichtung schwenkt
-    if (!LOC.raf) LOC.raf = requestAnimationFrame(() => { LOC.raf = 0; locDraw(); if (LOC.mode === 2 && !twist && !ROT.animating && Math.abs(norm180(LOC.head - ROT.b)) > 0.4) rotSet(LOC.head); });
+    if (!LOC.raf) LOC.raf = requestAnimationFrame(() => { LOC.raf = 0; locDraw(); headTurn(); });
+  }
+  /* Karte in die Blickrichtung nachdrehen – ruhig: Sie bleibt stehen, bis die Richtung um mehr als HEAD_GO° abweicht,
+     dreht dann mit begrenzter Geschwindigkeit nach und kommt innerhalb von HEAD_STOP° wieder zur Ruhe. Eine kleinere
+     Abweichung zählt erst, wenn sie anhält (länger als HEAD_WAIT auf derselben Seite): Zittern des Kompasses bewegt die
+     Karte nicht, und sie bleibt trotzdem nicht dauerhaft ein paar Grad daneben stehen. Nicht, solange zwei Finger
+     drehen oder die Karte gerade weich in die Blickrichtung schwenkt (rotTo). */
+  const HEAD_TAU = 400, HEAD_GO = 5, HEAD_STOP = 1.2, HEAD_SPEED = 110, HEAD_WAIT = 800; // ms · Grad · Grad · Grad je Sekunde · ms
+  function headTurn() {
+    if (LOC.mode !== 2 || LOC.head == null || twist || ROT.animating) { LOC.turning = false; LOC.turnAt = 0; LOC.offAt = 0; LOC.offSign = 0; return; }
+    const diff = norm180(LOC.head - ROT.b), a = Math.abs(diff), now = performance.now();
+    if (!LOC.turning) {
+      if (a <= HEAD_STOP) { LOC.offAt = 0; LOC.offSign = 0; return; }
+      if (a < HEAD_GO) {
+        const sg = Math.sign(diff);
+        if (sg !== LOC.offSign) { LOC.offSign = sg; LOC.offAt = now; return; }
+        if (now - LOC.offAt < HEAD_WAIT) return;
+      }
+      LOC.turning = true; LOC.turnAt = now; LOC.offAt = 0; LOC.offSign = 0;
+    }
+    const dt = Math.min(100, Math.max(8, now - (LOC.turnAt || now)));
+    LOC.turnAt = now;
+    if (a <= HEAD_STOP) { LOC.turning = false; return; }
+    // je grösser der Rückstand, desto schneller – höchstens HEAD_SPEED
+    const step = Math.min(a, (Math.min(HEAD_SPEED, 8 + a * 3.5) * dt) / 1000);
+    rotSet(ROT.b + Math.sign(diff) * step);
+    if (!LOC.raf) LOC.raf = requestAnimationFrame(() => { LOC.raf = 0; headTurn(); });
   }
   async function oriStart() {
     if (LOC.ori) return true;
@@ -17806,7 +18533,7 @@ ${wpts}
     if (LOC.ori) { window.removeEventListener('deviceorientationabsolute', onHead); window.removeEventListener('deviceorientation', onHead); LOC.ori = false; }
     // alles vergessen: Beim nächsten Mal wird der Kompass neu angefragt und ein fehlender Standort wieder gemeldet
     LOC.pos = null; LOC.asked = false;
-    LOC.head = null; LOC.hx = LOC.hy = 0; LOC.first = true;
+    LOC.head = null; LOC.hx = LOC.hy = 0; LOC.first = true; LOC.headAt = 0; LOC.turning = false; LOC.offAt = 0; LOC.offSign = 0;
     for (const l of [LOC.marker, LOC.ring]) if (l && map.hasLayer(l)) map.removeLayer(l);
     locMode(0);
   }
@@ -18535,6 +19262,291 @@ ${wpts}
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role=button][data-nav]')) { e.preventDefault(); e.target.click(); }
   });
 
+/* ── 86-tag.js ── */
+  /* ═════════════════════════ Tagesbericht: die nahe Umgebung der Orte aus «Meine Orte» ═════════════════════════
+     Je Ort: Lawinenbulletin der Region, Schnee an den nächsten Stationen (SLF und MeteoSchweiz), Wetter und Wind heute,
+     Wind an den nächsten Stationen, Meldungen in der Nähe (Alertswiss, Erdbeben). Der Bericht fasst zusammen, was die
+     App ohnehin lädt, und lässt sich als Text teilen. */
+  const TG = { seq: 0, at: 0, drawT: 0, state: {} };
+  const TG_KM = 20;        // Umkreis für Schnee- und Windstationen
+  const TG_FAR = 40;       // … findet sich darin nichts: die nächsten bis hierhin
+  const TG_ALERT_KM = 10;  // Umkreis für Meldungen
+  const TG_QUAKE_KM = 30;  // Erdbeben der letzten 48 h
+  const kmTxt = (d) => (d < 0.95 ? 'hier' : d < 10 ? d.toFixed(1).replace('.', ',').replace(',0', '') + ' km' : Math.round(d) + ' km');
+  const cmTxt = (v) => (v == null ? '–' : Math.round(v) + ' cm');
+  const tgDeg = (v) => (v == null ? '–' : (v < 0 ? '−' : '') + Math.abs(Math.round(v)) + '°');
+
+  /* ───── Daten je Ort ───── */
+  function tagWeather(t) {
+    const h = HF.get(t.id), today = ymdLocal(Date.now());
+    let days = null;
+    if (t.pt && LFS.text) days = lfDays(t.pt);
+    else if (LFS.text) { const c = lfCandidates(t, siteAlt(t, h))[0]; if (c) days = lfDays(c); }
+    if ((!days || !days.length) && h) days = daysFromHourly(h);
+    const day = (days || []).find((d) => d.d === today) || null;
+    let rr = null, gust = null, gustAt = null, wind = null, snowy = false, tmin = null, tmax = null;
+    if (h) {
+      const t0 = localMidnight(today), t1 = localMidnight(ymdLocal(t0 + 30 * 36e5)), now = Date.now();
+      h.times.forEach((tt, j) => {
+        if (tt <= t0 || tt > t1) return; // ein Stundenwert gilt für die Stunde davor
+        if (h.rr[j] != null) { rr = (rr || 0) + h.rr[j]; if (h.rr[j] >= 0.1 && PR_TYPE(h.wc[j]) === 'Schnee') snowy = true; }
+        if (h.temp[j] != null) { tmin = tmin == null ? h.temp[j] : Math.min(tmin, h.temp[j]); tmax = tmax == null ? h.temp[j] : Math.max(tmax, h.temp[j]); }
+        if (tt > now - 36e5) {
+          if (h.wg[j] != null && (gust == null || h.wg[j] > gust)) { gust = h.wg[j]; gustAt = tt; }
+          if (h.ws[j] != null && (wind == null || h.ws[j] > wind)) wind = h.ws[j];
+        }
+      });
+    }
+    const nw = h ? nowFromHf(h) : null;
+    return {
+      h, icon: day && day.icon != null ? day.icon : nw && nw.wc != null ? wmoToMs(nw.wc, nw.day) : null,
+      tmin: day && day.tmin != null ? day.tmin : tmin, tmax: day && day.tmax != null ? day.tmax : tmax,
+      rr: day && day.rr != null ? day.rr : rr, snowy, gust, gustAt, wind, text: h ? outlookText(h) : '',
+    };
+  }
+  // Schneestationen im Umkreis, nächste zuerst (SLF automatisch und Beobachter, dazu die Tageswerte der MeteoSchweiz)
+  function tagSnow(lat, lon, maxKm) {
+    const by = new Map(), d = SLFD.d;
+    if (d) {
+      for (const s of d.st.values()) {
+        const km = distKm(lat, lon, s.lat, s.lon);
+        if (km > maxKm) continue;
+        const hs = slfVal(d, s, 'HS'), hn = slfVal(d, s, 'HN', 1); // «Neu 24 h»: immer ein Tag, unabhängig vom Zeitraum der Schneekarte
+        if (hs == null && hn == null) continue;
+        by.set(s.code, { name: s.name, ele: s.ele, km, hs, hn, ta: slfVal(d, s, 'TA'), src: s.kind === 'sp' ? 'SLF-Beobachter' : 'SLF', lat: s.lat, lon: s.lon });
+      }
+    }
+    for (const f of ['HS', 'HN']) {
+      for (const s of MSS.d[f] || []) {
+        const km = distKm(lat, lon, s.lat, s.lon);
+        if (km > maxKm) continue;
+        const o = by.get(s.code) || by.set(s.code, { name: s.name, ele: s.ele, km, hs: null, hn: null, ta: null, src: 'MeteoSchweiz', lat: s.lat, lon: s.lon }).get(s.code);
+        if (f === 'HS') o.hs = s.v; else o.hn = s.v;
+      }
+    }
+    return [...by.values()].sort((a, b) => a.km - b.km);
+  }
+  function tagWind(lat, lon, maxKm) {
+    return allStations().filter((s) => Number.isFinite(s.lat) && (!s.ts || Date.now() - s.ts < 3 * 36e5))
+      .map((s) => ({ s, km: distKm(lat, lon, s.lat, s.lon) })).filter((x) => x.km <= maxKm).sort((a, b) => a.km - b.km);
+  }
+  function tagData(e) {
+    const t = entryTarget(e), lat = t.lat, lon = t.lon;
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return { e, t, bad: true };
+    let snow = tagSnow(lat, lon, TG_KM), snowFar = false;
+    if (!snow.length) { snow = tagSnow(lat, lon, TG_FAR).slice(0, 2); snowFar = snow.length > 0; }
+    let wind = tagWind(lat, lon, TG_KM), windFar = false;
+    if (!wind.length) { wind = tagWind(lat, lon, TG_FAR).slice(0, 2); windFar = wind.length > 0; }
+    const bf = BULL.n ? bullAt(lat, lon) : null;
+    const alerts = alertsNear(lat, lon, TG_ALERT_KM).sort((a, b) => a.a.rank - b.a.rank || a.d - b.d);
+    const quakes = (QK.list || []).filter((q) => Date.now() - q.t < 48 * 36e5).map((q) => ({ q, km: distKm(lat, lon, q.lat, q.lon) })).filter((x) => x.km <= TG_QUAKE_KM).sort((a, b) => b.q.t - a.q.t);
+    return { e, t, lat, lon, wx: tagWeather(t), snow, snowFar, wind, windFar, bull: bf ? bullHere(bf.properties || {}) : null, bullOut: !!BULL.n && !bf, alerts, quakes };
+  }
+
+  /* ───── Darstellung ───── */
+  const tgSec = (title, body, more = '') => `<section class="tg-sec"><h3 class="tg-h">${esc(title)}${more}</h3>${body}</section>`;
+  const tgNote = (txt) => `<p class="tg-note">${txt}</p>`;
+  function tgBullHtml(d) {
+    const st = TG.state.bull;
+    if (BULL.n == null) return tgNote(st === 'err' ? 'Lawinenbulletin gerade nicht verfügbar.' : 'Lawinenbulletin wird geladen …');
+    if (!BULL.n) return tgNote('Zurzeit gibt das SLF kein Lawinenbulletin heraus (Winterhalbjahr, etwa November bis Mai).');
+    if (!d.bull) return tgNote('Der Ort liegt ausserhalb der Regionen des Lawinenbulletins.');
+    const b = d.bull, x = b.d;
+    const asp = b.aspects.length === 8 ? 'alle Expositionen' : b.aspects.length ? 'Exposition ' + b.aspects.join(', ') : '';
+    return `<button class="tg-bull" data-tg-go="bulletin" data-lat="${d.lat}" data-lon="${d.lon}">
+        <i class="av-lvl tg-lvl" style="background:${x[1]};color:${x[0] >= 4 ? '#fff' : '#1b1b1b'}">${x[0] || '–'}</i>
+        <span class="tg-bt"><b>${esc(x[0] ? x[2].charAt(0).toUpperCase() + x[2].slice(1) : x[2])}${x[0] ? ' · ' + esc(b.where) : ''}</b>
+        <small>${esc([asp, b.probs.join(', ')].filter(Boolean).join(' · ') || 'Lawinenbulletin SLF')}</small></span>${IC.chevR}</button>
+      ${BULL.until ? tgNote(`Gültig bis ${esc(wd(BULL.until))} ${hm(BULL.until)} · SLF`) : ''}`;
+  }
+  function tgSnowHtml(d) {
+    if (!d.snow.length) {
+      const st = TG.state.slf;
+      if (st === 'load') return tgNote('Schneewerte werden geladen …');
+      return tgNote(`Keine Schneemessung im Umkreis von ${TG_FAR} km.${SLFD.err && SLFD.err.setup ? ' Die Stationen des SLF kommen über den Datenspiegel (Meldungen → Glocke).' : ''}`);
+    }
+    const rows = d.snow.slice(0, 5).map((s) => `<tr><th scope="row"><b>${esc(shortName(s.name))}</b><small>${s.ele != null ? Math.round(s.ele) + ' m · ' : ''}${esc(kmTxt(s.km))} · ${esc(s.src)}</small></th>
+        <td><i class="tg-sw" style="background:${snowColor(s.hs)}"></i>${cmTxt(s.hs)}</td><td>${s.hn == null ? '–' : (s.hn >= 0.5 ? '+' : '') + Math.round(s.hn) + ' cm'}</td><td>${s.ta == null ? '' : tgDeg(s.ta)}</td></tr>`).join('');
+    const top = d.snow.filter((s) => s.hs != null).sort((a, b) => b.hs - a.hs)[0], hn = d.snow.filter((s) => s.hn != null).sort((a, b) => b.hn - a.hn)[0];
+    const sum = [top ? `höchste Schneehöhe ${Math.round(top.hs)} cm (${shortName(top.name)})` : '', hn && hn.hn >= 1 ? `Neuschnee bis ${Math.round(hn.hn)} cm` : hn ? 'kein Neuschnee' : ''].filter(Boolean).join(' · ');
+    return `<table class="tg-tbl"><thead><tr><th scope="col">Station</th><th scope="col">Schnee</th><th scope="col">Neu 24 h</th><th scope="col">Luft</th></tr></thead><tbody>${rows}</tbody></table>
+      ${tgNote(`${d.snowFar ? `Im Umkreis von ${TG_KM} km misst keine Station – die nächsten. ` : ''}${esc(sum.charAt(0).toUpperCase() + sum.slice(1))}${d.snow.length > 5 ? ` · ${d.snow.length} Stationen im Umkreis` : ''}`)}`;
+  }
+  function tgWxHtml(d) {
+    const w = d.wx;
+    if (!w.h && w.tmax == null) return tgNote(TG.state.hf === 'load' ? 'Prognose wird geladen …' : 'Prognose gerade nicht verfügbar.');
+    const rr = w.rr == null ? '' : w.rr < 0.1 ? 'trocken' : `${rrTxt(w.rr)} ${w.snowy ? 'Schnee/Regen' : 'Niederschlag'}`;
+    const windTxt = w.gust != null ? `Böen bis ${Math.round(w.gust)} km/h${w.gustAt ? ' (' + localHour(w.gustAt - 36e5) + ' Uhr)' : ''}${w.wind != null ? ' · Wind bis ' + Math.round(w.wind) + ' km/h' : ''}` : '';
+    return `<button class="tg-wx" data-nav="${esc(entryRoute(d.e))}">
+        <span class="tg-wi">${w.icon != null ? wxSvg(w.icon) : ''}</span>
+        <span class="tg-bt"><b>${tgDeg(w.tmin)} | ${tgDeg(w.tmax)}${rr ? ' · ' + esc(rr) : ''}</b><small>${esc([w.text, windTxt].filter(Boolean).join(' · '))}</small></span>${IC.chevR}</button>`;
+  }
+  function tgWindHtml(d) {
+    if (!d.wind.length) return tgNote(S.live ? `Keine Windstation im Umkreis von ${TG_FAR} km.` : 'Messwerte werden geladen …');
+    return `<div class="tg-list">${d.wind.slice(0, 4).map(({ s, km }) => {
+      const col = windColor(S.colorBy === 'gust' ? s.gust ?? s.wind : s.wind ?? s.gust);
+      const f = s.foehn === 2 ? ' · Föhn' : s.foehn === 1 ? ' · Föhnmischluft' : '';
+      return `<button class="tg-row" data-st="${esc(s.id)}"><span class="row-w">${arrowSvg({ dir: s.dir, speed: s.wind ?? s.gust, color: col, shape: s.ext ? 'diamond' : 'circle' })}<b>${r0(s.wind)}</b><span class="g">${r0(s.gust)}</span></span>
+        <span class="tg-bt"><b>${esc(shortName(s.name))}</b><small>${s.alt != null ? Math.round(s.alt) + ' m · ' : ''}${esc(kmTxt(km))} · ${esc(compass(s.dir))}${esc(f)}${s.ts ? ' · ' + hm(s.ts) : ''}</small></span>${IC.chevR}</button>`;
+    }).join('')}</div>${d.windFar ? tgNote(`Im Umkreis von ${TG_KM} km misst keine Station – die nächsten.`) : ''}`;
+  }
+  function tgWarnHtml(d) {
+    const rows = [];
+    for (const { a, d: km } of d.alerts.slice(0, 4)) {
+      const col = AS_COL[a.level] || AS_COL.Information;
+      rows.push(`<button class="tg-row" data-nav="meldungen/alert?as=${encodeURIComponent(a.id)}"><i class="tg-dot" style="background:${col}"></i>
+        <span class="tg-bt"><b>${esc(a.title || 'Meldung')}</b><small><span style="color:${col};font-weight:700">${esc(a.level)}</span> · Alertswiss · ${asNation(a) ? 'ganze Schweiz' : km < 0.05 ? 'betrifft diesen Ort' : esc(kmTxt(km)) + ' entfernt'}</small></span>${IC.chevR}</button>`);
+    }
+    for (const { q, km } of d.quakes.slice(0, 2)) {
+      rows.push(`<button class="tg-row" data-qk="${esc(q.id)}"><i class="tg-dot" style="background:${qCol(q.t)}"></i>
+        <span class="tg-bt"><b>Erdbeben M ${q.mag.toFixed(1)} · ${esc(q.place || '')}</b><small>${esc(qWhen(q.t))} · ${esc(kmTxt(km))} entfernt</small></span>${IC.chevR}</button>`);
+    }
+    const ng = alertsNoGeo().length;
+    if (ng) {
+      rows.push(`<button class="tg-row" data-nav="meldungen/alert"><i class="tg-dot" style="background:${AS_COL.Warnung}"></i>
+        <span class="tg-bt"><b>${ng} ${ng === 1 ? 'Meldung' : 'Meldungen'} von Alertswiss ohne Gebietsangabe</b><small>Ob ${ng === 1 ? 'sie' : 'eine davon'} diesen Ort betrifft, steht unter «Meldungen»</small></span>${IC.chevR}</button>`);
+    }
+    if (rows.length) return `<div class="tg-list">${rows.join('')}</div>`;
+    const st = TG.state.al;
+    return tgNote(st === 'load' ? 'Meldungen werden geladen …' : st === 'err' ? `Alertswiss ist gerade nicht verfügbar${MELD.alErr && MELD.alErr.setup ? ' (Datenspiegel einrichten: Meldungen → Glocke)' : ''}. Keine Erdbeben in der Nähe.` : `Keine Meldung von Alertswiss im Umkreis von ${TG_ALERT_KM} km, kein Erdbeben in der Nähe.`);
+  }
+  function tgCard(d) {
+    if (d.bad) return `<article class="card tg-card"><h2 class="card-title">${esc(d.e.name)}</h2>${tgNote('Für diesen Ort fehlen die Koordinaten.')}</article>`;
+    const more = (go, label) => `<button class="tg-more" data-tg-go="${go}" data-lat="${d.lat}" data-lon="${d.lon}">${label}</button>`;
+    return `<article class="card tg-card" data-tg="${esc(favKey(d.e))}">
+      <header class="tg-top"><div><h2 class="card-title">${esc(d.e.name)}</h2><small>${esc(entrySub(d.e, d.t))}</small></div>
+        <button class="chip-l" data-nav="${esc(entryRoute(d.e))}">Bericht</button></header>
+      ${tgSec('Lawinenbulletin', tgBullHtml(d))}
+      ${tgSec(`Schnee · Umkreis ${TG_KM} km`, tgSnowHtml(d), more('mess', 'Karte'))}
+      ${tgSec('Wetter heute', tgWxHtml(d))}
+      ${tgSec('Wind jetzt', tgWindHtml(d), more('wind', 'Karte'))}
+      ${tgSec('Meldungen in der Nähe', tgWarnHtml(d))}
+    </article>`;
+  }
+  // Lage in der ganzen Schweiz (eine Zeile je Quelle)
+  function tgOverview() {
+    const f = pairNow('foehn'), fst = foehnState(f && f.dp), b = pairNow('bise'), bst = biseState(b && b.dp);
+    const items = [];
+    if (BULL.n) { const x = Object.values(DANGER).find((q) => q[0] === BULL.max); items.push(['Lawinengefahr', `bis Stufe ${BULL.max}${x ? ' (' + x[2] + ')' : ''}`]); }
+    else if (BULL.n === 0) items.push(['Lawinenbulletin', 'zurzeit keines']);
+    if (f) items.push(['Föhn', `${sgn(f.dp)} hPa · ${fst.short}`]);
+    if (b) items.push(['Bise', `${sgn(b.dp)} hPa · ${bst.short}`]);
+    if (MELD.al) items.push(['Alertswiss', MELD.al.list.length ? asCounts(MELD.al.list).map(([l, n]) => `${n} ${n === 1 ? l : AS_PLURAL[l]}`).join(', ') : 'keine Meldung']);
+    return items;
+  }
+  function tagHtml() {
+    const ents = homeEntries(), now = Date.now();
+    const head = `<div class="tg-head"><div><div class="eyebrow">Tagesbericht</div><h2 class="card-title">${esc(fWdLong.format(now))}, ${esc(fDMon.format(now))}</h2></div>
+      <button class="btn" id="tg-share">${IC.share}Teilen</button></div>`;
+    if (!ents.length) {
+      return `${head}<article class="card"><h2 class="card-title">Noch keine Orte</h2><p class="note">Der Tagesbericht fasst für jeden Ort aus «Meine Orte» die Umgebung zusammen: Lawinenbulletin, Schnee, Wetter, Wind und Meldungen.</p>
+        <button class="btn primary" data-nav="orte">${IC.plus}Orte hinzufügen</button></article>`;
+    }
+    const ov = tgOverview();
+    return `${head}
+      ${ov.length ? `<article class="card tg-ov"><h3 class="sec-t">Schweiz heute</h3><div class="facts">${ov.map(([k, v]) => `<div class="fact"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div></article>` : ''}
+      ${ents.map((e) => tgCard(tagData(e))).join('')}
+      <p class="note">Umgebung: Stationen im Umkreis von ${TG_KM} km, Meldungen im Umkreis von ${TG_ALERT_KM} km, Erdbeben der letzten 48 Stunden im Umkreis von ${TG_QUAKE_KM} km. Stand ${hm(now)}. Daten: SLF (CC BY 4.0), MeteoSchweiz, Open-Meteo, winds.mobi, Alertswiss (www.alertswiss.ch), SED. Der Bericht ersetzt keine eigene Beurteilung vor Ort.</p>`;
+  }
+
+  /* ───── Text zum Teilen ───── */
+  function tagText() {
+    const now = Date.now(), L0 = [`Tagesbericht ${wd(now)}, ${fDate.format(now)} · Stand ${hm(now)}`];
+    for (const e of homeEntries()) {
+      const d = tagData(e);
+      if (d.bad) continue;
+      const alt = siteAlt(d.t, d.wx.h);
+      L0.push('', `${e.name.toUpperCase()}${alt != null ? ' (' + Math.round(alt) + ' m)' : ''}`);
+      if (d.bull) { const b = d.bull; L0.push(`Lawinen: ${b.d[0] ? `Stufe ${b.d[0]} (${b.d[2]}), ${b.where}` : b.d[2]}${b.aspects.length && b.aspects.length < 8 ? ', ' + b.aspects.join('-') : ''}${b.probs.length ? ' · ' + b.probs.join(', ') : ''}`); }
+      else if (BULL.n === 0) L0.push('Lawinen: zurzeit kein Bulletin');
+      if (d.snow.length) L0.push('Schnee: ' + d.snow.slice(0, 4).map((s) => `${shortName(s.name)}${s.ele != null ? ' ' + Math.round(s.ele) + ' m' : ''} ${cmTxt(s.hs)}${s.hn != null && s.hn >= 0.5 ? ' (+' + Math.round(s.hn) + ')' : ''}`).join(', '));
+      const w = d.wx;
+      if (w.tmax != null || w.h) L0.push(`Wetter: ${tgDeg(w.tmin)} bis ${tgDeg(w.tmax)}${w.rr != null ? ', ' + (w.rr < 0.1 ? 'trocken' : rrTxt(w.rr)) : ''}${w.text ? ' · ' + w.text : ''}${w.gust != null ? ' · Böen bis ' + Math.round(w.gust) + ' km/h' : ''}`);
+      if (d.wind.length) L0.push('Wind jetzt: ' + d.wind.slice(0, 3).map(({ s }) => `${shortName(s.name)} ${compass(s.dir)} ${r0(s.wind)}|${r0(s.gust)} km/h`).join(', '));
+      const warn = d.alerts.slice(0, 3).map(({ a }) => `${a.level}: ${a.title}`).concat(d.quakes.slice(0, 1).map(({ q }) => `Erdbeben M ${q.mag.toFixed(1)} ${q.place || ''}`));
+      if (warn.length) L0.push('Meldungen: ' + warn.join(' · '));
+    }
+    const ng = alertsNoGeo().length;
+    if (ng) L0.push('', `Alertswiss: ${ng} ${ng === 1 ? 'Meldung' : 'Meldungen'} ohne Gebietsangabe – bitte auf www.alertswiss.ch prüfen`);
+    L0.push('', 'Quellen: SLF, MeteoSchweiz, Open-Meteo, Alertswiss · aus Windsack');
+    return L0.join('\n');
+  }
+  async function tagShare() {
+    const text = tagText();
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Tagesbericht', text }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    copyText(text, 'Tagesbericht');
+  }
+
+  /* ───── Laden und Zeichnen ───── */
+  function tagDraw() {
+    clearTimeout(TG.drawT);
+    TG.drawT = setTimeout(() => {
+      if (S.view !== 'tag') return;
+      const pg = $('#page-tag'), keep = pg.scrollTop;
+      $('#tag-body').innerHTML = tagHtml();
+      pg.scrollTop = keep;
+    }, 60);
+  }
+  // keep: an Ort und Stelle nachführen (Orte geändert, Standort eingetroffen) – nicht nach oben springen
+  async function renderTag(keep = false) {
+    const seq = ++TG.seq, alive = () => seq === TG.seq && S.view === 'tag';
+    if (!keep) $('#page-tag').scrollTop = 0;
+    $('#vh-sub').textContent = 'Umgebung von «Meine Orte»';
+    const st = TG.state = { bull: BULL.n == null ? 'load' : 'ok', slf: SLFD.d ? 'ok' : 'load', hf: 'load', al: MELD.al ? 'ok' : 'load' };
+    $('#tag-body').innerHTML = tagHtml();
+    const step = (p, key) => Promise.resolve(p).then(() => { if (key) st[key] = 'ok'; }, () => { if (key) st[key] = 'err'; }).then(() => { if (alive()) tagDraw(); });
+    await lfMeta().catch(() => null);
+    if (!alive()) return;
+    const ents = homeEntries();
+    await Promise.allSettled([
+      step(lfLoad()), step(hourlyFor(ents.map(entryTarget)).then(saveHF), 'hf'),
+      step(slfLoad(), 'slf'), step(msSnowLoad('HS')), step(msSnowLoad('HN')),
+      step(bulletinLoad(), 'bull'), step(alertsLoad().then(() => alertsGeo()), 'al'), step(quakesLoad()),
+      step(S.live ? null : refreshLive()), step(S.dp ? null : loadDp()),
+    ]);
+    TG.at = Date.now();
+  }
+  $('#tag-body').addEventListener('click', (e) => {
+    if (e.target.closest('#tg-share')) { tagShare(); return; }
+    const st = e.target.closest('[data-st]');
+    if (st) { openStation(st.dataset.st); return; }
+    const qk = e.target.closest('[data-qk]');
+    if (qk) { quakeShow(qk.dataset.qk); return; }
+    const go = e.target.closest('[data-tg-go]');
+    if (!go) return;
+    const c = [+go.dataset.lat, +go.dataset.lon], k = go.dataset.tgGo;
+    S.pendingView = { c, z: k === 'wind' ? 11 : 10 };
+    navigate(k === 'wind' ? 'wind/live' : k === 'mess' ? 'schnee/mess' : 'schnee/bulletin');
+  });
+  // Messwerte und Orte ändern sich: offenen Bericht nachführen
+  const tagRefresh = () => { if (S.view === 'tag') tagDraw(); };
+  BUS.on('live', tagRefresh);
+  BUS.on('extra', tagRefresh);
+  favListeners.add(() => { if (S.view === 'tag') renderTag(true); });
+
+  /* ───── Startkachel: die Orte auf der Karte, Farbe = Lawinengefahr dort (ohne Bulletin: Themenfarbe) ───── */
+  let tgTileAt = 0;
+  function tagTile() {
+    const ents = homeEntries();
+    if (Date.now() - tgTileAt > 15 * 60e3 && ents.length) {
+      tgTileAt = Date.now();
+      Promise.allSettled([slfLoad(), msSnowLoad('HS'), msSnowLoad('HN'), bulletinLoad()]).then(() => rerenderHome());
+    }
+    const ds = ents.map(tagData).filter((d) => !d.bad);
+    $('#tm-tag').innerHTML = miniMap('hill', null, ds.map((d) => dotAt(d.lat, d.lon, 8.5, d.bull && d.bull.d[0] ? d.bull.d[1] : 'var(--tc)')).join(''));
+    let b = 'Lawinen, Schnee, Wetter, Wind', sub = 'Umgebung von «Meine Orte»';
+    if (ds.length) {
+      const lvl = ds.reduce((m, d) => Math.max(m, d.bull ? d.bull.d[0] : 0), 0);
+      const top = ds.flatMap((d) => d.snow.filter((s) => s.hs != null).map((s) => ({ s, d }))).sort((x, y) => y.s.hs - x.s.hs)[0];
+      const n = ds.reduce((m, d) => m + d.alerts.length, 0), ng = alertsNoGeo().length;
+      b = `${ds.length} ${ds.length === 1 ? 'Ort' : 'Orte'}${lvl ? ` · Lawinengefahr bis ${lvl}` : ''}`;
+      sub = [top && top.s.hs >= 1 ? `Schnee bis ${Math.round(top.s.hs)} cm (${shortName(top.s.name)})` : top ? 'kein Schnee an den Stationen' : '', n ? `${n} ${n === 1 ? 'Meldung' : 'Meldungen'} in der Nähe` : ng ? `${ng} ${ng === 1 ? 'Meldung' : 'Meldungen'} ohne Gebietsangabe` : ''].filter(Boolean).join(' · ') || sub;
+    } else sub = 'Orte hinzufügen, um den Bericht zu sehen';
+    $('#tf-tag').innerHTML = `<b>${esc(b)}</b><span>${esc(sub)}</span>`;
+  }
+
 /* ── 87-push.js ── */
   /* ═════════════════════════ Mitteilungen (Web-Push) ═════════════════════════
      Windsack hat keinen eigenen Server. Die GitHub-Aktion im eigenen Repository prüft alle 10 Minuten Alertswiss,
@@ -18776,8 +19788,8 @@ ${wpts}
     karte: { title: 'Karte', sub: () => 'swisstopo · SAC · Touren · Luftfahrt', mode: () => 'karte', act: 'info' },
     schnee: {
       title: 'Schnee & Lawinen', segs: [{ k: 'bulletin', label: 'Bulletin', ic: 'mtn' }, { k: 'mess', label: 'Messwerte', ic: 'snowflake' }, { k: 'lawinen', label: 'Lawinen', ic: 'aval' }, { k: 'touren', label: 'Skitouren', ic: 'ski' }],
-      defSeg: () => (snWinter() ? 'bulletin' : 'mess'),
-      sub: (seg) => (seg === 'bulletin' ? 'Lawinenbulletin des SLF' : seg === 'lawinen' ? 'Lawinenunfälle der Saison · SLF' : seg === 'touren' ? 'Skitourenguru · SAC-Routen' : 'SLF-Messnetz und MeteoSchweiz'),
+      defSeg: () => (snWinter() ? 'bulletin' : 'mess'), titleFor: (seg) => (seg === 'mess' ? snTitleTxt() : ''),
+      sub: (seg) => (seg === 'bulletin' ? 'Lawinenbulletin des SLF' : seg === 'lawinen' ? 'Lawinenunfälle der Saison · SLF' : seg === 'touren' ? 'Skitourenguru · SAC-Routen' : snSubTxt()),
       mode: (seg) => 'schnee-' + seg, act: 'info',
     },
     flug: { title: 'Flugverkehr', sub: () => 'Live · offene ADS-B-Netze', mode: () => 'flug', act: 'ext' },
@@ -18787,12 +19799,12 @@ ${wpts}
       page: () => 'page-meld', act: 'bell',
     },
     xc: { title: 'XC Therm', sub: () => 'ICON-D2 Wind & Thermik', frame: 'xc', act: 'ext' },
-    msradar: { title: 'Radar MeteoSchweiz', sub: () => 'Niederschlag · Seite von MeteoSchweiz', frame: 'ms', act: 'ext' },
     peak: {
       title: 'Panorama', segs: [{ k: 'pano', label: 'Rundblick', ic: 'pano' }, { k: 'cam', label: 'Kamera', ic: 'camera' }], segArg: true,
       sub: (seg) => (seg === 'cam' ? 'Gipfel im Kamerabild' : 'PeakFinder'), frame: (seg) => (seg === 'cam' ? null : 'pf'), page: (seg) => (seg === 'cam' ? 'page-ar' : null), act: 'ext',
     },
     ort: { title: 'Bericht', sub: () => '', page: () => 'page-ort', act: 'star' },
+    tag: { title: 'Tagesbericht', sub: () => 'Umgebung von «Meine Orte»', page: () => 'page-tag', act: 'share' },
     orte: { title: 'Orte', sub: () => 'Suchen und «Meine Orte» verwalten', page: () => 'page-orte', act: 'edit' },
   };
 
@@ -18841,7 +19853,7 @@ ${wpts}
     document.documentElement.dataset.th = VIEW_TOPIC[vw] || 'wetter';
     barColor();
     showView(fresh);
-    $('#vh-title').textContent = cfg.title;
+    $('#vh-title').textContent = (cfg.titleFor && cfg.titleFor(seg)) || cfg.title;
     $('#vh-sub').textContent = cfg.sub ? cfg.sub(seg) : '';
     renderSegs(cfg, seg);
     setAct(cfg.act);
@@ -18851,7 +19863,6 @@ ${wpts}
     document.querySelectorAll('.vpage').forEach((p) => { p.hidden = p.id !== page; });
     const frame = typeof cfg.frame === 'function' ? cfg.frame(seg) : cfg.frame;
     $('#xcwrap').hidden = frame !== 'xc';
-    $('#mswrap').hidden = frame !== 'ms';
     $('#pfwrap').hidden = frame !== 'pf';
     if (!(vw === 'peak' && seg === 'cam')) arLeave();
     setMapMode(mode);
@@ -18859,8 +19870,8 @@ ${wpts}
     if (vw === 'foehn' && seg === 'dp') { $('#page-dp').scrollTop = 0; ensureDp(); }
     if (vw === 'cams') { if (!CAMS.list && !CAMS.loading) ensureCams(); if (seg === 'list') renderCamList(); }
     if (vw === 'xc') ensureXc();
-    if (vw === 'msradar') ensureMs();
     if (vw === 'ort') renderReport(arg);
+    if (vw === 'tag') renderTag();
     if (vw === 'orte') renderOrte(true);
     if (vw === 'anim') animSetTab(seg);
     if (vw === 'meldungen') renderMeld(seg);
@@ -18870,6 +19881,7 @@ ${wpts}
   function showHome() {
     arLeave();
     setMapMode(null);
+    S.mapOwner = null; // die nächste Karte wird neu geöffnet (ganze Schweiz bzw. gemerkter Ausschnitt)
     TL.stop();
     S.view = ''; S.seg = ''; S.arg = '';
     delete document.documentElement.dataset.th;
@@ -18918,6 +19930,7 @@ ${wpts}
   const ACT = {
     info: ['info', 'Info und Legende'], ext: ['ext', 'In neuem Fenster öffnen'],
     star: ['star', 'Zu «Meine Orte» hinzufügen'], edit: ['edit', 'Liste bearbeiten'], bell: ['bell', 'Mitteilungen einrichten'],
+    share: ['share', 'Bericht als Text teilen'],
   };
   function setAct(kind) {
     const b = $('#vh-act');
@@ -18931,16 +19944,16 @@ ${wpts}
   $('#vh-act').addEventListener('click', () => {
     const k = $('#vh-act').dataset.act;
     if (k === 'info') openInfo(S.view);
-    else if (k === 'ext') { if (S.view === 'peak') pfExtSheet(); else if (S.view === 'flug') flugExtSheet(); else window.open(S.view === 'msradar' ? MS_RADAR_URL : XC_URL, '_blank', 'noopener'); }
+    else if (k === 'ext') { if (S.view === 'peak') pfExtSheet(); else if (S.view === 'flug') flugExtSheet(); else window.open(XC_URL, '_blank', 'noopener'); }
     else if (k === 'bell') openPushSheet();
     else if (k === 'star') reportToggleFav();
     else if (k === 'edit') orteToggleEdit();
+    else if (k === 'share') tagShare();
   });
 
   /* ───── Kartenmodus: Ebenen und Bedienelemente je Ansicht ───── */
   const MODE_LAYERS = { 'wind-live': [liveLayer], 'wind-fc': [fcLayer], 'foehn-map': [foehnLayer], 'cams-map': [camLayer], anim: [], karte: [], 'schnee-bulletin': [], 'schnee-mess': [], 'schnee-lawinen': [], 'schnee-touren': [], flug: [flugGrp] };
   const modeBase = (mode) => (mode === 'karte' ? S.karteBase : mode && mode.startsWith('schnee-') ? 'grau' : 'hell');
-  let viewRestored = false;
   function setMapMode(mode) {
     const prev = S.mode;
     if (prev === mode) return;
@@ -18948,7 +19961,7 @@ ${wpts}
     if (prev) {
       map.stopLocate();
       for (const l of MODE_LAYERS[prev] || []) map.removeLayer(l);
-      if (prev === 'anim') { S.viewHold = true; animLeave(); } // Animationen hatten ihren eigenen Ausschnitt
+      if (prev === 'anim') animLeave();
       if (prev === 'karte') karteLeave();
       if (prev.startsWith('schnee-')) schneeLeave();
       if (prev === 'flug') flugLeave();
@@ -18967,18 +19980,37 @@ ${wpts}
     for (const l of MODE_LAYERS[mode] || []) l.addTo(map);
     document.querySelectorAll('#mapwrap [data-ui]').forEach((e) => { e.hidden = !e.dataset.ui.split(' ').includes(mode) || e.hasAttribute('data-cond'); });
     setStamp('');
+    /* Ausschnitt beim Öffnen einer Ansicht (nicht beim Wechsel ihres Reiters): ein verlangtes Ziel (S.pendingView:
+       Station, Suchtreffer, Gebiet einer Meldung) geht vor; das Kartentool kehrt zum gemerkten Ausschnitt zurück;
+       alle anderen Karten zeigen die ganze Schweiz. Die Animationen richten sich selbst ein (animSetTab). */
+    const opening = S.mapOwner !== S.view;
+    S.mapOwner = S.view;
+    S.viewHold = true; // bis der Ausschnitt steht, nichts merken
     requestAnimationFrame(() => {
       if (S.mode !== mode) return;
       mapSettle();
-      map.invalidateSize();
-      if (S.pendingView) { map.setView(S.pendingView.c, S.pendingView.z, { animate: false }); S.pendingView = null; viewRestored = true; }
-      else if (S.viewHold && mode !== 'anim') { const v = store.get('view', null); if (v && v.c && Number.isFinite(v.z)) map.setView(v.c, v.z, { animate: false }); else fitCH(); }
-      if (!viewRestored) { viewRestored = true; if (mode !== 'anim') restoreView(); }
+      if (mode === 'anim') map.invalidateSize();
+      const pv = S.pendingView;
+      S.pendingView = null;
       if (mode !== 'anim') {
-        // Grenzen der Schweizer Karten erst jetzt (nach den Animationen galten die weiteren), danach den Ausschnitt merken
-        if (map.options.maxBounds !== MAP_BOUNDS) map.setMaxBounds(MAP_BOUNDS);
-        if (S.viewHold) { S.viewHold = false; viewStore(); }
+        /* Solange Grösse und Ausschnitt gesetzt werden, gelten noch die Grenzen der vorigen Karte: Leaflet schöbe die
+           Karte sonst animiert dorthin zurück – und diese Animation überschriebe den neuen Ausschnitt (der gemerkte
+           Ausschnitt des Kartentools verrutschte so um die halbe Höhe der Kopfzeile). Die neuen Grenzen folgen danach. */
+        let fitted = false;
+        map._enforcingBounds = true;
+        try {
+          map.invalidateSize();
+          if (pv && pv.b) map.fitBounds(pv.b, { animate: false, maxZoom: pv.z || 15, paddingTopLeft: [30, 100], paddingBottomRight: [30, 150] });
+          else if (pv) map.setView(pv.c, pv.z, { animate: false });
+          else if (opening && mode === 'karte') { const v = store.get('view', null); if (v && v.c && Number.isFinite(v.z)) map.setView(v.c, v.z, { animate: false }); else { fitCH(); fitted = true; } }
+          else if (opening) { fitCH(); fitted = true; }
+        } finally { map._enforcingBounds = false; }
+        boundsSync();
+        mapSettle();
+        AUTOFIT.fresh = fitted; AUTOFIT.until = fitted ? Date.now() + 6000 : 0;
       }
+      S.viewHold = false;
+      viewStore();
       zoomClass();
       placeFabs();
     });
@@ -18994,6 +20026,7 @@ ${wpts}
   }
   // Runde Knöpfe über der Zeitleiste (und ihrer Zeitblase) halten
   function placeFabs() {
+    mapRefit(); // Leisten oder Legende haben sich geändert: «ganze Schweiz» neu einpassen, solange die Karte unberührt ist
     const tl = $('#tl'), bub = $('#tl-bubble'), rl = $('#rl'), tp = $('#tourp');
     // Reicht ein Feld unten bis unter die Knopfspalte rechts? (Im Querformat sind Tourenplanung und Punktinfo schmaler:
     // dann bleiben die Knöpfe unten stehen statt über das Feld zu rücken)
@@ -19074,13 +20107,6 @@ ${wpts}
     const fr = $('#xc-frame');
     if (!xcLoaded || force) { fr.src = force ? XC_URL + '&_=' + Date.now() : XC_URL; xcLoaded = true; }
   }
-  // Radarseite der MeteoSchweiz; ob sie sich einbetten lässt, entscheidet MeteoSchweiz – darum der Knopf «In Safari öffnen»
-  let msLoaded = false;
-  function ensureMs(force = false) {
-    const fr = $('#ms-frame');
-    if (!msLoaded || force) { fr.src = MS_RADAR_URL; msLoaded = true; }
-  }
-  $('#ms-open').addEventListener('click', () => window.open(MS_RADAR_URL, '_blank', 'noopener'));
 
   /* ───── Info-Blätter ───── */
   const INFO = {
@@ -19093,9 +20119,9 @@ ${wpts}
       <p class="note"><b>Föhnindex:</b> Die MeteoSchweiz stuft alle 10 Minuten an Föhnstationen ein: rot = Föhn, orange = Föhnmischluft, grau = kein Föhn.</p>
       <p class="note"><b>Druckdifferenzen:</b> Lugano − Zürich (Föhn) und Genf − Güttingen (Bise) aus den QFF-Messwerten der MeteoSchweiz, dazu die Prognose aus ICON. Ab etwa +4 hPa greift Föhn in die Alpentäler, ab −2 hPa Genf−Güttingen ist Bise wahrscheinlich.</p>`,
     anim: () => `<h2 class="sheet-t">Animationen</h2>
-      <p class="note"><b>Zeitleiste:</b> Wische die Skala unter dem Zeiger nach links oder rechts, tippe auf eine Zeit oder starte ▶. Grau = Messung, Petrol = Prognose; der rote Punkt ist jetzt. Zurück reicht sie 24 Stunden, voraus 48 Stunden – in Schritten von 5 Minuten. Die Karte öffnet immer mit der ganzen Schweiz; ausserhalb des Radarverbunds (weisse Fläche) gibt es keine Messung. Auf der Karte stehen neben den Städten auch «Meine Orte».</p>
+      <p class="note"><b>Zeitleiste:</b> Wische die Skala unter dem Zeiger nach links oder rechts, tippe auf eine Zeit oder starte ▶. Grau = Messung, Petrol = Prognose; der rote Punkt ist jetzt. Zurück reicht sie 24 Stunden, voraus 48 Stunden – in Schritten von 5 Minuten. Beim Abspielen läuft der Niederschlag durchgehend in 5-Minuten-Schritten (die übrigen Karten überspringen in der Prognose jedes zweite Bild). Die Karte öffnet immer mit der ganzen Schweiz; ausserhalb des Radarverbunds (weisse Fläche) gibt es keine Messung. Auf der Karte stehen neben den Städten auch «Meine Orte».</p>
       ${radarLegendBig()}
-      <p class="note"><b>Niederschlag:</b> Vergangenheit aus dem Radarverbund der MeteoSchweiz (RZC, alle 5 Minuten, ganzer Verbund von Lyon bis München), Zukunft aus dem Modell ICON-CH1/CH2 der MeteoSchweiz (stündlich über Open-Meteo, dazwischen überblendet; nur für die Schweiz). Die Farbflächen werden in Bildschirmauflösung gezeichnet – glatte Ränder in jeder Zoomstufe; Relief, Flüsse, Seen und Grenzen scheinen durch. <b>Niederschlagstyp</b> (Regen, Schneeregen, Schnee mit Flockenmuster) leitet die App aus der Modelltemperatur auf Geländehöhe ab. <b>Blitze</b> stammen vom Lightning Imager des Satelliten Meteosat (MTG, EUMETSAT), <b>Hagel</b> aus der Hagelwahrscheinlichkeit (POH) des Radars (April bis September).</p>
+      <p class="note"><b>Niederschlag:</b> Vergangenheit aus dem Radarverbund der MeteoSchweiz (RZC, alle 5 Minuten, ganzer Verbund von Lyon bis München), Zukunft aus dem Modell ICON-CH1/CH2 der MeteoSchweiz (stündlich über Open-Meteo, dazwischen überblendet): fein in der Schweiz und im nahen Grenzgebiet, darüber hinaus in einem gröberen Raster (≈ 37 km) bis an den Rand des Radarbilds – dieser äussere Teil lädt bis zu einer Minute später nach und bleibt zwei Stunden auf dem Gerät. Die Farbflächen werden in Bildschirmauflösung gezeichnet – glatte Ränder in jeder Zoomstufe; Relief, Flüsse, Seen und Grenzen scheinen durch. <b>Niederschlagstyp</b> (Regen, Schneeregen, Schnee mit Flockenmuster) leitet die App aus der Modelltemperatur auf Geländehöhe ab. <b>Blitze</b> stammen vom Lightning Imager des Satelliten Meteosat (MTG, EUMETSAT), <b>Hagel</b> aus der Hagelwahrscheinlichkeit (POH) des Radars (April bis September).</p>
       <p class="note"><b>Temperatur & Wind:</b> ICON-Modellwerte (≈ 13-km-Gitter), die Temperatur mit einem Höhenmodell auf das Gelände umgerechnet (−0.65 °C je 100 m). Die Linien zeigen die Windströmung am Boden (10 m).</p>
       <p class="note"><b>Niederschlagswahrscheinlichkeit:</b> Anteil der Ensemble-Läufe ICON-CH1/CH2-EPS mit mindestens 0.1 mm pro Stunde.</p>
       <p class="note"><b>Satellit:</b> Meteosat Third Generation, «Geo Colour» (tagsüber Echtfarben, nachts Infrarot), alle 10 Minuten; danach die vorhergesagte Bewölkung.</p>
@@ -19106,14 +20132,14 @@ ${wpts}
       <p class="note"><b>Mehr Webcams:</b> Windy führt das grösste Verzeichnis. Mit einem kostenlosen Schlüssel lädt die App zusätzlich bis zu 1000 Schweizer Webcams samt aktuellem Vorschaubild.</p>
       <button class="btn primary" data-windy-key>${store.get('windyKey', '') ? 'Windy-Schlüssel ändern' : 'Windy-Schlüssel eingeben'}</button>`,
     karte: () => `<h2 class="sheet-t">Karte</h2>
-      <p class="note"><b>Bedienung:</b> Die Karte füllt den ganzen Bildschirm. Zwei Finger spreizen zoomt stufenlos, zwei Finger drehen dreht die Karte – die Kompassnadel oben rechts stellt Norden wieder her. Doppeltipp zoomt hinein, ein Tipp mit zwei Fingern hinaus. Der Pfeil oben rechts zeigt deinen Standort mit Blickrichtung und lässt die Karte folgen; ein zweiter Tipp dreht die Karte in Blickrichtung, ein dritter zurück nach Norden. Sobald du die Karte verschiebst oder selbst drehst, folgt sie nicht mehr. Die Suche unten findet Orte, Adressen und Koordinaten (LV95, LV03 oder Breite, Länge); das Blatt lässt sich am Griff aufklappen.</p>
+      <p class="note"><b>Bedienung:</b> Die Karte füllt den ganzen Bildschirm. Zwei Finger spreizen zoomt stufenlos, zwei Finger deutlich drehen dreht die Karte (kleine Drehungen beim Zoomen und Schieben lassen sie genordet, nahe Norden rastet sie ein; wer gleichzeitig deutlich zoomt, muss weiter drehen) – die Kompassnadel oben rechts stellt Norden wieder her. Doppeltipp zoomt hinein, ein Tipp mit zwei Fingern hinaus. Der Pfeil oben rechts zeigt deinen Standort mit Blickrichtung und lässt die Karte folgen; ein zweiter Tipp dreht die Karte in Blickrichtung, ein dritter zurück nach Norden. Sobald du die Karte verschiebst oder selbst drehst, folgt sie nicht mehr. Die Suche unten findet Orte, Adressen und Koordinaten (LV95, LV03 oder Breite, Länge); das Blatt lässt sich am Griff aufklappen.</p>
       <p class="note">Karten und Ebenen von <a href="https://map.geo.admin.ch" target="_blank" rel="noopener">map.geo.admin.ch</a> (swisstopo, BAFU, BAZL, ASTRA). Über das Ebenen-Symbol rechts schaltest du Wanderwege, die Kategorien <b>SAC</b> (Hütten, Biwaks, Skitouren, Schneeschuhrouten), <b>Winter</b> (Hangneigung, Wildruhezonen, Jagdbanngebiete) sowie Erdbeben, Geologie und Luftfahrt ein.</p>
       <p class="note"><b>Schnee und Lawinen</b> – Lawinenbulletin, SLF-Messwerte, Schneehöhen, Lawinenunfälle, Lawinengelände (ATH, CAT) und Skitourenguru – haben ein eigenes Blatt auf der Startseite.</p>
       <p class="note"><b>Tippe auf die Karte</b>, um Koordinaten, Höhe und den Wetterbericht für diesen Punkt zu sehen – oder den Rundblick mit Gipfelnamen (PeakFinder). Die Hangneigungsklassen ersetzen keine Lawinenbeurteilung.</p>
       <p class="note"><b>Tour planen</b> (Symbol mit der Route rechts oder im aufgeklappten Blatt): Tippe Punkte auf die Karte – die Route folgt Wanderwegen und Pfaden (BRouter, OpenStreetMap) oder läuft mit «Wege» aus als gerade Linie (Skitour, weglos). Punkte lassen sich verschieben, ein Tipp auf die Linie fügt einen Zwischenpunkt ein. Distanz, Auf- und Abstieg stammen aus dem Höhenmodell von swisstopo, die Wanderzeit aus der Formel der Schweizer Wanderwege (ohne Pausen). Touren bleiben auf diesem Gerät gespeichert und lassen sich als GPX oder KML teilen; GPX-Dateien kannst du importieren.</p>`,
     schnee: () => `<h2 class="sheet-t">Schnee & Lawinen</h2>
       <p class="note"><b>Bulletin:</b> Lawinengefahr 1–5 je Region aus dem Lawinenbulletin des SLF; tippe auf eine Region für Höhenlagen, Tageszeit und Lawinenprobleme. Das SLF publiziert das Bulletin im Winterhalbjahr (etwa November bis Mai).</p>
-      <p class="note"><b>Messwerte:</b> alle automatischen Stationen (IMIS) und Beobachter-Messfelder des SLF – wahlweise Schneehöhe, Neuschnee, Lufttemperatur oder Wind; ein Tipp zeigt alle Werte mit Verlauf. Bei Schneehöhe und Neuschnee kommen die Tageswerte der MeteoSchweiz-Stationen dazu (runde Marken). Das SLF gibt das Messnetz nur über den Datenspiegel frei (GitHub-Aktion, siehe Meldungen → Glocke).</p>
+      <p class="note"><b>Messwerte:</b> alle automatischen Stationen (IMIS, Quadrate) und Beobachter-Messfelder des SLF (Kreise) – wahlweise Neuschnee, Schneehöhe, Wind oder Lufttemperatur; ein Tipp zeigt alle Werte mit Verlauf. Die Farbe folgt der Skala oben (Stufen wie in der App White Risk), der Wert steht in der Marke, grau heisst kein Messwert. Neuschnee gibt es als Summe über 1, 3 oder 7 Tage (mehrere Tage nur für die automatischen Stationen). Bei Schneehöhe und Neuschnee kommen die Tageswerte der MeteoSchweiz dazu (Kreise mit blauem Rand). Stationen aus «Meine Orte» sind grösser und angeschrieben. Das SLF gibt das Messnetz nur über den Datenspiegel frei (GitHub-Aktion, siehe Meldungen → Glocke).</p>
       <p class="note"><b>Lawinen:</b> Lawinen mit erfassten Personen der laufenden Saison mit Gefahrenstufe am Unfalltag und Aktivität. Aktuelle Lawinenbeobachtungen aller Art zeigt <a href="https://whiterisk.ch/de/conditions/current-avalanches" target="_blank" rel="noopener">White Risk</a>.</p>
       <p class="note"><b>Skitouren:</b> Karten von <a href="https://www.skitourenguru.com/" target="_blank" rel="noopener">Skitourenguru</a> – automatisch erzeugte Aufstiegskorridore oder das Tourengelände (ab Zoom 9) – oder die SAC-Skitourenrouten von swisstopo. Dazu die Lawinengefahr an der Kartenmitte aus dem Bulletin. Die tägliche Risikobewertung jeder Route (grün, orange, rot) gibt es nur auf skitourenguru.com; der Knopf öffnet sie. Karten von Skitourenguru: nur für private, nicht kommerzielle Nutzung.</p>
       <p class="note"><b>Geländeebenen</b> (Symbol rechts): Hangneigung ab 30° (swisstopo) und das Lawinengelände ATH und CAT des SLF. Sie zeigen das Gelände, nicht die aktuelle Lawinensituation.</p>
@@ -19185,7 +20211,18 @@ ${wpts}
     // Bildschirmtastatur: Sie verkleinert nur den sichtbaren Ausschnitt → Höhe merken, damit offene Blätter darüber enden
     const vv = window.visualViewport, kbd = vv ? Math.round(window.innerHeight - vv.height - vv.offsetTop) : 0;
     document.documentElement.style.setProperty('--kbd', (kbd > 80 ? kbd : 0) + 'px');
-    if (S.mode) { kviewResize(); map.invalidateSize(); placeFabs(); TL.place(); if (S.mode === 'anim') { RUL.place(); WP.resize(); } }
+    if (S.mode) {
+      kviewResize();
+      // Gerät gedreht oder Höhe geändert. Karte noch unberührt: «ganze Schweiz» neu einpassen; sonst nur die Grenzen
+      // nachführen. Die Bewegungen dabei (auch das Zurückschieben in die Grenzen) zählen nicht als «berührt».
+      const was = AUTOFIT.self;
+      AUTOFIT.self = true;
+      try {
+        map._enforcingBounds = S.mode !== 'anim'; map.invalidateSize(); map._enforcingBounds = false;
+        if (AUTOFIT.fresh) AUTOFIT.until = Date.now() + 3000;
+        if (!refitNow()) boundsSync();
+      } finally { map._enforcingBounds = false; AUTOFIT.self = was; }
+      placeFabs(); TL.place(); if (S.mode === 'anim') { RUL.place(); WP.resize(); } }
   }
   fitViewport();
   window.addEventListener('resize', debounce(fitViewport, 60));

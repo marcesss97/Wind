@@ -104,7 +104,80 @@ function shAurora({ slots = [], est = [], msgs = [] } = {}, thr = 6.67, now = Da
   return { thr, kpNow: last ? last.kp : null, kpAt: last ? last.t : null, high, alt, dark, now: (high || !!alt) && dark, nights: [...nights.values()], watch, maxFc };
 }
 
-/* ───── Alertswiss: Meldungen vereinheitlichen (ohne Flächen) ───── */
+/* ───── Alertswiss: Meldungen vereinheitlichen; die betroffenen Gebiete vereinfacht (für die Karte) ───── */
+// Linienzug vereinfachen (Douglas–Peucker ohne Rekursion): pts = [[Breite, Länge], …], tol in Grad Breite
+function shSimplify(pts, tol) {
+  const n = pts.length;
+  if (n < 4) return pts;
+  const kx = Math.cos((pts[0][0] * Math.PI) / 180), keep = new Uint8Array(n), st = [[0, n - 1]];
+  keep[0] = keep[n - 1] = 1;
+  while (st.length) {
+    const [a, b] = st.pop();
+    const ay = pts[a][0], ax = pts[a][1] * kx, dx = pts[b][1] * kx - ax, dy = pts[b][0] - ay, len2 = dx * dx + dy * dy;
+    let md = 0, mi = -1;
+    for (let i = a + 1; i < b; i++) {
+      const py = pts[i][0], px = pts[i][1] * kx;
+      const t = len2 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len2)) : 0;
+      const d = Math.hypot(px - ax - t * dx, py - ay - t * dy);
+      if (d > md) { md = d; mi = i; }
+    }
+    if (mi > 0 && md > tol) { keep[mi] = 1; st.push([a, mi], [mi, b]); }
+  }
+  return pts.filter((_, i) => keep[i]);
+}
+// Ein Ring aus der Meldung ([["46.57", "9.23"], …]) → flache Zahlenliste [Breite, Länge, Breite, …]; diag = Ausdehnung in Grad
+// maxPts: Obergrenze der Punkte – eine sehr fein gezeichnete Grenze wird gröber, bis sie passt (nie weggelassen)
+function shAsRing(coords, maxPts = 1500) {
+  const pts = [];
+  for (const c of Array.isArray(coords) ? coords : []) {
+    const lat = Number(c && c[0]), lon = Number(c && c[1]);
+    if (Number.isFinite(lat) && Number.isFinite(lon) && lat > 40 && lat < 52 && lon > 0 && lon < 16) pts.push([lat, lon]);
+  }
+  if (pts.length < 3) return null;
+  let la0 = 90, la1 = -90, lo0 = 180, lo1 = -180;
+  for (const [la, lo] of pts) { if (la < la0) la0 = la; if (la > la1) la1 = la; if (lo < lo0) lo0 = lo; if (lo > lo1) lo1 = lo; }
+  const diag = Math.hypot(la1 - la0, (lo1 - lo0) * 0.69);
+  // Genauigkeit nach Grösse: kleine Sperrzonen auf rund 5 m, ein ganzer Kanton auf rund 150 m
+  let tol = Math.max(0.00005, Math.min(0.0013, diag * 0.004)), sim = shSimplify(pts, tol);
+  for (let k = 0; k < 12 && sim.length > maxPts; k++) { tol *= 2; sim = shSimplify(pts, tol); }
+  if (sim.length < 3) return null;
+  const m = diag < 0.05 ? 1e5 : 1e4, flat = [];
+  for (const [la, lo] of sim) flat.push(Math.round(la * m) / m, Math.round(lo * m) / m);
+  return { flat, diag };
+}
+// Gebiete einer Meldung: p = Flächen (je [Aussenring, Aussparung, …]), c = Kreise [Breite, Länge, Radius km]
+function shAsGeo(areas) {
+  const p = [], c = [], polys = [];
+  for (const ar of Array.isArray(areas) ? areas : []) {
+    for (const pg of Array.isArray(ar && ar.polygons) ? ar.polygons : []) { const o = shAsRing(pg && pg.coordinates); if (o) polys.push({ pg, o }); }
+  }
+  /* Höchstens 3000 Punkte und 40 Flächen je Meldung. Grosse Flächen zuerst (fällt etwas weg, dann die kleinsten); jede
+     Fläche bekommt ihren Anteil am Rest – eine zu feine Grenze wird vereinfacht statt verworfen. */
+  polys.sort((a, b) => b.o.diag - a.o.diag);
+  if (polys.length > 40) polys.length = 40;
+  let budget = 3000;
+  polys.forEach(({ pg, o }, i) => {
+    const cap = Math.max(8, Math.floor(budget / (polys.length - i)));
+    const outer = o.flat.length / 2 > cap ? shAsRing(pg.coordinates, cap) : o;
+    if (!outer) return;
+    const rings = [outer.flat];
+    budget -= outer.flat.length / 2;
+    for (const ex of Array.isArray(pg.excludes) ? pg.excludes : []) {
+      const h = shAsRing(ex && ex.coordinates, 200);
+      if (!h || h.diag < 0.0027 || rings.length >= 12 || budget < h.flat.length / 2) continue; // Aussparungen unter rund 300 m weglassen
+      rings.push(h.flat);
+      budget -= h.flat.length / 2;
+    }
+    p.push(rings);
+  });
+  for (const ar of Array.isArray(areas) ? areas : []) {
+    for (const ci of Array.isArray(ar && ar.circles) ? ar.circles : []) {
+      const cp = (ci && ci.centerPosition) || [], la = Number(cp[0]), lo = Number(cp[1]), r = Number(ci && ci.radius);
+      if (Number.isFinite(la) && Number.isFinite(lo) && la > 40 && la < 52 && lo > 0 && lo < 16 && r > 0 && r < 300 && c.length < 20) c.push([Math.round(la * 1e5) / 1e5, Math.round(lo * 1e5) / 1e5, Math.round(r * 1000) / 1000]);
+    }
+  }
+  return p.length || c.length ? { p, c } : null;
+}
 const SH_AS_LEVEL = { minor: 'Information', moderate: 'Warnung', severe: 'Alarm', extreme: 'Alarm' };
 const SH_AS_RANK = { Alarm: 0, Warnung: 1, Information: 2, Entwarnung: 3 };
 // Weblink einer Meldung: nur https (http wird angehoben), «www.kanton.ch» ohne Schema ergänzt,
@@ -145,6 +218,7 @@ function shAlerts(raw) {
       level, rank: SH_AS_RANK[level], allClear: !!a.allClear,
       regions: a.nationWide ? ['CH'] : regions.slice(0, 30), area: area.slice(0, 400), pub: shPlain(a.publisherName).slice(0, 120),
       contact: shPlain(a.contact && a.contact.contact).slice(0, 800), links, link: links.length ? links[0].url : '', icon,
+      geo: a.nationWide ? null : shAsGeo(a.areas),
     };
   }).sort((x, y) => x.rank - y.rank || (y.t || 0) - (x.t || 0));
 }
