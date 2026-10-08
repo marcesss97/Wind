@@ -1,13 +1,33 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.2)
+Inhalt dieses Ordners (Version 11.3)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
   .github/workflows/windsack.yml   die GitHub-Aktion (einmalig anlegen, siehe unten)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.3
+  Ersetzen auf GitHub: nur index.html.
+  - Wettermodelle in Farbe: Im «Modelle im Vergleich» hat jeder Wetterdienst eine eigene Farbe (MeteoSchweiz blau,
+    DWD orange, ItaliaMeteo türkis, Météo-France gelb, KNMI rosa, UK Met Office grün, ECMWF violett, NOAA/Kanada rot);
+    das zweite Modell eines Dienstes ist gestrichelt (z. B. ICON-CH2, ICON-EU, AIFS). Weiche Kurven, Spannweite als
+    farbige Fläche, Median mit hellem Rand, Tage abwechselnd hinterlegt, 0-°C-Linie. Ein Tipp auf die Grafik zeigt
+    darunter die Werte aller Modelle zu dieser Zeit (nach Wert geordnet, mit Farbe). Neu: «Tageswerte je Modell» –
+    eine Tabelle mit Höchstwert, Summe bzw. Mittel jedes Tages, nach Wert eingefärbt.
+  - Neue Seite «Wettermodelle» (Kachel «Modelle» im Thema Wetter, Adresse #/modelle): Ortssuche über
+    MeteoSchweiz-Orte, PLZ, Gipfel und Messstationen, dazu Adressen und Flurnamen (swisstopo), Orte im Ausland
+    (Open-Meteo) und Koordinaten. Schnellwahl: aktueller Standort, «Meine Orte», zuletzt angeschaute Orte. Dazu die
+    Liste aller 13 Modelle mit Wetterdienst, Auflösung und Reichweite. Im Bericht eines Ortes führt ein Knopf dorthin.
+  - Neue Version: Erscheint auf dem Server eine neuere index.html, zeigt die App unten den Hinweis «Neue Version» mit
+    dem Knopf «Aktualisieren» (lädt die App neu, die geöffnete Ansicht bleibt). Geprüft wird beim Start, beim
+    Zurückkehren in die App und alle 30 Minuten – es wird nur der Anfang der Datei gelesen. «×» fragt nach drei
+    Stunden wieder. Von Hand: Windsack-Logo > «Nach neuer Version suchen».
+    Wichtig für spätere Versionen: Die Nummer steht im Kopf von index.html (<meta name="windsack-version"
+    content="11.3 · 08.10.2026">). Nur eine höhere Nummer (oder bei gleicher Nummer ein späteres Datum) löst den
+    Hinweis aus.
 
 Neu in Version 11.2
   Ersetzen auf GitHub: nur index.html.
