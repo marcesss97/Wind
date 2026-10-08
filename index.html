@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#102237">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="11.7 · 08.10.2026">
+<meta name="windsack-version" content="11.8 · 08.10.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -9337,7 +9337,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.7 · 08.10.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.8 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -19666,7 +19666,9 @@ ${wpts}
   const WN_KW = [['Gewitter', /gewitter/i], ['Hitze', /hitze/i], ['Waldbrand', /waldbrand/i], ['Hochwasser', /hochwasser/i], ['Lawinen', /lawine/i],
     ['Strassenglätte', /glätte|glatteis/i], ['Frost', /frost/i], ['Schnee', /schnee/i], ['Wind', /wind|sturm|böen/i], ['Regen', /regen|niederschl/i], ['Trockenheit', /trocken/i]];
   const WN_TYPE = { 0: 'Wind', 1: 'Gewitter', 2: 'Regen', 3: 'Schnee', 4: 'Strassenglätte', 5: 'Frost', 7: 'Hitze', 8: 'Lawinen', 10: 'Waldbrand', 11: 'Hochwasser', 13: 'Trockenheit' };
-  const wnType = (w) => { const k = WN_KW.find(([, re]) => re.test(w.tx || '')); return k ? k[0] : WN_TYPE[w.t] || 'Warnung'; };
+  // Gesicherte Kennzahlen gehen vor (der Text nennt die Gefahr nicht immer, z. B. Waldbrand: «Massnahmen … BAFU»)
+  const WN_SURE = { 1: 'Gewitter', 2: 'Regen', 7: 'Hitze', 10: 'Waldbrand', 11: 'Hochwasser' };
+  const wnType = (w) => { if (WN_SURE[w.t]) return WN_SURE[w.t]; const k = WN_KW.find(([, re]) => re.test(w.tx || '')); return k ? k[0] : WN_TYPE[w.t] || 'Warnung'; };
   const fWn = new Intl.DateTimeFormat('de-CH', { timeZone: TZ, weekday: 'short', hour: '2-digit', minute: '2-digit' });
   const wnTime = (w) => `${w.f ? fWn.format(w.f).replace(',', '') : 'jetzt'}${w.to ? ' – ' + (ymdLocal(w.to) === ymdLocal(w.f || Date.now()) ? hm(w.to) : fWn.format(w.to).replace(',', '')) : ''}`;
   async function wnLoad(force = false) {
