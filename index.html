@@ -2143,6 +2143,43 @@ details .as-desc { margin-top: 6px; }
   .sk-tbl th:first-child, .sk-tbl td:first-child { padding-left: 7px; }
   .sk-tbl th:last-child, .sk-tbl td:last-child { padding-right: 7px; }
 }
+
+/* ───── Modelle im Vergleich (Bericht) ───── */
+.mm-segs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.mm-v { flex: 1 1 auto; min-height: 36px; padding: 6px 10px; border-radius: 999px; border: 0; background: var(--tcs); color: var(--tci); font: 600 13px/1.2 var(--font-ui); }
+.mm-v[aria-checked="true"] { background: var(--tci); color: var(--on-slate); }
+.mm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 2px 2px 4px; }
+.mm-head b { font-size: 14px; color: var(--ink); }
+.mm-head small { font-size: 11.5px; color: var(--muted); }
+.mm-chart { min-height: 216px; }
+.mm-chart .mm-band { fill: var(--c-wetter-a); stroke: none; }
+.mm-chart .mm-l { fill: none; stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1.1; stroke-linejoin: round; }
+.mm-chart .mm-med { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.mm-chart .mm-sel { fill: none; stroke: var(--c-fliegen); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.mm-chart .mm-cur { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.mm-chart .mm-dot { fill: var(--ink); stroke: var(--surface); stroke-width: 2; }
+.mm-chart .mm-sdot { fill: var(--c-fliegen); stroke: var(--surface); stroke-width: 2; }
+.mm-chart .mm-hit { cursor: crosshair; }
+.mm-tip { position: absolute; top: 18px; z-index: 2; min-width: 170px; max-width: 250px; padding: 7px 9px; border-radius: 10px; background: var(--glass); box-shadow: var(--shadow); font-size: 12px; color: var(--ink-2); pointer-events: none; display: grid; gap: 2px; }
+.mm-tip b { color: var(--ink); font-size: 12.5px; }
+.mm-tip small { color: var(--muted); font-size: 11px; }
+.mm-tr { display: flex; align-items: center; gap: 6px; }
+.mm-tr em { margin-left: auto; font-style: normal; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.mm-tr i, .mm-leg i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--ink); flex: none; }
+.mm-tr i.bd, .mm-leg i.bd { height: 9px; background: var(--c-wetter-a); }
+.mm-tr.sel i, .mm-leg i.sel { background: var(--c-fliegen); }
+.mm-leg i.ln { height: 1.5px; background: var(--muted); opacity: 0.45; }
+.mm-leg { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 2px 0; font-size: 11.5px; color: var(--ink-2); }
+.mm-leg span { display: inline-flex; align-items: center; gap: 5px; }
+.mm-agree { margin-top: 8px; }
+.mm-agree b { color: var(--ink); font-weight: 650; }
+.mm-models { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; margin-top: 10px; }
+.mm-m { text-align: left; padding: 7px 9px; border-radius: 10px; border: 1px solid var(--hair); background: var(--surface-2); color: var(--ink); font: inherit; display: grid; gap: 1px; align-content: start; min-height: 44px; }
+.mm-m b { font-size: 13px; }
+.mm-m small { font-size: 10.5px; color: var(--muted); }
+.mm-m[aria-pressed="true"] { border-color: var(--c-fliegen); box-shadow: inset 0 0 0 1px var(--c-fliegen); background: var(--c-fliegen-s); }
+.mm-m[disabled] { opacity: 0.5; }
+@media (max-width: 359px) { .mm-models { grid-template-columns: 1fr 1fr; } .mm-v { font-size: 12px; padding: 6px 8px; } }
 </style>
 </head>
 <body>
@@ -9061,7 +9098,7 @@ pako/dist/pako.esm.mjs:
 (() => {
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
-  const APP_VERSION = '11.1 · 08.10.2026';
+  const APP_VERSION = '11.2 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -11838,6 +11875,250 @@ pako/dist/pako.esm.mjs:
     const pct = Math.round(fraction * 100);
     return `<svg class="moon" viewBox="0 0 16 16" width="${size}" height="${size}" role="img" aria-label="${esc(moonName(phase))}, ${pct} % beleuchtet"><title>${esc(moonName(phase))} · ${pct} % beleuchtet</title>`
       + `<circle cx="${cx}" cy="${cy}" r="${r}" class="mo-d"/>${lit}</svg>`;
+  }
+
+/* ── 57-multi.js ── */
+  /* ═════════════════════════ Modelle im Vergleich (Bericht eines Ortes) ═════════════════════════
+     Alle Wettermodelle, die Open-Meteo für die Schweiz rechnet, übereinander: jede Linie ein Modell, dazu der
+     Median und die Spannweite. Liegen die Linien eng beieinander, ist die Prognose sicherer. Ein Abruf für alle
+     Modelle (Open-Meteo liefert je Modell eigene Spalten: temperature_2m_<modell>), geladen erst, wenn die Karte
+     ins Bild kommt, und eine Stunde zwischengespeichert. */
+  const MM_MODELS = [
+    ['meteoswiss_icon_ch1', 'ICON-CH1', 'MeteoSchweiz · 1 km'],
+    ['meteoswiss_icon_ch2', 'ICON-CH2', 'MeteoSchweiz · 2 km'],
+    ['icon_d2', 'ICON-D2', 'DWD · 2 km'],
+    ['icon_eu', 'ICON-EU', 'DWD · 7 km'],
+    ['italia_meteo_arpae_icon_2i', 'ICON-2I', 'ItaliaMeteo · 2 km'],
+    ['meteofrance_arome_france', 'AROME', 'Météo-France · 1.3 km'],
+    ['meteofrance_arpege_europe', 'ARPEGE', 'Météo-France · 11 km'],
+    ['knmi_harmonie_arome_europe', 'HARMONIE', 'KNMI · 2 km'],
+    ['ukmo_seamless', 'UKMO', 'UK Met Office · 2–10 km'],
+    ['ecmwf_ifs025', 'IFS', 'ECMWF · 25 km'],
+    ['ecmwf_aifs025_single', 'AIFS', 'ECMWF · KI-Modell · 25 km'],
+    ['gfs_seamless', 'GFS', 'NOAA · 13–25 km'],
+    ['gem_seamless', 'GEM', 'Kanada · 15–25 km'],
+  ];
+  const MM_VARS = {
+    t: { k: 'temperature_2m', label: 'Temperatur', unit: '°C', dec: 1, band: [2, 5] },
+    p: { k: 'precipitation', label: 'Niederschlag', unit: 'mm', dec: 1, cum: true, band: [3, 10] },
+    w: { k: 'wind_speed_10m', label: 'Wind', unit: 'km/h', dec: 0, min0: true, band: [8, 20] },
+    g: { k: 'wind_gusts_10m', label: 'Böen', unit: 'km/h', dec: 0, min0: true, band: [12, 30] },
+    c: { k: 'cloud_cover', label: 'Bewölkung', unit: '%', dec: 0, min0: true, max: 100, smooth: 3, band: [25, 50] },
+  };
+  const MM = { cache: new Map(), bad: new Set(), sel: Object.assign({ v: 't', m: '' }, store.get('mmSel', {}) || {}), seq: 0 };
+  const mmName = (id) => (MM_MODELS.find((m) => m[0] === id) || [id, id])[1];
+
+  async function mmLoad(t) {
+    const useAlt = !t.ext && t.alt != null;
+    const key = `${t.lat.toFixed(3)},${t.lon.toFixed(3)},${useAlt ? Math.round(t.alt) : ''}`;
+    const hit = MM.cache.get(key);
+    if (hit && Date.now() - hit.at < 60 * 60e3) return hit;
+    let ids = MM_MODELS.map((m) => m[0]).filter((id) => !MM.bad.has(id)), j = null;
+    // Kennt Open-Meteo ein Modell nicht (mehr), nennt die Antwort es: ohne dieses nochmals versuchen
+    for (let k = 0; k < 4 && !j; k++) {
+      const url = `${OM}?latitude=${t.lat.toFixed(4)}&longitude=${t.lon.toFixed(4)}${useAlt ? '&elevation=' + Math.round(t.alt) : ''}`
+        + `&hourly=${Object.values(MM_VARS).map((v) => v.k).join(',')}&models=${ids.join(',')}&wind_speed_unit=kmh&timeformat=unixtime&forecast_days=7`;
+      try { j = await getJSON(url, 30000); } catch (e) {
+        let bad = null;
+        if (e.status === 400) { try { const m = /value[^a-z0-9_]*([a-z0-9_]+)/i.exec(JSON.parse(e.body).reason || ''); bad = m && ids.includes(m[1]) ? m[1] : null; } catch { bad = null; } }
+        if (!bad || ids.length < 4) throw e;
+        MM.bad.add(bad); ids = ids.filter((x) => x !== bad);
+      }
+    }
+    const h = (j && j.hourly) || {}, times = (h.time || []).map((x) => x * 1000);
+    if (!times.length) throw new Error('Keine Zeitschritte');
+    const series = {};
+    for (const id of ids) {
+      const s = {};
+      for (const [vk, v] of Object.entries(MM_VARS)) {
+        const a = h[`${v.k}_${id}`] || (ids.length === 1 ? h[v.k] : null);
+        if (Array.isArray(a) && a.some((x) => x != null)) s[vk] = a.map((x) => (x == null || !Number.isFinite(x) ? null : x));
+      }
+      if (Object.keys(s).length) series[id] = s;
+    }
+    if (!Object.keys(series).length) throw new Error('Kein Modell liefert Werte');
+    const out = { at: Date.now(), times, series, elev: Number.isFinite(j.elevation) ? j.elevation : null };
+    MM.cache.set(key, out);
+    return out;
+  }
+
+  // Werte einer Grösse ab der laufenden Stunde: je Modell eine Reihe (Niederschlag als Summe, Bewölkung geglättet)
+  function mmRows(D, vk) {
+    const v = MM_VARS[vk], t0 = Math.floor(Date.now() / 36e5) * 36e5;
+    const i0 = Math.max(0, D.times.findIndex((x) => x >= t0)), T = D.times.slice(i0);
+    const rows = [];
+    for (const [id, s] of Object.entries(D.series)) {
+      const a = s[vk];
+      if (!a) continue;
+      let vals = a.slice(i0);
+      if (v.smooth) vals = vals.map((x, i) => { if (x == null) return null; let sum = 0, n = 0; for (let k = i - 1; k <= i + 1; k++) if (vals[k] != null) { sum += vals[k]; n++; } return sum / n; });
+      if (v.cum) { let acc = 0, end = false; vals = vals.map((x) => { if (end || x == null) { end = true; return null; } acc += x; return acc; }); }
+      if (vals.some((x) => x != null)) rows.push({ id, vals });
+    }
+    // Median und Spannweite, sobald mindestens drei Modelle Werte haben
+    const med = [], lo = [], hi = [], n = [];
+    for (let i = 0; i < T.length; i++) {
+      const xs = rows.map((r) => r.vals[i]).filter((x) => x != null).sort((a, b) => a - b);
+      n.push(xs.length);
+      if (xs.length < 3) { med.push(null); lo.push(null); hi.push(null); continue; }
+      const m = xs.length >> 1;
+      med.push(xs.length % 2 ? xs[m] : (xs[m - 1] + xs[m]) / 2); lo.push(xs[0]); hi.push(xs[xs.length - 1]);
+    }
+    return { T, rows, med, lo, hi, n };
+  }
+
+  // Einigkeit je Tag: mittlere Spannweite (Niederschlag: Spannweite der Tagessummen)
+  function mmAgree(D, R, vk) {
+    const v = MM_VARS[vk], days = new Map();
+    R.T.forEach((t, i) => {
+      const d = SH_PW_FMT.format(t);
+      if (!days.has(d)) days.set(d, { t, sp: [], first: i, last: i });
+      const o = days.get(d); o.last = i;
+      if (R.hi[i] != null) o.sp.push(R.hi[i] - R.lo[i]);
+    });
+    const out = [];
+    for (const o of days.values()) {
+      let s;
+      if (v.cum) {
+        // Tagessumme je Modell aus der Summenkurve
+        const sums = R.rows.map((r) => (r.vals[o.last] != null ? r.vals[o.last] - (o.first > 0 && r.vals[o.first - 1] != null ? r.vals[o.first - 1] : 0) : null)).filter((x) => x != null);
+        if (sums.length < 3) continue;
+        s = Math.max(...sums) - Math.min(...sums);
+      } else {
+        if (o.sp.length < 4) continue;
+        s = o.sp.reduce((a, b) => a + b, 0) / o.sp.length;
+      }
+      out.push({ t: o.t, s, k: s < v.band[0] ? 0 : s < v.band[1] ? 1 : 2 });
+    }
+    return out;
+  }
+  function mmAgreeTxt(ag) {
+    if (!ag.length) return '';
+    const g = [[], [], []];
+    for (const a of ag) g[a.k].push(wd(a.t));
+    const parts = [];
+    if (g[0].length) parts.push(`<b>einig</b> ${g[0].join(', ')}`);
+    if (g[1].length) parts.push(`<b>uneins</b> ${g[1].join(', ')}`);
+    if (g[2].length) parts.push(`<b>weit auseinander</b> ${g[2].join(', ')}`);
+    return `Die Modelle sind ${parts.join(' · ')}`;
+  }
+
+  const mmFmt = (x, v) => (x == null ? '–' : (v.dec ? x.toFixed(v.dec) : String(Math.round(x))).replace('-', '−'));
+  function mmChart(host, D, vk, sel) {
+    const v = MM_VARS[vk], R = mmRows(D, vk);
+    const W = Math.max(280, host.clientWidth || 330), H = 216, m = { l: 34, r: 10, t: 22, b: 8 };
+    // bis zum letzten Zeitschritt mit Median (mindestens drei Modelle)
+    let iEnd = R.T.length - 1;
+    while (iEnd > 0 && R.med[iEnd] == null) iEnd--;
+    if (iEnd < 2) { host.innerHTML = '<div class="msg">Zu wenige Modelle mit Werten für diese Grösse.</div>'; return null; }
+    const x0 = R.T[0], x1 = R.T[iEnd];
+    let yMin = Infinity, yMax = -Infinity;
+    for (const r of R.rows) for (let i = 0; i <= iEnd; i++) { const x = r.vals[i]; if (x != null) { if (x < yMin) yMin = x; if (x > yMax) yMax = x; } }
+    if (v.min0 || v.cum) yMin = 0;
+    if (v.max) yMax = Math.min(yMax, v.max);
+    if (v.cum && yMax < 5) yMax = 5;
+    const step = niceStep(yMax - yMin || 1, 5);
+    yMin = Math.floor(yMin / step) * step; yMax = Math.ceil(yMax / step) * step;
+    if (yMax === yMin) yMax = yMin + step;
+    const X = (t) => m.l + ((t - x0) / (x1 - x0)) * (W - m.l - m.r), Y = (x) => m.t + ((yMax - x) / (yMax - yMin)) * (H - m.t - m.b);
+    const line = (vals) => { let d = '', pen = false; for (let i = 0; i <= iEnd; i++) { const x = vals[i]; if (x == null) { pen = false; continue; } d += (pen ? 'L' : 'M') + X(R.T[i]).toFixed(1) + ' ' + Y(x).toFixed(1); pen = true; } return d; };
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(v.label)}: ${R.rows.length} Wettermodelle im Vergleich">`;
+    // Raster: Werte links, Tage oben
+    for (let y = yMin; y <= yMax + 1e-9; y += step) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(y).toFixed(1)}" y2="${Y(y).toFixed(1)}" style="stroke:var(--hair)"/><text x="${m.l - 5}" y="${(Y(y) + 3.5).toFixed(1)}" text-anchor="end">${mmFmt(y, { dec: step < 1 ? 1 : 0 })}</text>`;
+    const days = [];
+    for (let t = Math.ceil(x0 / 36e5) * 36e5; t <= x1; t += 36e5) if (localHour(t) === 0) days.push(t);
+    for (const t of days) s += `<line x1="${X(t).toFixed(1)}" x2="${X(t).toFixed(1)}" y1="${m.t - 4}" y2="${H - m.b}" style="stroke:var(--hair-strong)"/>`;
+    const bounds = [x0, ...days, x1];
+    for (let i = 0; i < bounds.length - 1; i++) if (X(bounds[i + 1]) - X(bounds[i]) >= 24) s += `<text x="${X((bounds[i] + bounds[i + 1]) / 2).toFixed(1)}" y="12" text-anchor="middle">${esc(wd((bounds[i] + bounds[i + 1]) / 2))}</text>`;
+    // Spannweite als Fläche
+    let band = '', back = '';
+    for (let i = 0; i <= iEnd; i++) if (R.hi[i] != null) { band += (band ? 'L' : 'M') + X(R.T[i]).toFixed(1) + ' ' + Y(Math.min(R.hi[i], yMax)).toFixed(1); back = 'L' + X(R.T[i]).toFixed(1) + ' ' + Y(R.lo[i]).toFixed(1) + back; }
+    if (band) s += `<path class="mm-band" d="${band}${back}Z"/>`;
+    // jedes Modell eine dünne Linie, das gewählte farbig, der Median kräftig
+    for (const r of R.rows) if (r.id !== sel) s += `<path class="mm-l" data-m="${r.id}" d="${line(r.vals)}"/>`;
+    s += `<path class="mm-med" d="${line(R.med)}"/>`;
+    const sr = R.rows.find((r) => r.id === sel);
+    if (sr) s += `<path class="mm-sel" data-m="${sr.id}" d="${line(sr.vals)}"/>`;
+    s += `<line class="mm-cur" x1="0" x2="0" y1="${m.t - 4}" y2="${H - m.b}" visibility="hidden"/><circle class="mm-dot" r="3.5" visibility="hidden"/><circle class="mm-sdot" r="3.5" visibility="hidden"/>`;
+    s += `<rect class="mm-hit" x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg><div class="mm-tip" hidden></div>`;
+    host.innerHTML = s;
+    // Zeiger: Werte zur Zeit unter dem Finger
+    const svg = host.querySelector('svg'), tip = host.querySelector('.mm-tip'), cur = svg.querySelector('.mm-cur'), dot = svg.querySelector('.mm-dot'), sdot = svg.querySelector('.mm-sdot');
+    const at = (ev) => {
+      const r = svg.getBoundingClientRect(), x = ((ev.clientX - r.left) / r.width) * W;
+      const t = x0 + ((x - m.l) / (W - m.l - m.r)) * (x1 - x0);
+      let i = 0;
+      for (let k = 0; k <= iEnd; k++) if (Math.abs(R.T[k] - t) < Math.abs(R.T[i] - t)) i = k;
+      const xi = X(R.T[i]);
+      cur.setAttribute('x1', xi); cur.setAttribute('x2', xi); cur.setAttribute('visibility', 'visible');
+      if (R.med[i] != null) { dot.setAttribute('cx', xi); dot.setAttribute('cy', Y(R.med[i])); dot.setAttribute('visibility', 'visible'); } else dot.setAttribute('visibility', 'hidden');
+      const sv = sr ? sr.vals[i] : null;
+      if (sv != null) { sdot.setAttribute('cx', xi); sdot.setAttribute('cy', Y(Math.min(sv, yMax))); sdot.setAttribute('visibility', 'visible'); } else sdot.setAttribute('visibility', 'hidden');
+      const vals = R.rows.map((r2) => [r2.id, r2.vals[i]]).filter((p) => p[1] != null).sort((a, b) => b[1] - a[1]);
+      tip.innerHTML = `<b>${esc(wd(R.T[i]))} ${hm(R.T[i])}${v.cum ? ' · Summe ab jetzt' : ''}</b>
+        <span class="mm-tr med"><i></i>Median <em>${mmFmt(R.med[i], v)} ${v.unit}</em></span>
+        ${R.hi[i] != null ? `<span class="mm-tr"><i class="bd"></i>Spannweite <em>${mmFmt(R.lo[i], v)} bis ${mmFmt(R.hi[i], v)}</em></span>` : ''}
+        ${sr ? `<span class="mm-tr sel"><i></i>${esc(mmName(sr.id))} <em>${mmFmt(sv, v)} ${v.unit}</em></span>` : ''}
+        <small>${vals.length} Modelle · höchster Wert ${esc(mmName(vals[0][0]))}, tiefster ${esc(mmName(vals[vals.length - 1][0]))}</small>`;
+      tip.hidden = false;
+      const left = (xi / W) * r.width;
+      tip.style.left = clamp(left - tip.offsetWidth / 2, 0, r.width - tip.offsetWidth) + 'px';
+    };
+    const off = () => { tip.hidden = true; cur.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); sdot.setAttribute('visibility', 'hidden'); };
+    const hit = svg.querySelector('.mm-hit');
+    hit.addEventListener('pointerdown', at);
+    hit.addEventListener('pointermove', (ev) => { if (ev.pointerType === 'mouse' || ev.buttons) at(ev); });
+    hit.addEventListener('pointerleave', (ev) => { if (ev.pointerType === 'mouse') off(); });
+    return R;
+  }
+
+  function mmRender(card, D) {
+    const sel = MM.sel, v = MM_VARS[sel.v] || MM_VARS.t;
+    if (!MM_VARS[sel.v]) sel.v = 't';
+    const have = MM_MODELS.filter((mm) => D.series[mm[0]]);
+    const segs = Object.entries(MM_VARS).map(([k, x]) => `<button class="mm-v" role="radio" data-mmv="${k}" aria-checked="${k === sel.v}">${x.label}</button>`).join('');
+    card.innerHTML = `<div class="mm-segs" role="radiogroup" aria-label="Grösse">${segs}</div>
+      <div class="mm-head"><b>${esc(v.label)}${v.cum ? ' – Summe ab jetzt' : ''}</b><small>${v.unit}${v.smooth ? ' · über 3 Stunden geglättet' : ''}</small></div>
+      <div class="chart mm-chart"></div>
+      <div class="mm-leg"><span><i class="med"></i>Median</span><span><i class="bd"></i>Spannweite</span><span><i class="ln"></i>einzelne Modelle</span>${sel.m && D.series[sel.m] ? `<span><i class="sel"></i>${esc(mmName(sel.m))}</span>` : ''}</div>
+      <p class="note mm-agree"></p>
+      <div class="mm-models" role="group" aria-label="Modell hervorheben">${have.map(([id, n, d]) => {
+        const a = D.series[id][sel.v];
+        let last = null;
+        if (a) for (let i = a.length - 1; i >= 0; i--) if (a[i] != null) { last = D.times[i]; break; }
+        return `<button class="mm-m" data-mmm="${id}" aria-pressed="${id === sel.m}"${a ? '' : ' disabled'}><b>${esc(n)}</b><small>${esc(d)}${a && last ? ' · bis ' + esc(wd(last)) : a ? '' : ' · ohne diese Grösse'}</small></button>`;
+      }).join('')}</div>
+      <p class="note">Jede graue Linie ist ein Wettermodell, die kräftige der Median aller Modelle, die Fläche die Spannweite. Liegen die Linien eng beieinander, ist die Prognose sicherer. Tippe auf ein Modell, um es hervorzuheben, und auf die Grafik für die Werte. Modelle mit kurzer Reichweite enden früher. Daten: Open-Meteo${D.elev != null ? ` · für ${Math.round(D.elev)} m` : ''}.</p>`;
+    const R = mmChart(card.querySelector('.mm-chart'), D, sel.v, sel.m);
+    card.querySelector('.mm-agree').innerHTML = R ? mmAgreeTxt(mmAgree(D, R, sel.v)) : '';
+    card.querySelector('.mm-agree').hidden = !card.querySelector('.mm-agree').innerHTML;
+  }
+
+  // Karte im Bericht: lädt, sobald sie ins Bild kommt
+  function mmMount(card, t) {
+    if (!card || !t || !Number.isFinite(t.lat)) return;
+    const seq = ++MM.seq;
+    card.innerHTML = '<div class="msg">Modelle werden geladen, sobald du hierher scrollst …</div>';
+    let D = null;
+    const go = () => {
+      card.innerHTML = '<div class="msg">Lade alle Wettermodelle …</div>';
+      mmLoad(t).then((d) => { if (seq !== MM.seq || !card.isConnected) return; D = d; mmRender(card, D); })
+        .catch((e) => { if (seq === MM.seq && card.isConnected) card.innerHTML = `<div class="msg err">Modelle nicht verfügbar: ${esc(errText(e))}</div><button class="btn" data-mmretry>Nochmals versuchen</button>`; });
+    };
+    card.addEventListener('click', (ev) => {
+      const b = ev.target.closest('[data-mmv], [data-mmm], [data-mmretry]');
+      if (!b) return;
+      if (b.hasAttribute('data-mmretry')) { go(); return; }
+      if (!D) return;
+      if (b.dataset.mmv) MM.sel.v = b.dataset.mmv;
+      if (b.dataset.mmm) MM.sel.m = MM.sel.m === b.dataset.mmm ? '' : b.dataset.mmm;
+      store.set('mmSel', MM.sel);
+      mmRender(card, D);
+    });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '200px' });
+      io.observe(card);
+    } else go();
   }
 
 /* ── 60-fc.js ── */
@@ -19444,6 +19725,8 @@ ${wpts}
            <article class="card rep-cur"><div class="rep-now" id="rep-now"><div class="msg">Lade Prognose …</div></div></article>
            <h3 class="sec-t out">Wochenprognose</h3>
            <article class="card"><div class="rep-fc"></div></article>`}
+      <h3 class="sec-t out">Modelle im Vergleich</h3>
+      <article class="card mm-card" id="rep-mm"></article>
       <article class="card"><h3 class="sec-t">Wind in der Nähe</h3><div class="list flat" id="rep-near"></div></article>
       <div class="rep-acts">
         <button class="btn" id="rep-map">${IC.wind}Windkarte</button>
@@ -19455,6 +19738,7 @@ ${wpts}
     $('#rep-karte').addEventListener('click', () => { S.pendingView = { c: [t.lat, t.lon], z: 14 }; S.pendingPin = { lat: t.lat, lon: t.lon, name: e.name }; navigate('karte'); });
     $('#rep-pano').addEventListener('click', () => pfNav(t.lat, t.lon, e.name, t.alt ?? e.alt));
     renderNear(t);
+    mmMount($('#rep-mm'), t);
     if (isSt) {
       const box = body.querySelector('.st-card');
       loadHistory(e.id, box);

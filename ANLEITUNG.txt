@@ -1,13 +1,24 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.1)
+Inhalt dieses Ordners (Version 11.2)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
   .github/workflows/windsack.yml   die GitHub-Aktion (einmalig anlegen, siehe unten)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.2
+  Ersetzen auf GitHub: nur index.html.
+  - Bericht eines Ortes (Tipp auf einen Ort, einen Punkt der Karte oder eine Station): neue Karte «Modelle im
+    Vergleich». Alle Wettermodelle, die Open-Meteo für die Schweiz rechnet, übereinander – ICON-CH1/CH2
+    (MeteoSchweiz), ICON-D2/EU (DWD), ICON-2I (ItaliaMeteo), AROME und ARPEGE (Météo-France), HARMONIE (KNMI),
+    UKMO, IFS und AIFS (ECMWF), GFS (NOAA), GEM (Kanada). Je Modell eine dünne Linie, dazu der Median (kräftig)
+    und die Spannweite (Fläche); Temperatur, Niederschlag (Summe ab jetzt), Wind, Böen, Bewölkung. Ein Satz sagt,
+    an welchen Tagen sich die Modelle einig sind. Ein Modell antippen hebt es farbig hervor, ein Tipp auf die
+    Grafik zeigt die Werte. Modelle mit kurzer Reichweite (z. B. ICON-CH1, 33 Stunden) enden früher.
+    Die Karte lädt erst, wenn man zu ihr scrollt, und merkt sich die Daten eine Stunde.
 
 Neu in Version 11.1
   Ersetzen auf GitHub: nur index.html.
