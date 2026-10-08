@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#102237">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="11.5 · 08.10.2026">
+<meta name="windsack-version" content="11.6 · 08.10.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -714,6 +714,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --halo: #ffffff;
   --sky-1: #5f6884; --sky-2: #8d97b3; --sky-3: #c3c4c8; --sky-4: #6d7480;
   /* Verlauf über dem Foto der Startseite */
+  /* Lokalprognose (Farben wie MeteoSchweiz): vergangene Stunden, Niederschlag nach Stärke, Sonne, Wind */
+  --lp-past: #eef1f4; --lp-r1: #8e7aa0; --lp-r2: #2f45e0; --lp-r3: #1d7a2e; --lp-r4: #7fe055;
+  --lp-sun: #f2d24a; --lp-wind: #6a5ad6; --lp-gust: #a99ff0; --lp-pp: #2f6fd0; --lp-pill: #e3edf9;
   --ph-1: rgba(44, 54, 84, 0.62); --ph-2: rgba(44, 54, 84, 0.34); --ph-3: rgba(44, 54, 84, 0.10); --ph-4: rgba(22, 30, 46, 0.42);
   --fab: rgba(143, 175, 187, 0.92); --fab-on: #4e7f8f; --fab-ink: #ffffff;
   --tl-obs: #c9cdd1; --tl-fc: #6b96a3; --tl-bubble: #b6d4d9; --tl-bubble-ink: #173640; --tl-bubble-fc: #4e7f8f; --tl-bubble-fc-ink: #ffffff;
@@ -747,6 +750,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
     --halo: #141e27;
     --night: rgba(0, 0, 0, 0.32);
     --sky-1: #102237; --sky-2: #16304a; --sky-3: #1c3b58; --sky-4: #214463;
+    --lp-past: rgba(255, 255, 255, 0.045); --lp-r1: #a48fb8; --lp-r2: #5c6cff; --lp-r3: #3aa952; --lp-r4: #9cf06a;
+    --lp-sun: #e8c53d; --lp-wind: #a196f7; --lp-gust: #7d72c4; --lp-pp: #7db2f5; --lp-pill: #1d2e44;
     --ph-1: rgba(10, 20, 36, 0.70); --ph-2: rgba(10, 20, 36, 0.42); --ph-3: rgba(10, 20, 36, 0.18); --ph-4: rgba(8, 14, 24, 0.55);
     --fab: rgba(64, 96, 110, 0.92); --fab-on: #7fb3c2; --fab-ink: #ffffff;
     --tl-obs: #56626c; --tl-fc: #7fb3c2; --tl-bubble: #2d5561; --tl-bubble-ink: #e8f3f6; --tl-bubble-fc: #7fb3c2; --tl-bubble-fc-ink: #0b1a20;
@@ -1530,6 +1535,8 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
 .rn-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .rn-map .tiles-img { filter: var(--tile-map-filter); }
 .sec-t.out { margin: 2px 2px -2px; }
+/* Bericht eines Ortes: Abschnittstitel wie in der MeteoSchweiz-App (gross, fett) */
+#ort-body .sec-t.out { font: 700 21px/1.2 var(--font-display); letter-spacing: 0; text-transform: none; color: var(--ink); margin: 10px 4px 0; }
 /* Tagesbericht */
 .tg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 0 2px; }
 .tg-head .btn { flex: none; padding: 8px 14px; }
@@ -1588,29 +1595,87 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
 .fcb { display: flex; flex-direction: column; gap: 8px; }
 /* Wochenprognose als Liste (wie die MeteoSchweiz-App) */
 .fcw { display: flex; flex-direction: column; }
-.fcr { display: grid; grid-template-columns: minmax(0, 1fr) 46px auto auto; align-items: center; gap: 8px; width: 100%; padding: 9px 2px; border: 0; background: none; text-align: left; color: var(--ink); border-top: 1px solid var(--hair); }
+/* Wochenprognose wie in der MeteoSchweiz-App: Wochentag und Datum, grosses Symbol, Tiefst | Höchst, Niederschlag */
+.fcw { margin: 0 -14px; }
+.fcr { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 46px auto auto; align-items: center; gap: 8px; width: 100%; padding: 11px 14px 11px 16px; border: 0; background: none; text-align: left; color: var(--ink); border-top: 1px solid var(--hair); }
 .fcr:first-child { border-top: 0; }
-.fcr[aria-expanded="true"] { background: var(--accent-soft); border-radius: 12px; border-top-color: transparent; padding-left: 8px; padding-right: 8px; }
-.fcr[aria-expanded="true"] + .fcr { border-top-color: transparent; }
-.fcr-d { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.fcr-d b { font-size: 15px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fcr-d small { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
-.fcr-i svg { width: 42px; height: 42px; display: block; }
-.fcr-t { display: flex; align-items: baseline; gap: 4px; font-variant-numeric: tabular-nums; }
-.fcr-t .tn { font: 650 16px/1 var(--font-display); color: var(--muted); }
-.fcr-t .tx { font: 700 17px/1 var(--font-display); }
-.fcr-t i { color: var(--hair-strong); font-style: normal; font-weight: 400; }
-.fcr-r { display: flex; align-items: center; gap: 4px; justify-self: end; min-width: 74px; }
-.fcr-r svg { width: 16px; height: 16px; flex: none; color: var(--s-rain); }
-.fcr-r span { display: flex; flex-direction: column; align-items: flex-end; }
-.fcr-r b { font-size: 13.5px; font-weight: 650; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.fcr-r small { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.fcr[aria-expanded="true"]::before { content: ""; position: absolute; left: 4px; top: 10px; bottom: 10px; width: 3.5px; border-radius: 2px; background: var(--ink); }
+.fcr-d { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.fcr-d b { font: 700 16.5px/1.15 var(--font-display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fcr-d small { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.fcr-i svg { width: 46px; height: 46px; display: block; }
+.fcr-t { display: flex; align-items: baseline; gap: 5px; font-variant-numeric: tabular-nums; }
+.fcr-t .tn, .fcr-t .tx { font: 700 17px/1 var(--font-display); color: var(--ink); }
+.fcr-t i { color: var(--ink); font-style: normal; font-weight: 600; }
+.fcr-r { display: flex; align-items: center; gap: 6px; justify-self: end; min-width: 70px; }
+.fcr-r svg { width: 17px; height: 17px; flex: none; color: var(--ink); }
+.fcr-r span { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; margin-left: auto; }
+.fcr-r b { font-size: 15px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.fcr-r small { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .moon .mo-d { fill: var(--moon-dark); stroke: var(--moon-edge); stroke-width: 0.6; }
 .moon .mo-l { fill: var(--moon-lit); stroke: var(--moon-edge); stroke-width: 0.5; }
 .wx-desc { font-size: 13.5px; color: var(--ink-2); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
 .wx-desc b { color: var(--ink); font-weight: 650; }
 .subchart-t { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); margin: 4px 0 -6px; }
 .src-note { font-size: 11px; color: var(--muted); line-height: 1.45; }
+/* Lokalprognose: drei Grafiken über alle Tage (wie MeteoSchweiz); Achsen fest, Mitte seitlich wischen */
+.lp { display: flex; flex-direction: column; gap: 6px; margin: 4px -14px 0; }
+.lp-h { margin: 14px 14px 4px; font: 700 18px/1.25 var(--font-display); color: var(--ink); }
+.lp-c { display: grid; grid-template-columns: 38px minmax(0, 1fr) 36px; align-items: start; }
+.lp-l, .lp-r { display: flex; flex-direction: column; }
+.lp-ax { display: block; overflow: visible; }
+.lp-ax text { font-family: var(--font-ui); font-size: 12px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.lp-u { font-size: 12.5px; font-weight: 600; color: var(--muted); padding-top: 22px; text-align: right; padding-right: 3px; white-space: nowrap; }
+.lp-u.t { color: var(--s-temp); }
+.lp-u.r { color: var(--lp-pp); text-align: left; padding: 22px 0 0 2px; margin-left: -4px; }
+.lp-top { height: 44px; display: grid; place-items: center; color: var(--ink-2); }
+.lp-c1.pp .lp-top { height: 72px; }
+.lp-top svg { width: 22px; height: 22px; }
+.lp-s { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; }
+.lp-s::-webkit-scrollbar { display: none; }
+.lp-in { position: relative; }
+.lp-svg { display: block; }
+.lp-past { fill: var(--lp-past); }
+.lp-gl { stroke: var(--hair); stroke-width: 1; }
+.lp-hl { stroke: var(--hair); stroke-width: 1; opacity: 0.5; }
+.lp-dl { stroke: var(--hair-strong); stroke-width: 1; }
+.lp-band { fill: var(--s-band); }
+.lp-temp { fill: none; stroke: var(--s-temp); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.lp-sunb { fill: var(--lp-sun); }
+.lp-wind { fill: none; stroke: var(--lp-wind); stroke-width: 2.2; stroke-linejoin: round; }
+.lp-gust { fill: none; stroke: var(--lp-gust); stroke-width: 1.6; stroke-linejoin: round; }
+.lp-gust-a { fill: var(--lp-gust); opacity: 0.22; }
+.lp-cur { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.lp-ic { position: relative; height: 44px; }
+.lp-ic span { position: absolute; top: 4px; width: 36px; margin-left: -18px; }
+.lp-ic svg { width: 36px; height: 36px; display: block; }
+.lp-pp { position: relative; height: 28px; }
+.lp-pill { position: sticky; left: 2px; z-index: 1; display: inline-block; margin-top: 2px; padding: 3px 9px; border-radius: 999px; background: var(--lp-pill); color: var(--lp-pp); font-size: 12.5px; font-weight: 650; white-space: nowrap; }
+.lp-pp span { position: absolute; top: 5px; width: 40px; margin-left: -20px; text-align: center; font-size: 13px; color: var(--lp-pp); font-variant-numeric: tabular-nums; }
+.lp-xl { position: relative; height: 20px; }
+.lp-xl span { position: absolute; top: 3px; width: 24px; margin-left: -12px; text-align: center; font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.lp-days { position: relative; height: 24px; }
+.lp-days > div { position: absolute; top: 0; height: 24px; }
+.lp-days b { position: sticky; left: 4px; display: inline-block; padding-left: 4px; font-size: 14px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+.lp-sms { position: absolute; left: 0; right: 0; top: 0; height: 0; }
+.lp-sm { position: absolute; top: 62px; transform: translateX(-50%); display: grid; justify-items: center; gap: 0; padding: 2px 4px 1px; border-radius: 6px; background: var(--surface); border: 1px solid var(--hair-strong); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); font-size: 11.5px; color: var(--ink); line-height: 1.1; }
+.lp-sm::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 8px; height: 8px; margin-left: -4px; background: var(--surface); border-right: 1px solid var(--hair-strong); border-bottom: 1px solid var(--hair-strong); transform: rotate(45deg); }
+.lp-sm i { font-style: normal; font-size: 11px; color: var(--ink-2); }
+.lp-sm svg { width: 22px; height: 13px; display: block; }
+.lp-sm b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.lp-ar { position: relative; height: 44px; }
+.lp-ar span { position: absolute; top: 0; height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--ink); }
+.lp-ar span.odd { background: var(--surface-2); }
+.lp-ar svg { width: 18px; height: 18px; }
+.lp-ar b { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lp-tip { position: absolute; top: 2px; z-index: 3; min-width: 120px; padding: 6px 9px; border-radius: 10px; background: var(--glass); box-shadow: var(--shadow); font-size: 12px; color: var(--ink-2); display: grid; gap: 1px; pointer-events: none; white-space: nowrap; }
+.lp-tip b { color: var(--ink); font-size: 12.5px; }
+.lp-tip span { color: var(--ink); font-variant-numeric: tabular-nums; }
+.lp-leg { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 4px 14px 0; font-size: 11.5px; color: var(--ink-2); }
+.lp-leg span { display: inline-flex; align-items: center; gap: 5px; }
+.lp-leg i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; }
+.lp-leg i.w { background: var(--lp-wind); } .lp-leg i.g { background: var(--lp-gust); }
+.lp + .src-note { margin-top: 6px; }
 
 /* ───────────────────────── Blatt (Bottom Sheet) ───────────────────────── */
 .backdrop { position: absolute; inset: 0; z-index: 1300; background: rgba(8, 16, 22, 0.32); }
@@ -1673,10 +1738,11 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
   .seg span { display: none; } .seg[aria-selected="true"] span { display: inline; }
   .seg[aria-selected="true"] { flex: 0 1 auto; padding: 8px 14px; }
   .fcr { gap: 6px; grid-template-columns: minmax(0, 1fr) 36px auto auto; }
-  .fcr-i svg { width: 34px; height: 34px; }
-  .fcr-d b { font-size: 14px; } .fcr-d small { font-size: 11.5px; }
-  .fcr-t .tx { font-size: 15.5px; } .fcr-t .tn { font-size: 14.5px; }
-  .fcr-r { min-width: 60px; } .fcr-r b { font-size: 12.5px; } .fcr-r small { font-size: 11px; }
+  .fcr-i svg { width: 38px; height: 38px; }
+  .fcr { grid-template-columns: minmax(0, 1fr) 40px auto auto; gap: 7px; }
+  .fcr-d b { font-size: 15px; } .fcr-d small { font-size: 12.5px; }
+  .fcr-t .tx, .fcr-t .tn { font-size: 15.5px; }
+  .fcr-r { min-width: 60px; } .fcr-r b { font-size: 13.5px; } .fcr-r small { font-size: 11.5px; }
   .loc-days .dw { font-size: 13px; } .loc-days .mm { font-size: 12px; }
 }
 @media (min-width: 600px) {
@@ -9212,7 +9278,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.5 · 08.10.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.6 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -11818,7 +11884,7 @@ pako/dist/pako.esm.mjs:
   async function hourlyFor(list) {
     const need = list.filter((s) => s && Number.isFinite(s.lat) && (!HF.get(s.id) || Date.now() - HF.get(s.id).at > 60 * 60e3));
     if (!need.length) return;
-    const vars = 'temperature_2m,precipitation,weather_code,is_day,wind_speed_10m,wind_gusts_10m,wind_direction_10m';
+    const vars = 'temperature_2m,precipitation,weather_code,is_day,wind_speed_10m,wind_gusts_10m,wind_direction_10m,sunshine_duration,precipitation_probability';
     // MeteoSchweiz-Stationen mit ihrer (verlässlichen) Höhe; Fremdnetze mit Geländehöhe (90-m-DEM von Open-Meteo)
     const groups = [need.filter((s) => !s.ext && s.alt != null), need.filter((s) => s.ext || s.alt == null)].filter((g) => g.length);
     let err = null;
@@ -11849,6 +11915,7 @@ pako/dist/pako.esm.mjs:
         HF.set(s.id, {
           at: Date.now(), times, temp: pick('temperature_2m'), rr: pick('precipitation'), wc: pick('weather_code'), day: pick('is_day'),
           ws: pick('wind_speed_10m'), wg: pick('wind_gusts_10m'), wd: pick('wind_direction_10m'),
+          sun: pick('sunshine_duration'), pp: pick('precipitation_probability'),
           q10: band ? times.map((t) => (band.has(t) ? band.get(t)[0] : null)) : null,
           q90: band ? times.map((t) => (band.has(t) ? band.get(t)[1] : null)) : null,
           elev: Number.isFinite(base.elevation) ? base.elevation : null, model: pa ? 'ICON-CH1/CH2' : 'ICON-D2/EU',
@@ -12353,8 +12420,9 @@ pako/dist/pako.esm.mjs:
      Tageswerte kommen aus der Lokalprognose der MeteoSchweiz; die weiteren Tage und die
      Niederschlagswahrscheinlichkeit aus dem besten Modell (Open-Meteo). */
   const FC_SEL = new Map();
-  const dayName = (ymd, i) => (i === 0 && ymd === ymdLocal(Date.now()) ? 'Heute' : fWdLong.format(localMidnight(ymd) + 12 * 36e5));
-  const fcDate = (ymd) => fDMon.format(localMidnight(ymd) + 12 * 36e5);
+  const dayName = (ymd) => fWdLong.format(localMidnight(ymd) + 12 * 36e5);
+  const fDMon2 = new Intl.DateTimeFormat('de-CH', { timeZone: TZ, day: '2-digit', month: 'short' }); // «08. Okt.»
+  const fcDate = (ymd) => fDMon2.format(localMidnight(ymd) + 12 * 36e5);
   const rrTxt = (v) => (v == null ? '–' : v < 0.1 ? '0 mm' : v < 1 ? '<1 mm' : (v < 10 ? v.toFixed(1).replace('.0', '') : Math.round(v)) + ' mm');
   async function renderFc(host, s) {
     if (!host || !s) return;
@@ -12409,76 +12477,182 @@ pako/dist/pako.esm.mjs:
     d8.forEach((d, i) => {
       const noon = localMidnight(d.d) + 12 * 36e5;
       const t = (v) => (v != null ? Math.round(v) + '°' : '–');
-      rows += `<button class="fcr" data-i="${i}" aria-expanded="${i === sel}" aria-label="${esc(dayName(d.d, i))} ${esc(fcDate(d.d))}: ${esc(msText(d.icon) || 'Prognose')}, ${t(d.tmin)} bis ${t(d.tmax)}, Niederschlag ${esc(rrTxt(d.rr))}${d.p != null ? ', Wahrscheinlichkeit ' + Math.round(d.p) + ' Prozent' : ''}">`
-        + `<span class="fcr-d"><b>${esc(dayName(d.d, i))}</b><small>${esc(fcDate(d.d))} ${moonSvg(noon, 13)}</small></span>`
+      rows += `<button class="fcr" data-i="${i}" aria-expanded="${i === sel}" aria-label="${esc(dayName(d.d))} ${esc(fcDate(d.d))}: ${esc(msText(d.icon) || 'Prognose')}, ${t(d.tmin)} bis ${t(d.tmax)}, Niederschlag ${esc(rrTxt(d.rr))}${d.p != null ? ', Wahrscheinlichkeit ' + Math.round(d.p) + ' Prozent' : ''}">`
+        + `<span class="fcr-d"><b>${esc(dayName(d.d))}</b><small>${esc(fcDate(d.d))} ${moonSvg(noon, 13)}</small></span>`
         + `<span class="fcr-i">${d.icon != null ? wxSvg(d.icon) : '<svg viewBox="0 0 48 48"></svg>'}</span>`
         + `<span class="fcr-t"><b class="tn">${t(d.tmin)}</b><i>|</i><b class="tx">${t(d.tmax)}</b></span>`
         + `<span class="fcr-r">${IC.drops}<span><b>${esc(rrTxt(d.rr))}</b><small>${d.p != null ? Math.round(d.p) + ' %' : ''}</small></span></span></button>`;
     });
     rows += '</div>';
-    host.innerHTML = rows + '<div class="wx-desc"></div><div class="fc-detail"></div>'
+    host.innerHTML = rows + '<div class="lp"></div>'
       + `<div class="src-note">${esc(src)}${hf ? ` Stundenverlauf: ${esc(hf.model)} via Open-Meteo.` : ''}</div>`;
+    const lp = host.querySelector('.lp');
+    lpRender(lp, s);
+    // Tipp auf einen Tag: die Grafiken wischen zu diesem Tag (wie in der MeteoSchweiz-App)
     host.querySelectorAll('.fcr').forEach((b) => b.addEventListener('click', () => {
       FC_SEL.set(s.id, d8[+b.dataset.i].d);
       host.querySelectorAll('.fcr').forEach((x) => x.setAttribute('aria-expanded', String(x === b)));
-      fcOpen(host, s, d8[+b.dataset.i], b);
+      lpScroll(lp, d8[+b.dataset.i].d);
     }));
-    fcOpen(host, s, d8[sel], host.querySelectorAll('.fcr')[sel]);
+    if (sel > 0) lpScroll(lp, d8[sel].d, false);
   }
-  // Stundenverlauf direkt unter den gewählten Tag schieben (wie ein aufklappender Eintrag)
-  function fcOpen(host, s, day, row) {
-    const desc = host.querySelector('.wx-desc'), det = host.querySelector('.fc-detail');
-    if (!desc || !det || !row) return;
-    row.after(desc, det);
-    renderFcDetail(host, s, day);
-  }
-  function renderFcDetail(host, s, day) {
-    const desc = host.querySelector('.wx-desc'), det = host.querySelector('.fc-detail');
-    desc.innerHTML = `<b>${esc(dayName(day.d, day.d === ymdLocal(Date.now()) ? 0 : 1))}</b><span>${esc(msText(day.icon) || '')}</span>`;
+  /* ───── Lokalprognose wie in der MeteoSchweiz-App: drei Grafiken über alle Tage, seitlich zu wischen ─────
+     «Temperatur und Niederschlag» (Symbole und Wahrscheinlichkeit alle 3 Stunden, Temperatur mit Band, Niederschlag als
+     Balken, rechts die mm/h-Skala), «Sonnenscheindauer» (Minuten je Stunde, Sonnenauf- und -untergang) und «Wind und
+     Böen» (Richtung und Mittel alle 3 Stunden, darunter die Kurven). Die Achsen bleiben stehen, die drei Grafiken
+     wischen gemeinsam; vergangene Stunden sind grau hinterlegt. Ein Tipp zeigt die Werte dieser Stunde. */
+  const LP_PX = 12; // Breite einer Stunde in px
+  const fLpDay = new Intl.DateTimeFormat('de-CH', { timeZone: TZ, weekday: 'short', day: '2-digit', month: 'short' });
+  const lpDay = (t) => fLpDay.format(t).replace(',', '');
+  const LP_RAIN = [[1, 'var(--lp-r1)'], [2, 'var(--lp-r2)'], [4, 'var(--lp-r3)'], [Infinity, 'var(--lp-r4)']];
+  const lpRainCol = (v) => LP_RAIN.find((r) => v < r[0])[1];
+  const LP_SUN = '<svg viewBox="0 0 24 14" aria-hidden="true"><path d="M5 13a7 7 0 0 1 14 0z" fill="#f5c400"/><g stroke="#f5c400" stroke-width="1.6" stroke-linecap="round"><path d="M12 1v2.4M3.6 4.6l1.6 1.6M20.4 4.6l-1.6 1.6M1 10.4h2.2M23 10.4h-2.2"/></g></svg>';
+  function lpRender(box, s) {
     const h = HF.get(s.id);
-    const t0 = localMidnight(day.d), t1 = t0 + 24 * 36e5;
-    if (!h) { det.innerHTML = '<div class="msg">Stundenwerte nicht verfügbar.</div>'; return; }
-    const idx = [];
-    h.times.forEach((t, j) => { if (t >= t0 && t <= t1) idx.push(j); });
-    if (idx.filter((j) => h.temp[j] != null).length < 6) { det.innerHTML = '<div class="msg">Für diesen Tag gibt es noch keinen Stundenverlauf.</div>'; return; }
-    det.innerHTML = '<div class="subchart-t">Temperatur °C</div><div class="chart c-t"></div><div class="subchart-t">Niederschlag mm/h</div><div class="chart c-r"></div><div class="subchart-t">Wind km/h · Mittel und Böen</div><div class="chart c-w"></div>';
-    const P = (arr) => idx.map((j) => [h.times[j], arr[j]]);
-    const temps = idx.map((j) => h.temp[j]).filter((v) => v != null);
-    const ticks = [];
-    for (let k = 3; k < 24; k += 3) ticks.push({ t: t0 + k * 36e5, label: pad2(k) });
-    const icons = [];
-    for (let k = 1; k < 24; k += 3) {
-      const t = t0 + (k + 0.5) * 36e5;
-      const j = h.times.findIndex((x) => Math.abs(x - t) < 40 * 60e3);
-      if (j >= 0 && h.wc[j] != null) icons.push({ t, inner: wxInner(wmoToMs(h.wc[j], h.day[j])) });
+    if (!h) { box.innerHTML = '<div class="msg">Stundenwerte nicht verfügbar.</div>'; return; }
+    const t0 = localMidnight(ymdLocal(Date.now()));
+    const i0 = h.times.findIndex((t) => t >= t0);
+    let i1 = h.times.length - 1;
+    while (i1 > i0 && h.temp[i1] == null) i1--;
+    if (i0 < 0 || i1 - i0 < 12) { box.innerHTML = '<div class="msg">Für diese Tage gibt es noch keinen Stundenverlauf.</div>'; return; }
+    const x0 = h.times[i0], x1 = h.times[i1], now = Date.now();
+    const X = (t) => ((t - x0) / 36e5) * LP_PX, W = Math.round(X(x1)) + 2;
+    const I = []; for (let j = i0; j <= i1; j++) I.push(j);
+    const at = (arr, t) => { const j = h.times.findIndex((x) => Math.abs(x - t) < 31 * 60e3); return j >= 0 && arr ? arr[j] : null; };
+    const hours = [], days = [];
+    for (let t = x0; t <= x1; t += 36e5) { const hr = localHour(t); if (hr % 3 === 0) hours.push(t); if (hr === 0) days.push(t); }
+    if (!days.length || days[0] > x0) days.unshift(x0);
+    const blocks = hours.filter((t) => t + 3 * 36e5 <= x1 + 1); // Blöcke zu 3 Stunden ab 00, 03, 06 …
+    const past = now > x0 ? `<rect x="0" y="0" width="${Math.min(W, X(now)).toFixed(1)}" height="100%" class="lp-past"/>` : '';
+    const vGrid = (H) => hours.map((t) => `<line x1="${X(t).toFixed(1)}" x2="${X(t).toFixed(1)}" y1="0" y2="${H}" class="${localHour(t) === 0 ? 'lp-dl' : 'lp-hl'}"/>`).join('');
+    const xLabels = `<div class="lp-xl">${hours.map((t) => `<span style="left:${X(t).toFixed(1)}px">${pad2(localHour(t))}</span>`).join('')}</div>`
+      + `<div class="lp-days">${days.map((t, k) => { const e = k < days.length - 1 ? days[k + 1] : x1; return `<div style="left:${X(t).toFixed(1)}px;width:${Math.max(0, X(e) - X(t)).toFixed(1)}px"><b>${esc(lpDay(t + 12 * 36e5))}</b></div>`; }).join('')}</div>`;
+    const path = (arr) => { let d = '', pen = false; for (const j of I) { const v = arr[j]; if (v == null) { pen = false; continue; } d += (pen ? 'L' : 'M') + X(h.times[j]).toFixed(1) + ' ' + v.toFixed(1); pen = true; } return d; };
+    const mapY = (arr, Y) => h.times.map((_, j) => (arr && arr[j] != null ? Y(arr[j]) : null));
+
+    // 1 · Temperatur und Niederschlag
+    const H1 = 176, pt = 8, pb = 2;
+    const tv = I.flatMap((j) => [h.temp[j], h.q10 ? h.q10[j] : null, h.q90 ? h.q90[j] : null]).filter((v) => v != null);
+    let lo = Math.floor(Math.min(...tv) / 5) * 5, hi = Math.ceil(Math.max(...tv) / 5) * 5;
+    if (hi - lo < 15) { const add = 15 - (hi - lo); lo -= Math.floor(add / 10) * 5; hi = lo + 15; if (hi < Math.max(...tv)) hi += 5; }
+    const YT = (v) => pt + ((hi - v) / (hi - lo)) * (H1 - pt - pb);
+    const rMax = I.some((j) => (h.rr[j] || 0) > 5) ? 10 : 5;
+    const YR = (v) => H1 - pb - (Math.min(v, rMax) / rMax) * (H1 - pt - pb);
+    let g1 = `<svg class="lp-svg" width="${W}" height="${H1}" viewBox="0 0 ${W} ${H1}">${past}`;
+    for (let v = lo; v <= hi; v += 5) g1 += `<line x1="0" x2="${W}" y1="${YT(v).toFixed(1)}" y2="${YT(v).toFixed(1)}" class="lp-gl"/>`;
+    g1 += vGrid(H1);
+    for (const j of I) { const v = h.rr[j]; if (v == null || v < 0.05) continue; const x = X(h.times[j] - 36e5); if (x < 0) continue; g1 += `<rect x="${(x + 1).toFixed(1)}" y="${YR(v).toFixed(1)}" width="${LP_PX - 2}" height="${(H1 - pb - YR(v)).toFixed(1)}" style="fill:${lpRainCol(v)}"/>`; }
+    if (h.q10 && h.q90) {
+      const up = [], dn = [];
+      for (const j of I) if (h.q10[j] != null && h.q90[j] != null) { up.push(X(h.times[j]).toFixed(1) + ' ' + YT(h.q90[j]).toFixed(1)); dn.unshift(X(h.times[j]).toFixed(1) + ' ' + YT(h.q10[j]).toFixed(1)); }
+      if (up.length > 1) g1 += `<path d="M${up.join('L')}L${dn.join('L')}Z" class="lp-band"/>`;
     }
-    const now = Date.now() >= t0 && Date.now() <= t1 ? Date.now() : null;
-    drawChart(det.querySelector('.c-t'), {
-      x0: t0, x1: t1, now, height: 132, noDays: true, xTicks: ticks, icons, maxTicks: 4,
-      yMin: Math.floor(Math.min(...temps)) - 1, yMax: Math.ceil(Math.max(...temps)) + 1,
-      series: [{ name: 'Temperatur', color: 'var(--s-temp)', pts: P(h.temp), maxGap: 2 * 36e5 }],
-      valFmt: (v) => v.toFixed(1) + ' °C', tickFmt: (v) => v + '°', aria: 'Temperaturverlauf',
+    g1 += `<path d="${path(mapY(h.temp, YT))}" class="lp-temp"/><line class="lp-cur" y1="0" y2="${H1}" visibility="hidden"/></svg>`;
+    const icons = blocks.map((t) => { const wc = at(h.wc, t + 2 * 36e5), dy = at(h.day, t + 2 * 36e5); return wc == null ? '' : `<span style="left:${X(t + 1.5 * 36e5).toFixed(1)}px">${wxSvg(wmoToMs(wc, dy))}</span>`; }).join('');
+    const hasPP = h.pp && I.some((j) => h.pp[j] != null);
+    const probs = hasPP ? blocks.map((t) => {
+      let m = null; for (let k = 1; k <= 3; k++) { const v = at(h.pp, t + k * 36e5); if (v != null) m = Math.max(m ?? 0, v); }
+      if (m == null) return '';
+      return `<span style="left:${X(t + 1.5 * 36e5).toFixed(1)}px;opacity:${(0.5 + 0.5 * Math.min(1, m / 60)).toFixed(2)}">${m < 5 ? '&lt;5%' : Math.round(m / 10) * 10 + '%'}</span>`;
+    }).join('') : '';
+    const axT = (vals, Y, H, cls = '') => `<svg class="lp-ax ${cls}" width="100%" height="${H}">${vals.map(([v, l]) => `<text x="${cls === 'r' ? 4 : '92%'}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="${cls === 'r' ? 'start' : 'end'}">${l}</text>`).join('')}</svg>`;
+    const tTicks = []; for (let v = lo; v <= hi; v += 5) tTicks.push([v, String(v).replace('-', '−')]);
+    const rTicks = []; for (let v = 0; v <= rMax; v += rMax / 5) rTicks.push([v, String(v)]);
+    const strip = LP_RAIN.map(([u], k) => { const a = k ? LP_RAIN[k - 1][0] : 0, b = Math.min(u, rMax); return a >= rMax ? '' : `<rect x="26" y="${YR(b).toFixed(1)}" width="5" height="${(YR(a) - YR(b)).toFixed(1)}" style="fill:${LP_RAIN[k][1]}"/>`; }).join('');
+    const c1 = `<h3 class="lp-h">Temperatur und Niederschlag</h3>
+      <div class="lp-c lp-c1${hasPP ? ' pp' : ''}">
+        <div class="lp-l"><div class="lp-top"></div>${axT(tTicks, YT, H1)}<div class="lp-u t">°C</div></div>
+        <div class="lp-s"><div class="lp-in" style="width:${W}px">
+          <div class="lp-ic">${icons}</div>${hasPP ? `<div class="lp-pp"><b class="lp-pill">Niederschlagswahrscheinlichkeit</b>${probs}</div>` : ''}
+          ${g1}${xLabels}<div class="lp-tip" hidden></div></div></div>
+        <div class="lp-r"><div class="lp-top"></div>${axT(rTicks, YR, H1, 'r').replace('</svg>', strip + '</svg>')}<div class="lp-u r">mm/h</div></div>
+      </div>`;
+
+    // 2 · Sonnenscheindauer
+    const H2 = 124, YS = (m) => H2 - 2 - (m / 60) * (H2 - 10);
+    const hasSun = h.sun && I.some((j) => h.sun[j] != null);
+    let g2 = `<svg class="lp-svg" width="${W}" height="${H2}" viewBox="0 0 ${W} ${H2}">${past}`;
+    for (let m = 0; m <= 60; m += 15) g2 += `<line x1="0" x2="${W}" y1="${YS(m).toFixed(1)}" y2="${YS(m).toFixed(1)}" class="lp-gl"/>`;
+    g2 += vGrid(H2);
+    if (hasSun) for (const j of I) { const v = h.sun[j]; if (v == null || v < 30) continue; const x = X(h.times[j] - 36e5); if (x < 0) continue; g2 += `<rect x="${(x + 0.5).toFixed(1)}" y="${YS(v / 60).toFixed(1)}" width="${LP_PX - 1}" height="${(H2 - 2 - YS(v / 60)).toFixed(1)}" class="lp-sunb"/>`; }
+    g2 += `<line class="lp-cur" y1="0" y2="${H2}" visibility="hidden"/></svg>`;
+    let marks = '';
+    if (Number.isFinite(s.lat)) for (let d = localMidnight(ymdLocal(x0)); d <= x1; d += 864e5) {
+      const sd = skSun(localMidnight(ymdLocal(d + 12 * 36e5)) + 12 * 36e5, s.lat, s.lon);
+      for (const [t, up] of [[sd.up, true], [sd.down, false]]) if (t && t >= x0 && t <= x1) marks += `<div class="lp-sm" style="left:${X(t).toFixed(1)}px"><i>${up ? '↑' : '↓'}</i>${LP_SUN}<b>${hm(t)}</b></div>`;
+    }
+    const sTicks = [[0, '0'], [15, '15'], [30, '30'], [45, '45'], [60, '60']];
+    const c2 = `<h3 class="lp-h">Sonnenscheindauer</h3>
+      <div class="lp-c">
+        <div class="lp-l">${axT(sTicks, YS, H2)}<div class="lp-u">min/h</div></div>
+        <div class="lp-s"><div class="lp-in" style="width:${W}px">${g2}<div class="lp-sms">${marks}</div>${xLabels}<div class="lp-tip" hidden></div></div></div>
+        <div class="lp-r"></div>
+      </div>${hasSun ? '' : '<p class="note">Sonnenscheindauer erscheint nach der nächsten Aktualisierung der Stundenwerte.</p>'}`;
+
+    // 3 · Wind und Böen
+    const H3 = 132;
+    const wMax = Math.max(20, ...I.map((j) => h.wg[j] || h.ws[j] || 0));
+    const wTop = Math.ceil((wMax + 2) / 10) * 10, YW = (v) => H3 - 2 - (v / wTop) * (H3 - 10);
+    let g3 = `<svg class="lp-svg" width="${W}" height="${H3}" viewBox="0 0 ${W} ${H3}">${past}`;
+    for (let v = 0; v <= wTop; v += wTop > 50 ? 20 : 10) g3 += `<line x1="0" x2="${W}" y1="${YW(v).toFixed(1)}" y2="${YW(v).toFixed(1)}" class="lp-gl"/>`;
+    g3 += vGrid(H3);
+    const gp = path(mapY(h.wg, YW));
+    if (gp) g3 += `<path d="${gp}L${X(x1).toFixed(1)} ${H3 - 2}L0 ${H3 - 2}Z" class="lp-gust-a"/><path d="${gp}" class="lp-gust"/>`;
+    g3 += `<path d="${path(mapY(h.ws, YW))}" class="lp-wind"/><line class="lp-cur" y1="0" y2="${H3}" visibility="hidden"/></svg>`;
+    const arrows = blocks.map((t, k) => {
+      const vs = [1, 2, 3].map((q) => at(h.ws, t + q * 36e5)).filter((v) => v != null), dir = at(h.wd, t + 2 * 36e5);
+      if (!vs.length) return '';
+      const v = Math.round(vs.reduce((a, b) => a + b, 0) / vs.length);
+      return `<span class="${k % 2 ? '' : 'odd'}" style="left:${X(t).toFixed(1)}px;width:${3 * LP_PX}px">${dir != null && v >= 2 ? `<svg viewBox="-8 -8 16 16" aria-hidden="true"><g transform="rotate(${((dir + 180) % 360).toFixed(0)})"><path d="M0 6V-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M0 -6.5L-3.6 -1.8H3.6Z" fill="currentColor"/></g></svg>` : '<svg viewBox="-8 -8 16 16" aria-hidden="true"><circle r="2" fill="currentColor"/></svg>'}<b>${v}</b></span>`;
+    }).join('');
+    const wTicks = []; for (let v = 0; v <= wTop; v += wTop > 50 ? 20 : 10) wTicks.push([v, String(v)]);
+    const c3 = `<h3 class="lp-h">Wind und Böen</h3>
+      <div class="lp-c lp-c3">
+        <div class="lp-l"><div class="lp-top">${IC.wind}</div>${axT(wTicks, YW, H3)}<div class="lp-u">km/h</div></div>
+        <div class="lp-s"><div class="lp-in" style="width:${W}px"><div class="lp-ar">${arrows}</div>${g3}${xLabels}<div class="lp-tip" hidden></div></div></div>
+        <div class="lp-r"></div>
+      </div>
+      <div class="lp-leg"><span><i class="w"></i>Wind (Mittel)</span><span><i class="g"></i>Böen</span><span>Pfeil: wohin der Wind weht · Zahl: Mittel über 3 Stunden</span></div>`;
+    box.innerHTML = c1 + c2 + c3;
+
+    // gemeinsam wischen; Tipp zeigt die Werte der Stunde
+    const scs = [...box.querySelectorAll('.lp-s')];
+    let syncing = false;
+    scs.forEach((sc) => sc.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      for (const o of scs) if (o !== sc) o.scrollLeft = sc.scrollLeft;
+      requestAnimationFrame(() => { syncing = false; });
+    }, { passive: true }));
+    const f1 = (v, u, d = 0) => (v == null ? '–' : v.toFixed(d).replace('-', '−') + u);
+    const tips = [
+      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>${f1(h.temp[j], ' °C', 1)}${h.q10 && h.q10[j] != null ? ` <small>(${f1(h.q10[j], '', 0)} bis ${f1(h.q90[j], '', 0)})</small>` : ''}</span><span>${f1(h.rr[j], ' mm', 1)}${hasPP && h.pp[j] != null ? ` · ${Math.round(h.pp[j])} %` : ''}</span>`,
+      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>${hasSun && h.sun[j] != null ? Math.round(h.sun[j] / 60) + ' min Sonne' : '–'}</span>`,
+      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>Wind ${f1(h.ws[j], ' km/h')}${h.wd[j] != null ? ' aus ' + compass(h.wd[j]) : ''}</span><span>Böen ${f1(h.wg[j], ' km/h')}</span>`,
+    ];
+    scs.forEach((sc, k) => {
+      const inner = sc.firstElementChild, tip = inner.querySelector('.lp-tip');
+      sc.addEventListener('click', (ev) => {
+        const r = inner.getBoundingClientRect(), t = x0 + ((ev.clientX - r.left) / LP_PX) * 36e5;
+        let j = i0; for (const q of I) if (Math.abs(h.times[q] - t) < Math.abs(h.times[j] - t)) j = q;
+        const x = X(h.times[j]);
+        box.querySelectorAll('.lp-cur').forEach((c) => { c.setAttribute('x1', x); c.setAttribute('x2', x); c.setAttribute('visibility', 'visible'); });
+        box.querySelectorAll('.lp-tip').forEach((o) => { if (o !== tip) o.hidden = true; });
+        tip.innerHTML = tips[k](j);
+        tip.hidden = false;
+        tip.style.left = clamp(x - tip.offsetWidth / 2, sc.scrollLeft + 2, sc.scrollLeft + sc.clientWidth - tip.offsetWidth - 2) + 'px';
+      });
     });
-    const rrs = idx.map((j) => h.rr[j] || 0);
-    drawChart(det.querySelector('.c-r'), {
-      x0: t0, x1: t1, now, height: 92, noDays: true, xTicks: ticks, maxTicks: 3,
-      yMin: 0, yMax: Math.max(1, Math.ceil(Math.max(...rrs))),
-      series: [{ name: 'Niederschlag', color: 'var(--s-rain)', pts: P(h.rr), bars: true, step: 36e5, maxGap: 36e5 }],
-      valFmt: (v) => v.toFixed(1) + ' mm', aria: 'Niederschlag pro Stunde',
-    });
-    const gmax = Math.max(20, ...idx.map((j) => h.wg[j] || h.ws[j] || 0));
-    drawChart(det.querySelector('.c-w'), {
-      x0: t0, x1: t1, now, height: 128, noDays: true, xTicks: ticks, maxTicks: 4,
-      yMin: 0, yMax: Math.ceil((gmax + 2) / 10) * 10,
-      series: [
-        { name: 'Mittel', color: 'var(--s-mean)', pts: P(h.ws), area: true, maxGap: 2 * 36e5 },
-        { name: 'Böen', color: 'var(--s-gust)', pts: P(h.wg), maxGap: 2 * 36e5 },
-      ],
-      arrows: idx.filter((j) => localHour(h.times[j]) % 2 === 0).map((j) => ({ t: h.times[j], dir: h.wd[j] })),
-      valFmt: (v) => Math.round(v) + ' km/h',
-      extraReadout: (t) => { const j = h.times.findIndex((x) => Math.abs(x - t) < 31 * 60e3); return j >= 0 && h.wd[j] != null ? `aus ${compass(h.wd[j])} (${Math.round(h.wd[j])}°)` : ''; },
-      aria: 'Wind und Böen pro Stunde',
-    });
+    lpScroll(box, null, false);
+  }
+  // Grafiken zu einem Tag wischen (heute: einige Stunden vor jetzt)
+  function lpScroll(box, ymd, smooth = true) {
+    const sc = box.querySelector('.lp-s');
+    if (!sc) return;
+    const today = ymdLocal(Date.now()), t0 = localMidnight(today);
+    const target = !ymd || ymd === today ? ((Date.now() - t0) / 36e5) * LP_PX - sc.clientWidth * 0.3 : ((localMidnight(ymd) - t0) / 36e5) * LP_PX;
+    const left = Math.max(0, target);
+    box.querySelectorAll('.lp-s').forEach((o) => { if (smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches) o.scrollTo({ left, behavior: 'smooth' }); else o.scrollLeft = left; });
   }
 
 
@@ -19415,6 +19589,9 @@ ${wpts}
     idx.forEach((j, k) => {
       const x = X(k);
       s += `<line x1="${x}" x2="${x}" y1="48" y2="98" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>`;
+      // Niederschlag der folgenden Stunde als violetter Balken über der Grundlinie (wie MeteoSchweiz)
+      const rr = h.rr[j + 1];
+      if (rr != null && rr >= 0.1 && k < n - 1) { const bh = Math.min(22, 3 + rr * 6); s += `<rect x="${(x + 2).toFixed(1)}" y="${(98 - bh).toFixed(1)}" width="${step - 4}" height="${bh.toFixed(1)}" rx="1.5" fill="rgba(206,176,240,0.62)"/>`; }
       const wc = h.wc[j + 1] ?? h.wc[j];
       if (wc != null) s += `<svg x="${x - 11}" y="4" width="22" height="22" viewBox="0 0 48 48">${wxInner(wmoToMs(wc, h.day[j + 1] ?? h.day[j]))}</svg>`;
       if (h.temp[j] != null) s += `<text x="${x}" y="41" text-anchor="middle" font-size="12">${Math.round(h.temp[j])}°</text>`;
@@ -19484,7 +19661,7 @@ ${wpts}
     const stepV = hi - lo > 20 ? 10 : 5;
     for (let v = lo; v <= hi; v += stepV) { const y = Y(v); s += `<line x1="0" x2="${W}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" style="stroke:var(--hair)" stroke-dasharray="2 3" stroke-width="1"/>${v > lo && v < hi ? `<text x="4" y="${(y - 2).toFixed(1)}">${v}°</text>` : ''}`; }
     const bw = Math.max(1.2, W / (6 * 24) - 0.4);
-    for (const [t, , rr] of pts) if (rr != null && rr >= 0.1) { const hh = Math.min(20, 2 + rr * 4); s += `<rect x="${(X(t) - bw).toFixed(1)}" y="${(H - hh).toFixed(1)}" width="${bw.toFixed(1)}" height="${hh.toFixed(1)}" style="fill:var(--s-rain)" opacity="0.75"/>`; }
+    for (const [t, , rr] of pts) if (rr != null && rr >= 0.1) { const hh = Math.min(20, 2 + rr * 4); s += `<rect x="${(X(t) - bw).toFixed(1)}" y="${(H - hh).toFixed(1)}" width="${bw.toFixed(1)}" height="${hh.toFixed(1)}" style="fill:var(--lp-r1)" opacity="0.9"/>`; }
     // Band 10–90 %
     const band = pts.filter((p) => p[3] != null && p[4] != null);
     if (band.length > 6) {
