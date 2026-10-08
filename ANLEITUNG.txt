@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.7)
+Inhalt dieses Ordners (Version 11.8)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,12 @@ Inhalt dieses Ordners (Version 11.7)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.8
+  - Unwetter: Die Art der Warnung kommt bei Gewitter, Regen, Hitze, Waldbrand und Hochwasser aus der Kennzahl der
+    MeteoSchweiz (der Text nennt die Gefahr nicht immer). Postleitzahlen, die die MeteoSchweiz mit «00» nicht kennt,
+    fragt die GitHub-Aktion mit den Ortsnummern 01–03 nach; Bern, Zürich, Genf, Lausanne, Basel und Luzern mit
+    gültigen Postleitzahlen.
 
 Neu in Version 11.7
   Ersetzen auf GitHub: index.html UND windsack-bot.mjs (die GitHub-Aktion holt neu die Unwetterwarnungen).
@@ -82,7 +88,7 @@ Neu in Version 11.3
     Zurückkehren in die App und alle 30 Minuten – es wird nur der Anfang der Datei gelesen. «×» fragt nach drei
     Stunden wieder. Von Hand: Windsack-Logo > «Nach neuer Version suchen».
     Wichtig für spätere Versionen: Die Nummer steht im Kopf von index.html (<meta name="windsack-version"
-    content="11.7 · 08.10.2026">). Nur eine höhere Nummer (oder bei gleicher Nummer ein späteres Datum) löst den
+    content="11.8 · 08.10.2026">). Nur eine höhere Nummer (oder bei gleicher Nummer ein späteres Datum) löst den
     Hinweis aus.
 
 Neu in Version 11.2

@@ -845,24 +845,26 @@ async function doPowder() {
    («Meine Orte», p.wp). Ergebnis: warnings.json { pts: { PLZ: { n, la, lo, w: [{ t, l, f, to, tx, o }] } } }. */
 const WN_PLZ = [
   ['1950', 'Sion', 46.23, 7.36], ['1920', 'Martigny', 46.10, 7.07], ['1870', 'Monthey', 46.25, 6.95], ['1936', 'Verbier', 46.10, 7.23], ['3960', 'Sierre', 46.29, 7.53],
-  ['1983', 'Evolène', 46.11, 7.49], ['3961', 'Zinal', 46.13, 7.63], ['3900', 'Brig', 46.32, 7.99], ['3920', 'Zermatt', 46.02, 7.75], ['3906', 'Saas-Fee', 46.11, 7.93],
+  ['1983', 'Evolène', 46.11, 7.49], ['3961', 'Zinal (Anniviers)', 46.13, 7.63], ['3900', 'Brig', 46.32, 7.99], ['3920', 'Zermatt', 46.02, 7.75], ['3906', 'Saas-Fee', 46.11, 7.93],
   ['3954', 'Leukerbad', 46.38, 7.63], ['3918', 'Wiler (Lötschental)', 46.41, 7.78], ['3984', 'Fiesch', 46.40, 8.14], ['3999', 'Oberwald', 46.53, 8.35], ['3907', 'Simplon Dorf', 46.20, 8.06],
-  ['1937', 'Orsières', 46.03, 7.15], ['3000', 'Bern', 46.95, 7.45], ['3600', 'Thun', 46.76, 7.63], ['3800', 'Interlaken', 46.69, 7.86], ['3818', 'Grindelwald', 46.62, 8.04],
-  ['3780', 'Gstaad', 46.47, 7.29], ['3715', 'Adelboden', 46.49, 7.56], ['3860', 'Meiringen', 46.73, 8.19], ['6000', 'Luzern', 47.05, 8.31], ['6390', 'Engelberg', 46.82, 8.40],
+  ['1937', 'Orsières', 46.03, 7.15], ['3011', 'Bern', 46.95, 7.45], ['3600', 'Thun', 46.76, 7.63], ['3800', 'Interlaken', 46.69, 7.86], ['3818', 'Grindelwald', 46.62, 8.04],
+  ['3780', 'Gstaad', 46.47, 7.29], ['3715', 'Adelboden', 46.49, 7.56], ['3860', 'Meiringen', 46.73, 8.19], ['6003', 'Luzern', 47.05, 8.31], ['6390', 'Engelberg', 46.82, 8.40],
   ['6460', 'Altdorf', 46.88, 8.64], ['6490', 'Andermatt', 46.63, 8.59], ['6430', 'Schwyz', 47.02, 8.65], ['6300', 'Zug', 47.17, 8.52], ['6060', 'Sarnen', 46.90, 8.25],
-  ['8000', 'Zürich', 47.38, 8.54], ['8400', 'Winterthur', 47.50, 8.73], ['8200', 'Schaffhausen', 47.70, 8.63], ['8500', 'Frauenfeld', 47.56, 8.90], ['9000', 'St. Gallen', 47.42, 9.37],
+  ['8001', 'Zürich', 47.38, 8.54], ['8400', 'Winterthur', 47.50, 8.73], ['8200', 'Schaffhausen', 47.70, 8.63], ['8500', 'Frauenfeld', 47.56, 8.90], ['9000', 'St. Gallen', 47.42, 9.37],
   ['9050', 'Appenzell', 47.33, 9.41], ['8750', 'Glarus', 47.04, 9.07], ['7000', 'Chur', 46.85, 9.53], ['7270', 'Davos', 46.80, 9.84], ['7500', 'St. Moritz', 46.50, 9.84],
   ['7550', 'Scuol', 46.80, 10.30], ['7130', 'Ilanz', 46.77, 9.20], ['7742', 'Poschiavo', 46.33, 10.06], ['7435', 'Splügen', 46.55, 9.32], ['6500', 'Bellinzona', 46.19, 9.02],
   ['6900', 'Lugano', 46.00, 8.95], ['6600', 'Locarno', 46.17, 8.80], ['6780', 'Airolo', 46.53, 8.61], ['6850', 'Mendrisio', 45.87, 8.98], ['6535', 'Roveredo', 46.24, 9.13],
-  ['1200', 'Genève', 46.20, 6.15], ['1000', 'Lausanne', 46.52, 6.63], ['1860', 'Aigle', 46.32, 6.97], ['1660', 'Château-d\'Œx', 46.47, 7.13], ['1630', 'Bulle', 46.62, 7.06],
+  ['1201', 'Genève', 46.20, 6.15], ['1003', 'Lausanne', 46.52, 6.63], ['1860', 'Aigle', 46.32, 6.97], ['1660', 'Château-d\'Œx', 46.47, 7.13], ['1630', 'Bulle', 46.62, 7.06],
   ['1700', 'Fribourg', 46.80, 7.15], ['2000', 'Neuchâtel', 46.99, 6.93], ['2300', 'La Chaux-de-Fonds', 47.10, 6.83], ['2800', 'Delémont', 47.36, 7.34], ['1450', 'Sainte-Croix', 46.82, 6.50],
-  ['4000', 'Basel', 47.56, 7.59], ['5000', 'Aarau', 47.39, 8.04], ['4500', 'Solothurn', 47.21, 7.53], ['4410', 'Liestal', 47.48, 7.73], ['8280', 'Kreuzlingen', 47.65, 9.17],
+  ['4051', 'Basel', 47.56, 7.59], ['5000', 'Aarau', 47.39, 8.04], ['4500', 'Solothurn', 47.21, 7.53], ['4410', 'Liestal', 47.48, 7.73], ['8280', 'Kreuzlingen', 47.65, 9.17],
 ];
 const WN_KW = [['Gewitter', /gewitter/i], ['Hitze', /hitze/i], ['Waldbrand', /waldbrand/i], ['Hochwasser', /hochwasser/i], ['Lawinen', /lawine/i],
   ['Strassenglätte', /glätte|glatteis/i], ['Frost', /frost/i], ['Schnee', /schnee/i], ['Wind', /wind|sturm|böen/i], ['Regen', /regen|niederschl/i], ['Trockenheit', /trocken/i]];
 const WN_TYPE = { 0: 'Wind', 1: 'Gewitter', 2: 'Regen', 3: 'Schnee', 4: 'Strassenglätte', 5: 'Frost', 7: 'Hitze', 8: 'Lawinen', 10: 'Waldbrand', 11: 'Hochwasser', 13: 'Trockenheit' };
 const WN_LVL = { 2: 'mässige Gefahr', 3: 'erhebliche Gefahr', 4: 'grosse Gefahr', 5: 'sehr grosse Gefahr' };
-const wnType = (w) => { const k = WN_KW.find(([, re]) => re.test(w.tx || '')); return k ? k[0] : WN_TYPE[w.t] || 'Warnung'; };
+// Gesicherte Kennzahlen (gegen naturgefahren.ch geprüft) gehen vor; sonst Stichwort im Text, sonst die übrige Liste
+const WN_SURE = { 1: 'Gewitter', 2: 'Regen', 7: 'Hitze', 10: 'Waldbrand', 11: 'Hochwasser' };
+const wnType = (w) => { if (WN_SURE[w.t]) return WN_SURE[w.t]; const k = WN_KW.find(([, re]) => re.test(w.tx || '')); return k ? k[0] : WN_TYPE[w.t] || 'Warnung'; };
 // Zeitstempel der App: Sekunden oder Millisekunden (Quellen uneinig) oder ISO-Text
 const wnMs = (x) => (x == null || x === '' ? null : typeof x === 'number' ? (x > 1e12 ? x : x * 1000) : /^\d+$/.test(String(x)) ? wnMs(+x) : Date.parse(x) || null);
 function wnNorm(w) {
@@ -883,7 +885,12 @@ async function doWarnings() {
     while (k < todo.length) {
       const p = todo[k++];
       try {
-        const j = await getRetry(`${URLS.msapp}plzDetail?plz=${p[0]}00`, { headers: { 'accept-language': 'de' }, timeout: 20000 }, 2);
+        // Die App erwartet PLZ + zweistellige Ortsnummer (meist 00); unbekannt (404) → 01 bis 03 versuchen
+        let j = null;
+        for (const sfx of ['00', '01', '02', '03']) {
+          try { j = await getRetry(`${URLS.msapp}plzDetail?plz=${p[0]}${sfx}`, { headers: { 'accept-language': 'de' }, timeout: 20000 }, 2); break; }
+          catch (e) { if (e.status !== 404 || sfx === '03') throw e; }
+        }
         out[p[0]] = { n: p[1], la: p[2], lo: p[3], w: (j && Array.isArray(j.warnings) ? j.warnings : []).map(wnNorm).filter(Boolean) };
         ok++;
       } catch (e) { fail++; if (fail <= 3) log('Warnungen', p[0], e.message); }
