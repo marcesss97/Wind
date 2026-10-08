@@ -9061,7 +9061,7 @@ pako/dist/pako.esm.mjs:
 (() => {
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
-  const APP_VERSION = '11 · 08.10.2026';
+  const APP_VERSION = '11.1 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -13185,7 +13185,8 @@ pako/dist/pako.esm.mjs:
   const STEP = 3e5; // 5 Minuten, wie die Radarbilder
   function buildFrames() {
     const now = Date.now(), tab = AN.tab, F = [];
-    const d = MG.data, ahead = (FC_HOURS + 0.5) * 36e5;
+    // Niederschlag und Wahrscheinlichkeit: auch das grosse Gitter allein genügt (es kommt beim Öffnen zuerst)
+    const d = MG.data || (tab === 'precip' || tab === 'prob' ? MGO.data : null), ahead = (FC_HOURS + 0.5) * 36e5;
     // Niederschlag und Wahrscheinlichkeit gelten für die Stunde davor (mgAt rechnet mit der Stundenmitte) →
     // der letzte Schritt liegt eine halbe Stunde vor der letzten Modellstunde, der erste eine halbe davor
     const sh = tab === 'precip' || tab === 'prob' ? 30 * 60e3 : 0;
@@ -13434,7 +13435,7 @@ pako/dist/pako.esm.mjs:
   });
   // Modellfeld als Farbflächen (Niederschlag oder Wahrscheinlichkeit)
   function showBands(kind, t) {
-    if (!MG.data) { AN.cur = null; show(AN.rLayer, false); animNote(MG.err ? 'Prognose nicht verfügbar' : mgWaitTxt(true) || 'Prognose wird geladen …'); mgWaitTick(); return; }
+    if (!MG.data && !MGO.data) { AN.cur = null; show(AN.rLayer, false); animNote(MG.err ? 'Prognose nicht verfügbar' : mgWaitTxt(true) || 'Prognose wird geladen …'); mgWaitTick(); return; }
     const mb = mbandGrid(kind, t);
     AN.cur = { kind, t };
     const wet = !!(mb && mb.wet);
@@ -13754,15 +13755,68 @@ pako/dist/pako.esm.mjs:
   }
   document.querySelectorAll('#fabs [data-opt]').forEach((b) => b.addEventListener('click', () => animOpt(b.dataset.opt)));
 
-  // Standardausschnitt wie in der MeteoSchweiz-App: die Schweiz füllt die Breite, mittig zwischen Kopfzeile und Zeitleiste
+  /* Ausschnitt wie in der MeteoSchweiz-App: Die Schweiz füllt die Breite, mittig zwischen Kopfzeile und Zeitleiste.
+     Ausserhalb des Radargebiets ist die Karte weiss (Maske) – darum reicht der sichtbare Teil der Karte (zwischen
+     Kopfzeile und Zeitleiste) nie darüber hinaus: Der Ausschnitt rückt so, dass oben und unten keine weissen Streifen
+     bleiben, Herauszoomen endet, wenn das Radargebiet den freien Teil gerade ausfüllt, und Verschieben am Rand des
+     Radargebiets. Kopfzeile und Zeitleiste liegen über der Karte: Die Grenzen für Leaflet sind um sie erweitert. */
   const ANIM_BOUNDS = L.latLngBounds([43.2, 2.6], [49.8, 13.1]);
-  function animDefaultView() {
+  // Radargebiet (aus der Maske) als Rechteck in Grad, ganz innerhalb des Radarverbunds
+  function animBox() {
+    const ext = (R.latest && R.latest.ext && R.latest.ext.every(Number.isFinite) && R.latest.ext) || COMP, [e0, n0, e1, n1] = ext, K = 16;
+    let la0 = -90, la1 = 90, lo0 = -180, lo1 = 180;
+    for (let k = 0; k <= K; k++) {
+      const e = e0 + ((e1 - e0) * k) / K, n = n0 + ((n1 - n0) * k) / K;
+      la1 = Math.min(la1, lvToLatLng(e, n1)[0]); la0 = Math.max(la0, lvToLatLng(e, n0)[0]);
+      lo0 = Math.max(lo0, lvToLatLng(e0, n)[1]); lo1 = Math.min(lo1, lvToLatLng(e1, n)[1]);
+    }
+    return L.latLngBounds([la0, lo0], [la1, lo1]);
+  }
+  // freier Teil der Karte im Kartenbehälter: zwischen Kopfzeile (T) und Zeitleiste (B)
+  function animFree() {
     const mr = mapEl.getBoundingClientRect(), rl = $('#rl');
-    if (!mr.width || !mr.height) return;
+    if (!mr.width || !mr.height) return null;
+    const T = clamp($('#vh').getBoundingClientRect().bottom - mr.top, 0, mr.height * 0.4);
+    const B = rl.hidden ? mr.height : clamp(rl.getBoundingClientRect().top - mr.top, mr.height * 0.6, mr.height);
+    return { W: mr.width, H: mr.height, T, B };
+  }
+  // kleinster Zoom: Das Radargebiet füllt den freien Teil gerade aus; Grenzen für Leaflet zum aktuellen Zoom
+  function animLimits(fr = animFree()) {
+    if (!fr || S.mode !== 'anim') return;
+    const b = animBox(), p0 = map.project(b.getNorthWest(), 0), p1 = map.project(b.getSouthEast(), 0);
+    AN.zmin = Math.log2(Math.max(fr.W / (p1.x - p0.x), (fr.B - fr.T) / (p1.y - p0.y))) + 0.01;
+    if (Math.abs(map.getMinZoom() - AN.zmin) > 0.005) map.setMinZoom(AN.zmin);
+    animBounds(fr, b);
+  }
+  function animBounds(fr = animFree(), b = animBox()) {
+    if (!fr || S.mode !== 'anim') return;
+    const z = Math.max(map.getZoom(), AN.zmin || 0);
+    const nw = map.project(b.getNorthWest(), z).subtract([0, fr.T]), se = map.project(b.getSouthEast(), z).add([0, fr.H - fr.B]);
+    AN.bounds = L.latLngBounds(map.unproject(se, z), map.unproject(nw, z));
+    if (!map.options.maxBounds || !map.options.maxBounds.equals(AN.bounds, 1e-9)) map.setMaxBounds(AN.bounds);
+  }
+  map.on('zoomend', () => { if (S.mode === 'anim' && AN.zmin != null) animBounds(); });
+  map.on('resize', () => { if (S.mode === 'anim' && AN.zmin != null) animLimits(); });
+  function animDefaultView() {
+    const fr = animFree();
+    if (!fr) return;
     mapSettle(); // eine noch laufende Zoom-Animation würde den Sprung verschlucken
-    const top = Math.max(0, $('#vh').getBoundingClientRect().bottom - mr.top) + 30; // Kopfzeile überlappt die Karte; darunter Quelle und Zeit
-    const bottom = (rl.hidden ? 0 : Math.max(0, mr.bottom - rl.getBoundingClientRect().top)) + 8;
-    map.fitBounds(CH_BOUNDS, { paddingTopLeft: [4, Math.min(top, mr.height * 0.4)], paddingBottomRight: [4, Math.min(bottom, mr.height * 0.4)], animate: false });
+    map.setMaxBounds(null); // die neuen Grenzen gelten erst für den neuen Ausschnitt
+    animLimits(fr);
+    // Die Schweiz füllt die Breite des freien Teils (darunter Quelle und Zeit: 30 Punkte) – mindestens so gross, dass
+    // das Radargebiet den freien Teil ausfüllt
+    const top = fr.T + 30, bot = fr.B - 8;
+    const c0 = map.project(L.latLng(CH_BOUNDS[0]), 0), c1 = map.project(L.latLng(CH_BOUNDS[1]), 0);
+    const z = Math.max(Math.log2(Math.min((fr.W - 8) / (c1.x - c0.x), (bot - top) / (c0.y - c1.y))), AN.zmin);
+    // Mitte der Schweiz in die Mitte des freien Teils …
+    const ch = map.project(L.latLng(CH_BOUNDS[0]), z).add(map.project(L.latLng(CH_BOUNDS[1]), z)).divideBy(2);
+    let vx = ch.x - fr.W / 2, vy = ch.y - (top + bot) / 2; // linke obere Ecke des Kartenbehälters
+    // … aber ohne weisse Ränder: Das Radargebiet deckt den freien Teil ganz
+    const b = animBox(), q0 = map.project(b.getNorthWest(), z), q1 = map.project(b.getSouthEast(), z);
+    vx = clamp(vx, q0.x, q1.x - fr.W);
+    vy = clamp(vy, q0.y - fr.T, q1.y - fr.B);
+    map.setView(map.unproject(L.point(vx + fr.W / 2, vy + fr.H / 2), z), z, { animate: false });
+    animBounds(fr, b);
     AN.z0 = map.getZoom(); // Zoom der Übersicht: Massstab für die Auswahl der Ortsnamen
     drawPlaces();
   }
@@ -13770,12 +13824,14 @@ pako/dist/pako.esm.mjs:
     makeLayers();
     AN.on = true;
     AN.fresh = true; // beim Öffnen: Standardausschnitt und neuestes Bild (der Ausschnitt der übrigen Karten bleibt unberührt)
-    map.setMaxBounds(ANIM_BOUNDS);
+    AN.minZ = AN.minZ == null ? map.getMinZoom() : AN.minZ;
+    map.setMaxBounds(AN.bounds || ANIM_BOUNDS);
   }
   // Die Grenzen der übrigen Karten setzt setMapMode wieder, sobald deren Ausschnitt steht (sonst schiebt Leaflet
   // die Karte animiert zurück und der gemerkte Ausschnitt verrutscht)
   function animLeave() {
     AN.on = false;
+    if (AN.minZ != null) map.setMinZoom(AN.minZ); // die übrigen Karten: ursprünglicher kleinster Zoom
     AN.seq++; // was jetzt noch lädt, darf nichts mehr einblenden
     AN.cur = null;
     RUL.stop();
@@ -13817,15 +13873,20 @@ pako/dist/pako.esm.mjs:
         if (S.mode !== 'anim' || AN.tab !== tab) return;
         if (!AN.radar.length && R.err) toast('Radar nicht erreichbar: ' + errText(R.err), 3500);
         maskSync(); show(AN.mask, true);
+        if (AN.zmin != null) animLimits(); // Radargebiet aus dem neuesten Bild
         if (R.lastT !== had.radar || !AN.frames.length) { AN.radar = radarTimes(); animRebuild(true); }
         preloadRadar();
       });
     }
     if (tab === 'temp' || (tab === 'precip' && S.animOpt.ptype)) demLoad().then(() => { if (!had.dem && DEM.z && S.mode === 'anim' && AN.tab === tab && AN.frames[RUL.idx]) animShow(RUL.idx); });
     if (cfg.model) {
-      mgLoad().then(() => { if (S.mode === 'anim' && AN.tab === tab && MG.at !== had.mg) animRebuild(true); })
+      const inner = () => mgLoad().then(() => { if (S.mode === 'anim' && AN.tab === tab && MG.at !== had.mg) animRebuild(true); })
         .catch((e) => { if (S.mode === 'anim') { toast(MG.data ? `Prognose nicht aktualisiert (${errText(e)}) – Stand ${hm(MG.at)}` : 'Prognose nicht verfügbar: ' + errText(e), 3500); animRebuild(true); } });
-      mgoSoon();
+      /* Niederschlag und Wahrscheinlichkeit: zuerst das grosse Gitter – es deckt das ganze Radargebiet, die Prognose
+         endet also nicht an der Landesgrenze. Das feine Gitter für die Schweiz folgt eine Minute später (Open-Meteo
+         zählt die Abfragen je Minute); bis dahin zeigt die Karte die Prognose des grossen Gitters. */
+      if (mgoWanted() && !(MGO.data && Date.now() - MGO.at < 2 * 36e5) && !MG.loading) mgoSoon().then(inner);
+      else { inner(); mgoSoon(); }
     }
   }
   /* Äusseres Gitter nachladen (Niederschlagsprognose über die Landesgrenze hinaus): nur für Niederschlag und
@@ -13833,8 +13894,11 @@ pako/dist/pako.esm.mjs:
      inneren Gitters, weil Open-Meteo die Abfragen auch je Minute zählt. */
   const mgoWanted = () => S.mode === 'anim' && (AN.tab === 'precip' || AN.tab === 'prob');
   function mgoShown() {
+    if (!mgoWanted()) return;
+    // ohne feines Gitter gab es noch keine Prognose-Schritte: Zeitleiste neu aufbauen
+    if (!MG.data) { animRebuild(true); return; }
     const fr = AN.frames[RUL.idx];
-    if (mgoWanted() && fr && fr.src === 'model' && !RUL.playing) animShow(RUL.idx);
+    if (fr && fr.src === 'model' && !RUL.playing) animShow(RUL.idx);
   }
   async function mgoSoon() {
     if (!mgoWanted() || MGO.busy) return;
@@ -19647,7 +19711,7 @@ ${wpts}
     if (!POPB.held) return;
     POPB.held = false;
     if (!S.mode) return;
-    if (S.mode === 'anim') map.setMaxBounds(ANIM_BOUNDS);
+    if (S.mode === 'anim') map.setMaxBounds(AN.bounds || ANIM_BOUNDS);
     else if (ROT.on) { rotBounds(); map.setMaxBounds(ROT.bounds); }
     else map.setMaxBounds(MAPB.cur);
   }

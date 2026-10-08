@@ -1,0 +1,274 @@
+WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
+=====================================================================================
+
+Inhalt dieses Ordners (Version 11.1)
+  index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
+  sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
+  windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
+  .github/workflows/windsack.yml   die GitHub-Aktion (einmalig anlegen, siehe unten)
+  windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
+  apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.1
+  Ersetzen auf GitHub: nur index.html.
+  - Animationen, Niederschlag: Die Prognose deckt beim Öffnen sofort das ganze Radargebiet ab (zuerst das grosse
+    Gitter, das feinere für die Schweiz folgt eine Minute später) – sie endet nicht mehr an der Landesgrenze.
+  - Animationen, Ausschnitt: Die Karte zeigt zwischen Kopfzeile und Zeitleiste nie mehr weisse Ränder ausserhalb des
+    Radargebiets. Herauszoomen endet, wenn das Radargebiet den Bildschirm füllt; verschieben lässt sich die Karte
+    frei bis an seinen Rand, ohne dass sie zurückspringt.
+
+Neu in Version 11
+  Ersetzen auf GitHub: index.html und windsack-bot.mjs (beide geändert). Alle anderen Dateien sind gleich geblieben.
+  Für den Powderalert zusätzlich: in der App unter Meldungen > Glocke «Powderalert» einschalten, «Code kopieren»
+  und auf GitHub das Secret WINDSACK_PUSH durch den neuen Code ersetzen (siehe 3).
+
+  - Passwort und Verschlüsselung sind vorläufig aus: index.html ist wieder die App selbst und öffnet ohne
+    Eingabe. Ein Gerät, das sich den Zugang gemerkt hatte, räumt ihn beim ersten Start weg. Die Technik bleibt
+    erhalten und lässt sich beim Bauen wieder einschalten (siehe 4).
+  - Powder (neuer Reiter im Blatt «Schnee & Lawinen»): Karte der Neuschnee-Prognose für die nächsten 24 und
+    48 Stunden, 3 oder 5 Tage. Niederschlag und Temperatur kommen aus dem Modell ICON-CH1/CH2 der MeteoSchweiz
+    (über Open-Meteo); die App rechnet daraus den Neuschnee für jede Höhe und legt ihn auf das Gelände – oben
+    Schnee, im Tal Regen. Die Zahlen auf der Karte sind 79 Referenzorte (Skigelände von Champéry bis Samnaun,
+    Jura bis Tessin). Ein Tipp auf die Karte oder eine Zahl zeigt die Tage, die Mengen nach Höhe und die
+    Schneefallgrenze; «Rangliste» ordnet die Orte nach Neuschnee. Die Mengen sind Richtwerte (Wind und Setzung
+    sind nicht eingerechnet).
+  - Powderalert (Mitteilung, ganze Schweiz): Die GitHub-Aktion prüft alle 3 Stunden die Prognose der 79 Orte.
+    Ein «Powdertag» ist der Neuschnee von 8 Uhr am Vortag bis 8 Uhr. Erreichen ihn mindestens zwei Orte ab der
+    gewählten Schwelle (20, 30 oder 50 cm; ein einzelner Ort genügt beim Anderthalbfachen), kommt die Mitteilung
+    – sobald die Prognose ihn zeigt, also bis 7 Tage voraus. Die ersten 5 Tage stammen aus ICON der MeteoSchweiz,
+    danach aus dem Standardmodell von Open-Meteo («Fernsicht, noch unsicher»; dort braucht es drei Orte).
+    Wächst die Menge deutlich, folgt ein Update; am Vorabend ab 16 Uhr kommt die Bestätigung – oder die Rücknahme,
+    wenn die Prognose den Powdertag nicht mehr zeigt («fällt kleiner aus» oder «nur noch vereinzelt»). Kehrt er
+    danach zurück, wird er einmal neu gemeldet.
+    Die Startkachel «Schnee & Lawinen» nennt den nächsten Powdertag (ab 30 cm).
+  - Skitouren-Planer (im Kartentool; Aktivität «Skitour» oder «Schneeschuh», oder das neue Blatt «Skitour
+    planen» der Startseite): Zur Route holt die App die Höhen aus dem Höhenmodell von swisstopo – entlang der
+    Spur und auf Parallelen 12 und 40 m daneben – und bestimmt Hangneigung und Exposition an der Spur und im
+    Umfeld. Unter dem Höhenprofil liegt ein Band in den Farben der Hangneigungsklassen, die Route ist gleich
+    eingefärbt. Schlüsselstellen (ab 30° an der Spur oder mit erhöhtem Risiko) sind nummeriert.
+    Die Zeile «Lawinen-Check» öffnet die Auswertung:
+      · Lawinengefahr aus dem Bulletin des SLF (Stufe je Höhenlage mit Zwischenstufe, Kernzone, ausserhalb eine
+        Stufe tiefer) oder als eigene Annahme (Stufe, Expositionen, Höhe) – für die Planung Tage voraus;
+      · grafische Reduktionsmethode: jede Schlüsselstelle als Punkt, grün = geringes, orange = erhöhtes,
+        rot = hohes Risiko. Bis Stufe 2 zählt die Neigung an der Spur, ab Stufe 3 auch die steilste Stelle des
+        Umfelds mit ihrer eigenen Exposition (ein Hang neben der Spur kann in der Kernzone liegen, auch wenn die
+        Spur es nicht tut; liegt die Spur selbst im Hang, gilt fürs Umfeld mindestens ihre Stufe). Ohne gültige
+        Gefahrenstufe – kein Bulletin, abgelaufenes Bulletin, Route ausserhalb der Regionen, keine Annahme –
+        gibt es keine Bewertung und damit auch kein Grün. Bei mehr als 24 Schlüsselstellen zeigt die Grafik
+        die 24 mit dem höchsten Risiko;
+      · Liste der Schlüsselstellen mit Neigung, Exposition, Höhe, Länge; eigene Stellen lassen sich merken
+        (auf die Routenlinie tippen, wenn nicht bearbeitet wird);
+      · Anteile der Hangneigungsklassen und Expositionen, steilste Stelle;
+      · Zeitplan mit Startzeit, Pause, Umkehrzeit, Uhrzeit an jedem Wegpunkt, Sonnenauf- und -untergang;
+      · Schutzgebiete auf der Route (Wildruhezonen, eidgenössische Jagdbanngebiete);
+      · Planungs-Check (Verhältnisse, Gelände, Mensch).
+    Die Schlüsselstellen stehen auch als Wegpunkte in der exportierten GPX-Datei.
+    Wichtig: Das ist eine Planungshilfe. Ganze Hänge über der Spur, Auslaufbereiche, Triebschnee und die
+    Verhältnisse vor Ort erfasst die Auswertung nicht.
+  - Tourenplaner allgemein: «Hin und zurück» (Zahnrad) zählt Distanz, Höhenmeter und Zeit für beide Richtungen.
+
+Neu in Version 10
+  (Der Passwortschutz dieser Version ist seit Version 11 vorläufig ausgeschaltet.)
+  Ersetzen auf GitHub: index.html und windsack-bot.mjs (beide geändert).
+  Löschen auf GitHub: windsack-relais.js und wrangler.toml (werden nicht mehr gebraucht).
+  Bei Cloudflare: den Worker «wind» löschen (Workers & Pages → wind → Settings → ganz unten «Delete»). Sonst
+  versucht Cloudflare bei jedem Hochladen weiter zu bauen und meldet Fehler, sobald die zwei Dateien fehlen.
+
+  - Passwortschutz: index.html enthält nur noch einen Sperrbildschirm und die App in verschlüsselter Form
+    (AES-256). Ohne Passwort ist nichts lesbar – auch nicht für jemanden, der die Datei direkt von GitHub lädt.
+    Nach der ersten Eingabe merkt sich das Gerät den Zugang; die App startet danach wie gewohnt. Einzelheiten: 4.
+  - Das Blatt «Flugverkehr» ist entfernt, samt Relais und Flightradar24-Knopf. Die offenen Flugdaten-Netze
+    (adsb.fi, adsb.lol, airplanes.live) lehnen Abrufe über Cloudflare ab; das Relais konnte darum nichts liefern.
+  - GitHub-Skript (windsack-bot.mjs): Die Liste der Roundshot-Kameras steht neu im Skript selbst. Bisher las es sie
+    aus index.html – das geht mit der verschlüsselten Datei nicht mehr. Darum unbedingt beide Dateien ersetzen.
+
+Neu in Version 9
+  Ersetzen auf GitHub: index.html und windsack-bot.mjs (beide geändert). Alle anderen Dateien sind gleich geblieben.
+
+  - Radar abspielen: überall in Schritten von 5 Minuten (auch in der Prognose, bisher 10), jedes Bild steht
+    doppelt so lange.
+  - Prognose über die Landesgrenze: Der vorhergesagte Niederschlag (und die Niederschlagswahrscheinlichkeit)
+    reicht jetzt so weit wie das gemessene Radarbild – in der Schweiz und im nahen Grenzgebiet fein, darüber
+    hinaus in einem gröberen Raster (rund 37 km). Dieser äussere Teil lädt bis zu einer Minute nach dem Öffnen
+    nach (der Wetterdienst begrenzt die Abrufe je Minute) und bleibt danach zwei Stunden auf dem Gerät.
+    Die übrigen Animationen (Temperatur, Wahrscheinlichkeit, Satellit) spielen wie bisher ab.
+  - Karten öffnen mit der ganzen Schweiz: Wind, Föhn, Webcams, Schnee und Flugverkehr zeigen beim Öffnen immer
+    die ganze Schweiz, mittig im freien Teil der Karte (im Querformat neben statt über der Legende). Nur das
+    Kartentool («Karte») kehrt dorthin zurück, wo man war. Wer von einem Ort, einer Station oder einer Meldung aus eine Karte öffnet, landet wie
+    bisher dort.
+  - Das Blatt «Radar MeteoSchweiz» (die eingebettete Radarseite der MeteoSchweiz) ist entfernt.
+  - Karte drehen ist starrer: Die Drehung greift erst nach einer deutlichen Verdrehung der zwei Finger (rund 25°
+    bei normalem Fingerabstand; je näher sie beisammen liegen, desto mehr), bei deutlichem Zoomen noch später;
+    nahe Norden rastet die Karte ein. In
+    «Blickrichtung oben» bewegt das Zittern des Kompasses die Karte nicht mehr, sie dreht ruhiger nach.
+  - Tagesbericht (neues Blatt, erstes unter «Wetter»): für jeden Ort aus «Meine Orte» das Lawinenbulletin der
+    Region, Schneehöhe und Neuschnee der nächsten Stationen (Umkreis 20 km; misst dort keine, die zwei nächsten
+    bis 40 km), Wetter heute, Wind jetzt und Meldungen in der Nähe (Alertswiss 10 km, Erdbeben 30 km). Fehlt
+    bei einer Meldung die Gebietsangabe, steht das im Bericht – statt «keine Meldung». «Teilen» gibt den Bericht als Text weiter (Nachricht, Mail,
+    Notiz). «Karte» zeigt Schnee bzw. Wind rund um den Ort.
+  - Alertswiss mit Karte: Über der Liste zeigt eine Übersichtskarte die betroffenen Gebiete (antippen klappt die
+    Meldung auf). «Gebiet auf der Karte» zeigt es genau im Kartentool; dort gibt es dafür die neue Ebene
+    «Alertswiss» (Naturgefahren). Die Gebiete liefert der Datenspiegel, sobald dort das neue windsack-bot.mjs
+    läuft; bis dahin holt die App sie aus dem öffentlichen Spiegel desselben Feeds.
+  - Schnee & Lawinen → Messwerte wie in White Risk aufgebaut (mit eigenen Symbolen): Reihenfolge Neuschnee,
+    Schneehöhe, Wind, Temperatur; Farbskala oben mit denselben Stufen (Neuschnee 0–100 cm, Schneehöhe 0–400 cm);
+    Werte in Quadraten (automatische Stationen) und Kreisen (Beobachter; blauer Rand = MeteoSchweiz), grau ohne
+    Messwert; Neuschnee über 1, 3 oder 7 Tage (mehrere Tage: Summe der Tageswerte, nur automatische
+    Stationen); Kopfzeile mit «Messungen vom …». Stationen aus «Meine Orte» sind grösser und angeschrieben.
+    Die Angaben einer Station haben jetzt auch auf kleinen Bildschirmen Platz (Auswahl und Legende weichen so
+    lange).
+  - Behoben: In der Übersicht «ganze Schweiz» blieb eine Sprechblase weit oben unter der Kopfzeile verborgen;
+    die Sprechblase einer MeteoSchweiz-Messstelle schloss sich von selbst wieder; der gemerkte Ausschnitt des
+    Kartentools verrutschte, wenn dazwischen eine andere Karte offen war.
+
+Neu in Version 8
+  - Startseite nach Themen: Wetter, Karten, Winter, Fliegen und Meldungen, je mit Überschrift. Die Leiste mit den
+    fünf Symbolen springt zum Thema und bleibt beim Rollen oben stehen. Blätter lassen sich innerhalb ihres
+    Themas verschieben.
+  - Farben: Jedes Thema hat seine Farbe (Wetter blau, Karten grün, Winter violett, Fliegen orange, Meldungen
+    rot) – für Symbole, Kopfzeilen und Knöpfe; dazu ein wärmerer Hintergrund. Hell und dunkel wie bisher.
+  - Animationen (Radar): Schritte von 5 Minuten, Prognose neu bis 48 Stunden voraus. Radar und Prognose werden
+    in Bildschirmauflösung als glatte Farbflächen gezeichnet – keine Rasterpunkte mehr, auch beim Hineinzoomen.
+    Relief, Flüsse, Seen und Grenzen scheinen durch. Gezeigt wird der ganze Radarverbund (Lyon bis München,
+    Turin, Mailand). Die Karte öffnet immer mit der ganzen Schweiz. Schnee und Schneeregen haben eigene
+    Farbtöne mit Flocken bzw. Flocken und Tropfen. Ausserhalb des Radarverbunds ist die Karte weiss (dort gibt
+    es keine Messung). Ortsnamen in amtlicher Schreibweise; in der Übersicht nur wenige, dazu «Meine Orte».
+    Die Farbskala steht im Info-Blatt (i oben rechts) – die Zeitleiste bleibt dadurch flach.
+    Fällt der Empfang kurz aus, lädt die App fehlende Radarbilder von selbst nach.
+  - Reliefkarte (Wind, Föhn, Animationen, Webcams, Flugverkehr): neu mit Flüssen, Seen und Landesgrenzen.
+  - Karte über den ganzen Bildschirm, ohne Kopfzeile: Suche unten als Blatt (Ort, Adresse oder Koordinaten in
+    LV95, LV03 oder Breite/Länge; am Griff aufklappen für Tour, Touren, Ebenen, Info), runde Knöpfe für Zurück,
+    Standort, Ebenen und Tour, Massstab unten links.
+  - Karte bedienen wie eine Karten-App: stufenloser Zoom, Doppeltipp zoomt hinein, Tipp mit zwei Fingern hinaus,
+    mit zwei Fingern drehen (die Kompassnadel oben rechts stellt Norden wieder her). Das Kartenbild ist scharf
+    (doppelte Auflösung; lädt dafür etwa viermal so viele Kartenkacheln).
+  - Standort mit Blickrichtung: Der Pfeil oben rechts zeigt den Standort mit Kegel in Blickrichtung und lässt die
+    Karte folgen; ein zweiter Tipp dreht die Karte in Blickrichtung, ein dritter zurück nach Norden. Beim
+    ersten Tipp fragt das iPhone nach Standort und nach «Bewegung & Ausrichtung» (Kompass) – erlauben.
+    Wer die Karte dabei verschiebt oder selbst dreht, übernimmt: Sie folgt nicht mehr und bleibt, wie sie steht;
+    die Kompassnadel stellt Norden wieder her. Auch im Querformat bedienbar (Knöpfe oben nebeneinander).
+
+Neu in Version 7.2
+  - Bericht (Ort, Gipfel oder Station) im Layout der MeteoSchweiz-App: oben «Aktuelles Wetter» mit Ort, Zeit,
+    Temperatur, Symbol und Kärtchen, darunter die «Wochenprognose» als Liste mit 8 Tagen – Symbol, Tiefst- und
+    Höchstwert, Niederschlag und Regenwahrscheinlichkeit. Ein Tipp auf einen Tag klappt den Stundenverlauf auf
+    (Temperatur, Niederschlag, Wind).
+  - Die ersten Tage kommen wie bisher aus der Lokalprognose der MeteoSchweiz, die restlichen Tage und die
+    Wahrscheinlichkeit aus dem besten Modell (Open-Meteo).
+  - Bei jedem Tag steht das Mondsymbol mit der Phase (gerechnet im Gerät, ohne Netz; antippen bzw. VoiceOver
+    nennt Phase und Beleuchtung).
+  - Neues Blatt «Radar MeteoSchweiz»: die Radarseite von MeteoSchweiz 1:1 eingebettet. Bleibt die Fläche leer,
+    erlaubt MeteoSchweiz das Einbetten nicht – dann unten «In Safari öffnen».
+
+Neu in Version 7.1
+  - Flugverkehr: adsb.fi, adsb.lol und airplanes.live erlauben keinen Abruf direkt aus einer Web-App (keine
+    CORS-Freigabe) – darum blieb das Blatt leer bzw. «offline». Neu holt ein eigenes, kostenloses Relais bei
+    Cloudflare die Daten (einmalig einrichten, siehe 4). Ohne Relais zeigt das Blatt die Anleitung und die Knöpfe
+    zu Flightradar24 und zur Karte von adsb.fi.
+  - Schnee & Lawinen → neuer Teil «Skitouren»: Karten von Skitourenguru (Aufstiegskorridore oder Tourengelände,
+    ab Zoom 9) oder die SAC-Skitourenrouten, dazu die Lawinengefahr an der Kartenmitte (Stufe, Höhe, Expositionen,
+    Lawinenprobleme) und der Knopf zur Tagesbewertung auf skitourenguru.com. Die Korridore gibt es auch in der
+    Karte (Ebenen → Winter).
+  - Kopfzeile: Bei vier Teilen steht der Text nur beim gewählten, die anderen zeigen ihr Symbol.
+
+Neu in Version 7
+  - Startseite: Blätter lassen sich verschieben (Blatt lange drücken und ziehen, oder unten «Blätter anordnen»);
+    «Windprognose» ist im Blatt «Wind» (Messung/Prognose), die beiden Föhn-Blätter sind eines («Föhn & Bise»).
+  - Neues Blatt «Schnee & Lawinen»: Lawinenbulletin, Messwerte (SLF-Stationen und MeteoSchweiz: Schneehöhe,
+    Neuschnee, Temperatur, Wind), Lawinenunfälle; zuschaltbar Hangneigung und Lawinengelände ATH/CAT.
+    Die Karte behält Hangneigung, Wildruhezonen und Jagdbanngebiete.
+  - Neues Blatt «Flugverkehr»: Flugzeuge und Helikopter live aus offenen ADS-B-Netzen (adsb.fi, adsb.lol,
+    airplanes.live), Farbe nach Höhe, Filter «Unter 4000 m», Knopf zu Flightradar24 (lässt sich nicht einbetten)
+    und zum Open Glider Network (Segelflieger, Gleitschirme mit FLARM/FANET).
+  - Panorama: Rundblick ab deinem GPS-Standort (oder dem gewählten Ort); neu «Kamera»: Gipfelnamen, Horizont und
+    Grate im Kamerabild – Kompass und Lagesensor, Gipfel aus OpenStreetMap, Sichtbarkeit aus dem Höhenmodell.
+    Wischen richtet aus, zwei Finger ändern den Bildwinkel, Doppeltippen setzt zurück. Alternativ: swisstopo-App
+    (gratis, Panorama-Modus) oder PeakFinder-App.
+
+Neu in Version 6
+  - Design wie die MeteoSchweiz-App (Schrift, Grafiken, Symbole, helles Relief), Radar wie bei MeteoSchweiz
+  - Tourenplaner: Einstellungen (Wandern, Velo, Mountainbike, Skitour, Schneeschuh), Tempo, Tourenfarbe
+  - Webcams: alle bekannten Roundshot-360°-Kameras (451) mit aktuellem Panorama zum Wischen
+  - Karte: Erdbeben (SED, 30 Tage), Lawinen (SLF, Unfälle der Saison), alle SLF-Messstationen mit Messwerten
+  - Panorama: PeakFinder-Rundblick für jeden Ort, auch aus der Luft (+150 m bis +1,5 km)
+  - Meldungen: Alertswiss, Nordlicht (NOAA) und Erdbeben – auf Wunsch als Mitteilung aufs iPhone
+
+Nachtrag 20.09.2026 (mit echten Daten der Quellen geprüft)
+  - Alertswiss: kompakte Karten, sortiert nach Stufe (Alarm, Warnung, Information, Entwarnung), Links der Kantone,
+    Notrufnummern antippbar, technische Testmeldungen ausgeblendet. Ohne eigene GitHub-Aktion zeigt die App die
+    Meldungen über den öffentlichen Spiegel "TRMNL-AlertSwiss" (derselbe amtliche Feed, bis 15 Minuten verzögert).
+  - Lawinen: Gefahrenstufe am Unfalltag (z. B. 3= erheblich), Aktivität (Tourengelände, Variantengelände …) und
+    Link zum Lawinenbulletin jenes Tages.
+  - SLF-Beobachter-Messfelder öffnen die passende Station in White Risk.
+  - GitHub-Aktion: Alertswiss mit bis zu 3 Versuchen, bei Ablehnung Ersatz über den Spiegel; Zeitbudget, damit ein
+    langsamer Dienst nicht den ganzen Lauf blockiert.
+
+1) Neue Version einspielen (geht auch auf dem iPhone)
+  Von Version 10 auf 11 haben sich index.html und windsack-bot.mjs geändert – sw.js und die GitHub-Aktion
+  (.github/workflows/windsack.yml) bleiben gleich.
+  1. Im Repository "Add file" > "Upload files" > index.html auswählen.
+  2. Bestehende Datei ersetzen (es darf keine "index 2.html" entstehen) > "Commit changes".
+  3. 1–2 Minuten warten, Windsack ganz schliessen und neu öffnen. Unten auf der Startseite steht "Version 11".
+  4. Beim ersten Öffnen von «Kamera» fragt das iPhone nach Bewegung & Ausrichtung, Kamera und Standort – erlauben.
+
+2) GitHub-Aktion einrichten (einmalig, für Alertswiss, Nordlicht, SLF-Stationen, Lawinen und Mitteilungen)
+  Alertswiss und das SLF-Messnetz lassen sich im Browser nicht direkt abrufen. Die kostenlose Aktion holt die
+  Daten alle 10 Minuten, legt sie im Zweig "data" ab (die App liest sie dort) und verschickt die Mitteilungen.
+  1. Auf GitHub "Add file" > "Create new file". Als Name eintippen: .github/workflows/windsack.yml
+     Inhalt: windsack-workflow.yml aus dem ZIP – oder in der App unter Meldungen > Glocke > "Datei kopieren".
+     "Commit changes".
+  2. Reiter "Actions" > "Windsack" > "Run workflow". Nach etwa einer Minute ist der Datenspiegel da.
+
+3) Mitteilungen aufs iPhone (iOS 16.4 oder neuer)
+  1. Windsack vom Home-Bildschirm aus öffnen (nicht in Safari) > Meldungen > Glocke.
+  2. Auswahl treffen (Alertswiss alle Meldungen, Nordlicht, optional Erdbeben ab M 3, Powderalert mit Schwelle
+     20, 30 oder 50 cm) > "Mitteilungen aktivieren" > Erlauben.
+  3. "Code kopieren". Auf GitHub: Settings > Secrets and variables > Actions > "New repository secret",
+     Name WINDSACK_PUSH, Code einfügen, speichern. Mehrere Geräte: Codes untereinander in dasselbe Secret.
+  4. "Run workflow" (oder 10 Minuten warten): Es kommt die Bestätigung "Mitteilungen eingerichtet".
+  Auswahl geändert? Neuen Code kopieren und das Secret ersetzen. Das Secret sieht nur die Aktion.
+
+4) Zugang: Passwort (zurzeit ausgeschaltet)
+  - Seit Version 11 ist der Passwortschutz vorläufig aus: Die Adresse öffnet die App direkt.
+  - Wieder einschalten heisst: index.html neu bauen lassen (im Bau ein Schalter «aktiv»), die Datei ersetzen.
+    Dann zeigt die Adresse wieder den Sperrbildschirm, die App liegt verschlüsselt (AES-256) in der Datei und
+    jedes Gerät fragt einmal nach dem Passwort.
+  - Was der Schutz leistet: Ein weitergeschickter Link allein nützt nichts. Was er nicht leistet: Wer das Passwort
+    kennt, kann es weitergeben; einzelne Personen lassen sich nicht aussperren (nur alle zusammen über ein neues
+    Passwort). Und wer Zugang hat, kann die App technisch kopieren – sie läuft auf seinem Gerät.
+  - Im Repository bleiben frühere Fassungen von index.html in der Versionsgeschichte abrufbar («Commits»).
+  - Das Passwort steht bewusst nicht in dieser Anleitung.
+
+Hinweise
+  - Nordlicht: Mitteilung, wenn in der Schweiz Kp 7 erwartet oder gemessen wird und es dunkel ist
+    (Vorhersage für die Nacht und "jetzt"); Faustregel SRF Meteo: ab Kp ~7 am Nordhorizont, meist nur mit Kamera.
+  - "Aktuelle Lawinen" (Beobachtungen) gibt das SLF nicht als offene Daten heraus; «Schnee & Lawinen» zeigt die
+    Lawinenunfälle der Saison und verlinkt White Risk.
+  - Roundshot-Standorte holt die App beim ersten Öffnen der Webcams einmalig bei jeder Kamera (danach gespeichert);
+    mit der GitHub-Aktion kommen sie aus dem Datenspiegel.
+  - Skitourenguru: Die tägliche Risikobewertung jeder Route (grün, orange, rot) gibt es nur auf skitourenguru.com –
+    sie ist keine offene Datenquelle; Windsack zeigt die Karten von Skitourenguru und öffnet die Tagesbewertung.
+    Die Karten von Skitourenguru sind nur für private, nicht kommerzielle Nutzung freigegeben.
+  - Animationen: Die Niederschlagsprognose reicht so weit wie das Radarbild (in der Schweiz fein, ausserhalb in
+    einem gröberen Raster). Zwischen zwei Modellstunden wird überblendet.
+  - Powder: Die Karte braucht einen Gitterabruf bei Open-Meteo (höchstens einer je Minute; war gerade eine
+    Animation offen, wartet die Karte bis zu einer Minute). Die Mengen entstehen aus Niederschlag und Temperatur
+    (unter 0.5 °C Schnee, über 2 °C Regen; 1 mm ≈ 1 cm, bei Kälte bis 1.4 cm). Das Modellgitter ist rund 13 km
+    weit – einzelne Staulagen und Täler kann es über- oder unterschätzen.
+  - Powderalert: Mitteilungen kommen nur, wenn «Powderalert» im Code des Secrets steht (nach dem Einschalten den
+    Code neu kopieren und das Secret ersetzen). Die Fernsicht (6 bis 7 Tage) ist oft falsch – sie ist ein früher
+    Hinweis, die Bestätigung am Vorabend zählt.
+  - Skitouren-Planer: Hangneigung «an der Spur» entspricht etwa der Hangneigungskarte (Raster 10 m); kurze
+    Steilstufen unter 20 m können fehlen. Bei importierten GPX-Spuren mit sehr vielen Punkten wird die Linie für
+    die Auswertung auf wenige Meter vereinfacht. Ausserhalb der Schweiz gibt es kein Höhenmodell und damit keine
+    Auswertung; Routen über 80 km wertet der Lawinen-Check nicht aus. Die Reduktionsmethode gilt für trockene
+    Schneebrettlawinen, nicht für Nass- und Gleitschnee.
+  - Karte drehen und Blickrichtung: Der iPhone-Kompass braucht manchmal ein paar Sekunden und eine Acht-Bewegung.
+    Ohne Freigabe von «Bewegung & Ausrichtung» zeigt die Karte den Standort ohne Kegel.
+  - Kamera-Rundblick: Der iPhone-Kompass ist auf etwa ±5–10° genau; einmal auf einen bekannten Gipfel ausrichten
+    (wischen), die Korrektur bleibt gespeichert.
+  - Farben, Faustregeln und Wanderzeiten sind Orientierungshilfen. Der Entscheid liegt immer bei dir.
+
+Quellen: MeteoSchweiz, swisstopo, SLF (CC BY 4.0), Schweizerischer Erdbebendienst SED, Alertswiss
+(Quelle: www.alertswiss.ch; Ersatz-Spiegel TRMNL-AlertSwiss von Michael Kurath), NOAA SWPC, EUMETSAT, Open-Meteo, Natural Earth (Flüsse, Seen, Grenzen), Terrain Tiles (Relief), winds.mobi, BRouter, OpenStreetMap,
+Roundshot, Wikidata, Windy, PeakFinder, Skitourenguru, xctherm.com.

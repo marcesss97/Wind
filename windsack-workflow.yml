@@ -1,0 +1,48 @@
+# Windsack · Datenspiegel und Mitteilungen
+# Läuft alle 10 Minuten: holt Alertswiss, Nordlicht-Lage (NOAA), SLF-Messnetz, Lawinenunfälle und Roundshot-Standorte,
+# legt sie als JSON in den Zweig «data» und schickt Mitteilungen an die Geräte im Secret WINDSACK_PUSH.
+# Das Skript windsack-bot.mjs liegt neben index.html im Repository.
+name: Windsack
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: windsack
+  cancel-in-progress: false
+jobs:
+  daten:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: app
+          sparse-checkout: |
+            windsack-bot.mjs
+            index.html
+            docs/windsack-bot.mjs
+            docs/index.html
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Daten holen, Mitteilungen senden
+        env:
+          WINDSACK_PUSH: ${{ secrets.WINDSACK_PUSH }}
+          GITHUB_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          git clone -q --depth 1 --branch data "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" prev 2>/dev/null || mkdir -p prev
+          rm -rf prev/.git
+          BOT=app/windsack-bot.mjs; [ -f "$BOT" ] || BOT=app/docs/windsack-bot.mjs
+          [ -f "$BOT" ] || { echo "::error::windsack-bot.mjs fehlt neben index.html im Repository – bitte aus dem ZIP hochladen"; exit 1; }
+          node "$BOT"
+          cd out
+          git init -q -b data
+          git add -A
+          git -c user.name="windsack-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Datenspiegel $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" data
