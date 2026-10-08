@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#102237">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="11.3 · 08.10.2026">
+<meta name="windsack-version" content="11.4 · 08.10.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -713,7 +713,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --wx-sun: #f8d808; --wx-ray: #f8c000; --wx-moon: #c9d2da; --wx-cloud: #dcdcdc; --wx-cloud-s: #a3a3a3; --wx-dark: #a6adb3; --wx-rain: #1f78e0; --wx-snow: #6fa6dc;
   --halo: #ffffff;
   --sky-1: #4b8fe8; --sky-2: #66a6ee; --sky-3: #8cc2f2; --sky-4: #bfdff6;
-  --mtn-1: rgba(32, 84, 178, 0.28); --mtn-2: rgba(255, 255, 255, 0.14); --mtn-3: rgba(46, 104, 180, 0.20);
+  --mtn-3: rgba(30, 86, 150, 0.30);
+  /* Matterhorn auf der Startseite: Ostwand mit Alpenglühen, Nordwand im Schatten, Schnee */
+  --mh-far-a: rgba(255, 255, 255, 0.55); --mh-far-b: rgba(120, 165, 220, 0.30); --mh-far-s: rgba(255, 255, 255, 0.55);
+  --mh-e-a: rgba(255, 214, 178, 0.80); --mh-e-b: rgba(128, 150, 190, 0.55); --mh-e-c: rgba(52, 96, 160, 0.42);
+  --mh-n-a: rgba(36, 62, 108, 0.62); --mh-n-b: rgba(28, 62, 118, 0.45);
+  --mh-snow: rgba(255, 255, 255, 0.82); --mh-snow-n: rgba(225, 236, 250, 0.45); --mh-snow-c: rgba(255, 255, 255, 0.42);
+  --mh-glow: rgba(255, 236, 205, 0.40); --mh-stars: 0;
   --fab: rgba(143, 175, 187, 0.92); --fab-on: #4e7f8f; --fab-ink: #ffffff;
   --tl-obs: #c9cdd1; --tl-fc: #6b96a3; --tl-bubble: #b6d4d9; --tl-bubble-ink: #173640; --tl-bubble-fc: #4e7f8f; --tl-bubble-fc-ink: #ffffff;
   --tile-map-filter: none;
@@ -746,7 +752,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
     --halo: #141e27;
     --night: rgba(0, 0, 0, 0.32);
     --sky-1: #102237; --sky-2: #16304a; --sky-3: #1c3b58; --sky-4: #214463;
-    --mtn-1: rgba(120, 170, 230, 0.10); --mtn-2: rgba(255, 255, 255, 0.05); --mtn-3: rgba(120, 170, 230, 0.07);
+    --mtn-3: rgba(8, 18, 30, 0.45);
+    --mh-far-a: rgba(170, 200, 240, 0.16); --mh-far-b: rgba(90, 130, 190, 0.06); --mh-far-s: rgba(200, 220, 250, 0.16);
+    --mh-e-a: rgba(176, 200, 236, 0.30); --mh-e-b: rgba(80, 112, 160, 0.22); --mh-e-c: rgba(20, 40, 66, 0.40);
+    --mh-n-a: rgba(6, 14, 26, 0.55); --mh-n-b: rgba(6, 16, 30, 0.40);
+    --mh-snow: rgba(214, 230, 252, 0.42); --mh-snow-n: rgba(170, 195, 230, 0.20); --mh-snow-c: rgba(200, 220, 250, 0.20);
+    --mh-glow: rgba(150, 185, 235, 0.14); --mh-stars: 0.7;
     --fab: rgba(64, 96, 110, 0.92); --fab-on: #7fb3c2; --fab-ink: #ffffff;
     --tl-obs: #56626c; --tl-fc: #7fb3c2; --tl-bubble: #2d5561; --tl-bubble-ink: #e8f3f6; --tl-bubble-fc: #7fb3c2; --tl-bubble-fc-ink: #0b1a20;
     /* Karten bleiben auch im dunklen Design weiss (keine Invertierung) */
@@ -813,10 +824,18 @@ a { color: var(--accent); }
   background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 34%, var(--sky-3) 68%, var(--sky-4) 100%);
   padding: calc(var(--safe-t) + 6px) calc(var(--safe-r) + 16px) 18px calc(var(--safe-l) + 16px);
 }
-.sky-mtn { position: absolute; left: 0; top: 0; width: 100%; height: 470px; pointer-events: none; }
-.sky-mtn .m1 { fill: var(--mtn-1); }
-.sky-mtn .m2 { fill: var(--mtn-2); }
+.sky-mtn { position: absolute; left: 0; top: 0; width: 100%; height: 100%; min-height: 470px; pointer-events: none; }
 .sky-mtn .m3 { fill: var(--mtn-3); }
+.sky-mtn .mh-far-a { stop-color: var(--mh-far-a); } .sky-mtn .mh-far-b { stop-color: var(--mh-far-b); }
+.sky-mtn .mh-far-s { fill: var(--mh-far-s); }
+.sky-mtn .mh-e-a { stop-color: var(--mh-e-a); } .sky-mtn .mh-e-b { stop-color: var(--mh-e-b); } .sky-mtn .mh-e-c { stop-color: var(--mh-e-c); }
+.sky-mtn .mh-n-a { stop-color: var(--mh-n-a); } .sky-mtn .mh-n-b { stop-color: var(--mh-n-b); }
+.sky-mtn .mh-glow-a { stop-color: var(--mh-glow); } .sky-mtn .mh-glow-b { stop-color: var(--mh-glow); stop-opacity: 0; }
+.sky-mtn .mh-snow path { fill: var(--mh-snow); }
+.sky-mtn .mh-snow path.n { fill: var(--mh-snow-n); }
+.sky-mtn .mh-snow path.g { fill: var(--mh-snow-n); }
+.sky-mtn .mh-snow path.c { fill: var(--mh-snow-c); }
+.sky-mtn .mh-stars circle { fill: #fff; opacity: var(--mh-stars); }
 .sky-in { position: relative; max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 .sky-top { display: flex; align-items: center; gap: 4px; min-height: 44px; }
 .sky-logo { display: flex; align-items: center; gap: 8px; border: 0; background: none; color: #fff; padding: 4px 6px 4px 0; font-weight: 650; font-size: 15px; letter-spacing: 0.01em; }
@@ -2277,10 +2296,39 @@ details .as-desc { margin-top: 6px; }
   <section class="scr home" id="home" aria-label="Übersicht">
     <div class="home-scroll" id="home-scroll">
       <div class="sky" id="sky">
+        <!-- Matterhorn (Ansicht von Zermatt): Ostwand in der Sonne, Nordwand im Schatten, Hörnligrat in der Mitte -->
         <svg class="sky-mtn" viewBox="0 0 390 460" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-          <path class="m1" d="M-10 330 L70 250 L112 272 L168 150 L205 96 L222 110 L246 88 L300 190 L338 214 L400 300 L400 460 L-10 460 Z"/>
-          <path class="m2" d="M205 96 L222 110 L246 88 L262 124 L236 118 L214 150 L196 138 Z"/>
-          <path class="m3" d="M-10 380 L60 330 L120 352 L190 300 L260 336 L330 312 L400 350 L400 460 L-10 460 Z"/>
+          <defs>
+            <linearGradient id="mh-far-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="mh-far-a"/><stop offset="1" class="mh-far-b"/></linearGradient>
+            <linearGradient id="mh-e-g" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" class="mh-e-a"/><stop offset="0.45" class="mh-e-b"/><stop offset="1" class="mh-e-c"/></linearGradient>
+            <linearGradient id="mh-n-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="mh-n-a"/><stop offset="1" class="mh-n-b"/></linearGradient>
+            <radialGradient id="mh-glow-g" cx="262" cy="120" r="120" gradientUnits="userSpaceOnUse"><stop offset="0" class="mh-glow-a"/><stop offset="1" class="mh-glow-b"/></radialGradient>
+          </defs>
+          <g class="mh-stars"><circle cx="34" cy="62" r="1"/><circle cx="96" cy="34" r="0.8"/><circle cx="332" cy="128" r="1.1"/><circle cx="196" cy="48" r="0.7"/><circle cx="232" cy="84" r="0.9"/><circle cx="318" cy="40" r="0.8"/><circle cx="356" cy="106" r="1"/><circle cx="212" cy="22" r="0.7"/><circle cx="124" cy="178" r="0.8"/><circle cx="372" cy="168" r="0.7"/><circle cx="290" cy="68" r="1.1"/><circle cx="20" cy="210" r="0.8"/></g>
+          <circle cx="262" cy="120" r="120" fill="url(#mh-glow-g)"/>
+          <!-- Kette dahinter: Breithorn und Monte Rosa links, Dent Blanche rechts -->
+          <path fill="url(#mh-far-g)" d="M-10 262 L14 248 L36 252 L58 236 L78 240 L102 222 L120 228 L140 214 L158 222 L178 216 L196 230 L214 240 L300 246 L322 232 L338 236 L356 218 L372 226 L400 214 L400 460 L-10 460 Z"/>
+          <path class="mh-far-s" d="M58 236 L78 240 L102 222 L120 228 L140 214 L158 222 L150 226 L138 222 L122 234 L104 230 L82 246 L64 242 Z M322 232 L338 236 L356 218 L372 226 L364 230 L354 228 L340 242 L326 238 Z"/>
+          <!-- Matterhorn: ganze Silhouette (Ostwand) -->
+          <path fill="url(#mh-e-g)" d="M262 114 L268 120 L274 129 L277 140 L283 159 L291 181 L298 197 L305 211 L316 223 L332 241 L352 261 L376 281 L400 294 L400 460 L-10 460 L-10 350 L40 330 L92 316 L132 300 L160 280 L180 262 L196 240 L206 222 L214 208 L218 198 L224 186 L232 168 L242 147 L250 130 Z"/>
+          <!-- Nordwand im Schatten, rechts vom Hörnligrat -->
+          <path fill="url(#mh-n-g)" d="M262 114 L268 120 L274 129 L277 140 L283 159 L291 181 L298 197 L305 211 L316 223 L332 241 L352 261 L376 281 L400 294 L400 344 L364 330 L330 308 L308 284 L294 258 L285 232 L279 207 L273 182 L268 158 L265 136 Z"/>
+          <!-- Schnee: Gipfel, Hörnligrat, Schulter, Rinnen der Ostwand, Streifen in der Nordwand -->
+          <g class="mh-snow">
+            <path d="M262 114 L268 120 L273 128 L269 132 L265 128 L261 133 L257 129 L253 127 Z"/>
+            <path d="M265 136 L268 158 L273 182 L279 207 L285 232 L294 258 L291 260 L282 235 L276 210 L270 185 L265 161 L262 142 Z"/>
+            <path d="M298 197 L305 211 L316 223 L309 223 L301 213 L295 203 Z"/>
+            <path class="c" d="M254 136 L257 135 L250 166 L246 182 L244 181 L248 162 Z"/>
+            <path class="c" d="M260 146 L262 146 L259 176 L255 198 L253 197 L256 172 Z"/>
+            <path class="c" d="M244 160 L247 160 L238 190 L232 206 L230 205 L237 184 Z"/>
+            <path class="c" d="M255 204 L258 203 L254 226 L249 242 L247 241 L251 222 Z"/>
+            <path class="c" d="M233 196 L236 197 L226 222 L219 236 L217 235 L225 216 Z"/>
+            <path class="c" d="M241 216 L244 216 L239 240 L234 254 L232 253 L236 236 Z"/>
+            <path class="n" d="M272 140 L275 141 L278 158 L278 170 L275 160 Z M280 172 L283 174 L288 192 L288 204 L284 192 Z M291 210 L294 212 L299 228 L299 240 L295 228 Z M276 150 L279 150 L285 176 L282 172 Z"/>
+            <path class="g" d="M184 272 C214 256 250 254 286 260 C304 264 318 272 330 282 C300 276 262 274 228 278 C210 280 194 282 176 288 Z"/>
+          </g>
+          <!-- Vordergrund: Alp und Wald -->
+          <path class="m3" d="M-10 384 C40 356 92 362 136 374 C180 386 214 358 262 356 C310 354 346 372 400 362 L400 460 L-10 460 Z"/>
         </svg>
         <div class="sky-in">
           <div class="sky-top">
@@ -9202,7 +9250,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.3 · 08.10.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.4 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
