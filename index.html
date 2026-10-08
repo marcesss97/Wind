@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#102237">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="11.6 · 08.10.2026">
+<meta name="windsack-version" content="11.7 · 08.10.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -716,6 +716,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* Verlauf über dem Foto der Startseite */
   /* Lokalprognose (Farben wie MeteoSchweiz): vergangene Stunden, Niederschlag nach Stärke, Sonne, Wind */
   --lp-past: #eef1f4; --lp-r1: #8e7aa0; --lp-r2: #2f45e0; --lp-r3: #1d7a2e; --lp-r4: #7fe055;
+  --lp-fz: #d9481c; --lp-sl: #2f6fd0;
   --lp-sun: #f2d24a; --lp-wind: #6a5ad6; --lp-gust: #a99ff0; --lp-pp: #2f6fd0; --lp-pill: #e3edf9;
   --ph-1: rgba(44, 54, 84, 0.62); --ph-2: rgba(44, 54, 84, 0.34); --ph-3: rgba(44, 54, 84, 0.10); --ph-4: rgba(22, 30, 46, 0.42);
   --fab: rgba(143, 175, 187, 0.92); --fab-on: #4e7f8f; --fab-ink: #ffffff;
@@ -751,6 +752,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     --night: rgba(0, 0, 0, 0.32);
     --sky-1: #102237; --sky-2: #16304a; --sky-3: #1c3b58; --sky-4: #214463;
     --lp-past: rgba(255, 255, 255, 0.045); --lp-r1: #a48fb8; --lp-r2: #5c6cff; --lp-r3: #3aa952; --lp-r4: #9cf06a;
+    --lp-fz: #f27a4c; --lp-sl: #6fa8f0;
     --lp-sun: #e8c53d; --lp-wind: #a196f7; --lp-gust: #7d72c4; --lp-pp: #7db2f5; --lp-pill: #1d2e44;
     --ph-1: rgba(10, 20, 36, 0.70); --ph-2: rgba(10, 20, 36, 0.42); --ph-3: rgba(10, 20, 36, 0.18); --ph-4: rgba(8, 14, 24, 0.55);
     --fab: rgba(64, 96, 110, 0.92); --fab-on: #7fb3c2; --fab-ink: #ffffff;
@@ -1676,6 +1678,60 @@ table.t thead th { position: sticky; top: 0; background: var(--surface-2); font-
 .lp-leg i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; }
 .lp-leg i.w { background: var(--lp-wind); } .lp-leg i.g { background: var(--lp-gust); }
 .lp + .src-note { margin-top: 6px; }
+/* Unwetter: Karte mit Warnstufen und Powder, Liste der Warnungen */
+.wn-map { position: relative; aspect-ratio: 1.1; max-height: 340px; border-radius: 14px; overflow: hidden; background: var(--surface-2); }
+.wn-map > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.wn-map .mm-tint { fill: rgba(255, 255, 255, 0.18); }
+.wn-leg { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 12px; color: var(--ink-2); }
+.wn-leg span { display: inline-flex; align-items: center; gap: 4px; }
+.wn-leg i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; box-shadow: 0 0 0 1px var(--hair-strong); }
+.wn-leg i.pw { background: #2f6fd0; }
+.wn-sum { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.45; }
+.wn-sum b { color: var(--ink); }
+.wn-list { display: flex; flex-direction: column; gap: 8px; }
+.wn-it { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); border-left: 5px solid var(--c); padding: 0 12px; }
+.wn-it summary { display: flex; align-items: center; gap: 12px; padding: 11px 0; cursor: pointer; list-style: none; }
+.wn-it summary::-webkit-details-marker { display: none; }
+.wn-l { flex: none; width: 30px; height: 30px; border-radius: 8px; background: var(--c); color: #1b1b1b; display: grid; place-items: center; font: 800 16px/1 var(--font-display); }
+.wn-t { min-width: 0; display: grid; gap: 2px; }
+.wn-t b { font-size: 15px; color: var(--ink); }
+.wn-t small { font-size: 12.5px; color: var(--muted); }
+.wn-it .note { padding-bottom: 10px; }
+.wn-pw { display: grid; gap: 1px; padding: 6px 0; border-bottom: 1px solid var(--hair); }
+.wn-pw b { font-size: 14px; color: var(--ink); }
+.wn-pw span { font-size: 13px; color: var(--ink-2); }
+/* Walliser Alpen */
+.wal-big { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.wal-big > div { display: grid; gap: 2px; background: var(--surface-2); border-radius: 12px; padding: 10px 12px; }
+.wal-big small { font-size: 12px; font-weight: 650; color: var(--muted); }
+.wal-big b { font: 800 26px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.wal-big span { font-size: 12px; color: var(--ink-2); }
+.wal-lp { margin: -6px -14px 0; }
+.wal-lp .lp-h { margin-top: 4px; }
+.wal-row { align-items: center; }
+.wal-v { display: grid; gap: 3px; justify-items: end; font-size: 13.5px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wal-v span { display: inline-flex; align-items: center; gap: 6px; }
+.wal-v i { width: 12px; height: 3px; border-radius: 2px; }
+.lp-alt { stroke: var(--ink-2); stroke-width: 1.2; stroke-dasharray: 2 4; opacity: 0.8; }
+.lp-zr { fill: var(--lp-r1); opacity: 0.35; }
+.lp-fz { fill: none; stroke: var(--lp-fz); stroke-width: 2.4; stroke-linejoin: round; }
+.lp-sl { fill: none; stroke: var(--lp-sl); stroke-width: 2.4; stroke-linejoin: round; }
+.lp-sl.est { stroke-dasharray: 6 4; }
+.lp-leg i.fz { background: var(--lp-fz); } .lp-leg i.sl { background: var(--lp-sl); }
+.lp-leg i.sl.est { background: repeating-linear-gradient(90deg, var(--lp-sl) 0 5px, transparent 5px 8px); }
+.lp-leg i.alt { height: 0; border-top: 2px dotted var(--ink-2); } .lp-leg i.zr { height: 8px; background: var(--lp-r1); opacity: 0.45; }
+/* Tagesinfo unter einem Tag der Wochenprognose */
+.fc-info { margin: 0 -14px; padding: 10px 16px 12px; background: var(--surface-2); border-top: 1px solid var(--hair); display: grid; gap: 8px; animation: fiIn 0.18s ease-out; }
+@keyframes fiIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.fi-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.fi-h b { font: 700 15px/1.25 var(--font-display); color: var(--ink); }
+.fi-h span { font-size: 14px; color: var(--ink-2); }
+.fc-info dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.fc-info dl div { min-width: 0; }
+.fc-info dt { font-size: 11.5px; font-weight: 650; letter-spacing: 0.02em; color: var(--muted); }
+.fc-info dd { margin: 1px 0 0; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.fi-go { justify-self: start; border: 0; background: none; padding: 2px 0; color: var(--accent); font: 600 13.5px/1.2 var(--font-ui); }
+@media (max-width: 359px) { .fc-info dl { grid-template-columns: 1fr; } }
 
 /* ───────────────────────── Blatt (Bottom Sheet) ───────────────────────── */
 .backdrop { position: absolute; inset: 0; z-index: 1300; background: rgba(8, 16, 22, 0.32); }
@@ -2582,6 +2638,9 @@ details .as-desc { margin-top: 6px; }
           <div id="orte-body"></div>
         </div>
       </div>
+
+      <!-- Walliser Alpen: Nullgrad- und Schneefallgrenze -->
+      <div class="vpage" id="page-wallis" hidden><div class="page" id="wallis-body"></div></div>
 
       <!-- Wettermodelle: alle Modelle für einen Ort, mit Ortssuche -->
       <div class="vpage" id="page-modelle" hidden>
@@ -9278,7 +9337,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.6 · 08.10.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.7 · 08.10.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -11884,7 +11943,7 @@ pako/dist/pako.esm.mjs:
   async function hourlyFor(list) {
     const need = list.filter((s) => s && Number.isFinite(s.lat) && (!HF.get(s.id) || Date.now() - HF.get(s.id).at > 60 * 60e3));
     if (!need.length) return;
-    const vars = 'temperature_2m,precipitation,weather_code,is_day,wind_speed_10m,wind_gusts_10m,wind_direction_10m,sunshine_duration,precipitation_probability';
+    const vars = 'temperature_2m,precipitation,weather_code,is_day,wind_speed_10m,wind_gusts_10m,wind_direction_10m,sunshine_duration,precipitation_probability,freezing_level_height,snowfall_height';
     // MeteoSchweiz-Stationen mit ihrer (verlässlichen) Höhe; Fremdnetze mit Geländehöhe (90-m-DEM von Open-Meteo)
     const groups = [need.filter((s) => !s.ext && s.alt != null), need.filter((s) => s.ext || s.alt == null)].filter((g) => g.length);
     let err = null;
@@ -11915,7 +11974,7 @@ pako/dist/pako.esm.mjs:
         HF.set(s.id, {
           at: Date.now(), times, temp: pick('temperature_2m'), rr: pick('precipitation'), wc: pick('weather_code'), day: pick('is_day'),
           ws: pick('wind_speed_10m'), wg: pick('wind_gusts_10m'), wd: pick('wind_direction_10m'),
-          sun: pick('sunshine_duration'), pp: pick('precipitation_probability'),
+          sun: pick('sunshine_duration'), pp: pick('precipitation_probability'), fz: pick('freezing_level_height'), sl: pick('snowfall_height'),
           q10: band ? times.map((t) => (band.has(t) ? band.get(t)[0] : null)) : null,
           q90: band ? times.map((t) => (band.has(t) ? band.get(t)[1] : null)) : null,
           elev: Number.isFinite(base.elevation) ? base.elevation : null, model: pa ? 'ICON-CH1/CH2' : 'ICON-D2/EU',
@@ -12488,13 +12547,57 @@ pako/dist/pako.esm.mjs:
       + `<div class="src-note">${esc(src)}${hf ? ` Stundenverlauf: ${esc(hf.model)} via Open-Meteo.` : ''}</div>`;
     const lp = host.querySelector('.lp');
     lpRender(lp, s);
-    // Tipp auf einen Tag: die Grafiken wischen zu diesem Tag (wie in der MeteoSchweiz-App)
+    // Tipp auf einen Tag: darunter die Tagesinfo (nochmals tippen schliesst sie), die Grafiken wischen zu diesem Tag
     host.querySelectorAll('.fcr').forEach((b) => b.addEventListener('click', () => {
-      FC_SEL.set(s.id, d8[+b.dataset.i].d);
+      const d = d8[+b.dataset.i], open = b.getAttribute('aria-expanded') === 'true' && b.nextElementSibling && b.nextElementSibling.classList.contains('fc-info');
+      FC_SEL.set(s.id, d.d);
       host.querySelectorAll('.fcr').forEach((x) => x.setAttribute('aria-expanded', String(x === b)));
-      lpScroll(lp, d8[+b.dataset.i].d);
+      if (open) { b.nextElementSibling.remove(); return; }
+      fcInfo(host, s, d, b);
+      lpScroll(lp, d.d);
     }));
+    fcInfo(host, s, d8[sel], host.querySelectorAll('.fcr')[sel]);
     if (sel > 0) lpScroll(lp, d8[sel].d, false);
+  }
+  // Tagesinfo unter einem Tag der Wochenprognose: Wetter, Temperatur, Niederschlag (wann), Sonne, Wind,
+  // Nullgrad- und Schneefallgrenze – aus der Lokalprognose (Tageswerte) und den Stundenwerten
+  function fcInfo(host, s, d, row) {
+    host.querySelectorAll('.fc-info').forEach((x) => x.remove());
+    if (!row) return;
+    const h = HF.get(s.id), t0 = localMidnight(d.d), t1 = t0 + 864e5;
+    const J = h ? h.times.map((t, j) => [t, j]).filter(([t]) => t > t0 && t <= t1).map(([, j]) => j) : [];
+    const vals = (a) => (a ? J.map((j) => a[j]).filter((v) => v != null) : []);
+    const mx = (a) => { const v = vals(a); return v.length ? Math.max(...v) : null; }, mn = (a) => { const v = vals(a); return v.length ? Math.min(...v) : null; };
+    const t = (v) => (v != null ? Math.round(v) + '°' : '–');
+    const facts = [];
+    facts.push(['Temperatur', `${t(d.tmin)} bis ${t(d.tmax)}`]);
+    // Niederschlag: Menge, Wahrscheinlichkeit und wann (erste bis letzte Stunde mit mindestens 0.2 mm)
+    let when = '';
+    if (h) { const wet = J.filter((j) => (h.rr[j] || 0) >= 0.2); if (wet.length) when = ` · ${pad2(localHour(h.times[wet[0]] - 36e5))}–${pad2(localHour(h.times[wet[wet.length - 1]]) || 24)} Uhr`; }
+    facts.push(['Niederschlag', `${rrTxt(d.rr)}${d.p != null ? ` · ${Math.round(d.p)} %` : ''}${when}`]);
+    const sunS = h && h.sun ? vals(h.sun) : [];
+    const sd = Number.isFinite(s.lat) ? skSun(t0 + 12 * 36e5, s.lat, s.lon) : null;
+    facts.push(['Sonne', `${sunS.length ? (sunS.reduce((a, b) => a + b, 0) / 3600).toFixed(1).replace('.0', '') + ' h · ' : ''}${sd && sd.up ? '↑ ' + hm(sd.up) + '  ↓ ' + hm(sd.down) : ''}`]);
+    if (h && J.length) {
+      const ws = mx(h.ws), wg = mx(h.wg), jm = J.reduce((a, j) => ((h.ws[j] || 0) > (h.ws[a] || 0) ? j : a), J[0]);
+      facts.push(['Wind', `bis ${ws != null ? Math.round(ws) : '–'} km/h${h.wd[jm] != null ? ' aus ' + compass(h.wd[jm]) : ''} · Böen ${wg != null ? Math.round(wg) : '–'} km/h`]);
+      const r100 = (v) => Math.round(v / 100) * 100;
+      const fz0 = mn(h.fz), fz1 = mx(h.fz);
+      if (fz0 != null) facts.push(['Nullgradgrenze', fz0 === fz1 || r100(fz0) === r100(fz1) ? `${r100(fz0)} m` : `${r100(fz0)}–${r100(fz1)} m`]);
+      // Schneefallgrenze: nur in Stunden mit Niederschlag sinnvoll; ohne Modellwert ≈ Nullgradgrenze − 300 m
+      const wetJ = J.filter((j) => (h.rr[j] || 0) >= 0.1), useJ = wetJ.length ? wetJ : J;
+      const slv = useJ.map((j) => (h.sl && h.sl[j] != null ? h.sl[j] : h.fz && h.fz[j] != null ? h.fz[j] - 300 : null)).filter((v) => v != null);
+      const est = !(h.sl && useJ.some((j) => h.sl[j] != null));
+      if (slv.length) { const a = r100(Math.min(...slv)), b = r100(Math.max(...slv)); facts.push(['Schneefallgrenze', `${est ? '≈ ' : ''}${a === b ? a : a + '–' + b} m${wetJ.length ? '' : ' (kein Niederschlag)'}`]); }
+    }
+    const el = document.createElement('div');
+    el.className = 'fc-info';
+    el.innerHTML = `<div class="fi-h"><b>${esc(dayName(d.d))}, ${esc(fcDate(d.d))}</b><span>${esc(msText(d.icon) || '')}</span></div>
+      <dl>${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+      ${h ? '<button class="fi-go">Stundenverlauf in den Grafiken ↓</button>' : ''}`;
+    row.after(el);
+    const go = el.querySelector('.fi-go');
+    if (go) go.addEventListener('click', () => { const lp = host.querySelector('.lp'); if (lp) { lpScroll(lp, d.d); lp.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
   }
   /* ───── Lokalprognose wie in der MeteoSchweiz-App: drei Grafiken über alle Tage, seitlich zu wischen ─────
      «Temperatur und Niederschlag» (Symbole und Wahrscheinlichkeit alle 3 Stunden, Temperatur mit Band, Niederschlag als
@@ -12507,14 +12610,13 @@ pako/dist/pako.esm.mjs:
   const LP_RAIN = [[1, 'var(--lp-r1)'], [2, 'var(--lp-r2)'], [4, 'var(--lp-r3)'], [Infinity, 'var(--lp-r4)']];
   const lpRainCol = (v) => LP_RAIN.find((r) => v < r[0])[1];
   const LP_SUN = '<svg viewBox="0 0 24 14" aria-hidden="true"><path d="M5 13a7 7 0 0 1 14 0z" fill="#f5c400"/><g stroke="#f5c400" stroke-width="1.6" stroke-linecap="round"><path d="M12 1v2.4M3.6 4.6l1.6 1.6M20.4 4.6l-1.6 1.6M1 10.4h2.2M23 10.4h-2.2"/></g></svg>';
-  function lpRender(box, s) {
-    const h = HF.get(s.id);
-    if (!h) { box.innerHTML = '<div class="msg">Stundenwerte nicht verfügbar.</div>'; return; }
+  // Zeitgerüst der Grafiken: ab heute 0 Uhr bis zum letzten Wert von «main», 3-Stunden-Raster, Tage, Hilfen
+  function lpFrame(h, main) {
     const t0 = localMidnight(ymdLocal(Date.now()));
     const i0 = h.times.findIndex((t) => t >= t0);
     let i1 = h.times.length - 1;
-    while (i1 > i0 && h.temp[i1] == null) i1--;
-    if (i0 < 0 || i1 - i0 < 12) { box.innerHTML = '<div class="msg">Für diese Tage gibt es noch keinen Stundenverlauf.</div>'; return; }
+    while (i1 > i0 && main[i1] == null) i1--;
+    if (i0 < 0 || i1 - i0 < 12) return null;
     const x0 = h.times[i0], x1 = h.times[i1], now = Date.now();
     const X = (t) => ((t - x0) / 36e5) * LP_PX, W = Math.round(X(x1)) + 2;
     const I = []; for (let j = i0; j <= i1; j++) I.push(j);
@@ -12529,6 +12631,73 @@ pako/dist/pako.esm.mjs:
       + `<div class="lp-days">${days.map((t, k) => { const e = k < days.length - 1 ? days[k + 1] : x1; return `<div style="left:${X(t).toFixed(1)}px;width:${Math.max(0, X(e) - X(t)).toFixed(1)}px"><b>${esc(lpDay(t + 12 * 36e5))}</b></div>`; }).join('')}</div>`;
     const path = (arr) => { let d = '', pen = false; for (const j of I) { const v = arr[j]; if (v == null) { pen = false; continue; } d += (pen ? 'L' : 'M') + X(h.times[j]).toFixed(1) + ' ' + v.toFixed(1); pen = true; } return d; };
     const mapY = (arr, Y) => h.times.map((_, j) => (arr && arr[j] != null ? Y(arr[j]) : null));
+    return { i0, x0, x1, now, X, W, I, at, hours, days, blocks, past, vGrid, xLabels, path, mapY };
+  }
+  // Wischen gemeinsam, Tipp zeigt die Werte der Stunde (tips: je Grafik eine Funktion j → HTML)
+  function lpWire(box, F, h, tips) {
+    const { x0, i0, I, X } = F;
+    const scs = [...box.querySelectorAll('.lp-s')];
+    let syncing = false;
+    scs.forEach((sc) => sc.addEventListener('scroll', () => {
+      if (syncing) return;
+      syncing = true;
+      for (const o of scs) if (o !== sc) o.scrollLeft = sc.scrollLeft;
+      requestAnimationFrame(() => { syncing = false; });
+    }, { passive: true }));
+    scs.forEach((sc, k) => {
+      const inner = sc.firstElementChild, tip = inner.querySelector('.lp-tip');
+      sc.addEventListener('click', (ev) => {
+        const r = inner.getBoundingClientRect(), t = x0 + ((ev.clientX - r.left) / LP_PX) * 36e5;
+        let j = i0; for (const q of I) if (Math.abs(h.times[q] - t) < Math.abs(h.times[j] - t)) j = q;
+        const x = X(h.times[j]);
+        box.querySelectorAll('.lp-cur').forEach((c) => { c.setAttribute('x1', x); c.setAttribute('x2', x); c.setAttribute('visibility', 'visible'); });
+        box.querySelectorAll('.lp-tip').forEach((o) => { if (o !== tip) o.hidden = true; });
+        tip.innerHTML = tips[k](j);
+        tip.hidden = false;
+        tip.style.left = clamp(x - tip.offsetWidth / 2, sc.scrollLeft + 2, sc.scrollLeft + sc.clientWidth - tip.offsetWidth - 2) + 'px';
+      });
+    });
+  }
+  const lpF1 = (v, u, d = 0) => (v == null ? '–' : v.toFixed(d).replace('-', '−') + u);
+  // Nullgrad- und Schneefallgrenze: Linien in m ü. M.; fehlt die Schneefallgrenze im Modell, gilt «Nullgradgrenze − 300 m»
+  // (Faustregel, gestrichelt). Die Höhe des Ortes steht als graue Linie dabei.
+  function lpZero(F, h, alt) {
+    const { I, X, W, past, vGrid, xLabels, path, mapY } = F;
+    if (!h.fz || !I.some((j) => h.fz[j] != null)) return null;
+    const est = !h.sl || !I.some((j) => h.sl[j] != null);
+    const sl = est ? h.fz.map((v) => (v == null ? null : Math.max(0, v - 300))) : h.times.map((_, j) => (h.sl[j] != null ? h.sl[j] : null));
+    const vs = I.flatMap((j) => [h.fz[j], sl[j]]).filter((v) => v != null);
+    if (Number.isFinite(alt)) vs.push(alt);
+    const step = Math.max(...vs) - Math.min(...vs) > 2500 ? 1000 : 500;
+    const lo = Math.max(0, Math.floor(Math.min(...vs) / step) * step), hi = Math.ceil(Math.max(...vs) / step) * step + (Math.max(...vs) % step === 0 ? step : 0);
+    const H4 = 140, Y = (v) => 8 + ((hi - v) / (hi - lo)) * (H4 - 12);
+    let g = `<svg class="lp-svg" width="${W}" height="${H4}" viewBox="0 0 ${W} ${H4}">${past}`;
+    for (let v = lo; v <= hi; v += step) g += `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="lp-gl"/>`;
+    g += vGrid(H4);
+    if (Number.isFinite(alt) && alt >= lo && alt <= hi) g += `<line x1="0" x2="${W}" y1="${Y(alt).toFixed(1)}" y2="${Y(alt).toFixed(1)}" class="lp-alt"/>`;
+    // Niederschlag als zarte Balken unten: zeigt, wann die Schneefallgrenze zählt
+    for (const j of I) { const v = h.rr ? h.rr[j] : null; if (v == null || v < 0.1) continue; const x = X(h.times[j] - 36e5); if (x < 0) continue; const bh = Math.min(26, 3 + v * 5); g += `<rect x="${(x + 1).toFixed(1)}" y="${(H4 - 2 - bh).toFixed(1)}" width="${LP_PX - 2}" height="${bh.toFixed(1)}" class="lp-zr"/>`; }
+    g += `<path d="${path(mapY(sl, Y))}" class="lp-sl${est ? ' est' : ''}"/><path d="${path(mapY(h.fz, Y))}" class="lp-fz"/><line class="lp-cur" y1="0" y2="${H4}" visibility="hidden"/></svg>`;
+    const ticks = []; for (let v = lo; v <= hi; v += step) ticks.push(v);
+    const ax = `<svg class="lp-ax" width="100%" height="${H4}">${ticks.map((v) => `<text x="92%" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end">${v}</text>`).join('')}</svg>`;
+    const html = `<h3 class="lp-h">Nullgrad- und Schneefallgrenze</h3>
+      <div class="lp-c">
+        <div class="lp-l">${ax}<div class="lp-u">m</div></div>
+        <div class="lp-s"><div class="lp-in" style="width:${W}px">${g}${xLabels}<div class="lp-tip" hidden></div></div></div>
+        <div class="lp-r"></div>
+      </div>
+      <div class="lp-leg"><span><i class="fz"></i>Nullgradgrenze</span><span><i class="sl${est ? ' est' : ''}"></i>Schneefallgrenze${est ? ' (geschätzt: 300 m unter der Nullgradgrenze)' : ''}</span>${Number.isFinite(alt) ? `<span><i class="alt"></i>Ort ${Math.round(alt)} m</span>` : ''}<span><i class="zr"></i>Niederschlag</span></div>`;
+    const r100 = (v) => (v == null ? '–' : Math.round(v / 100) * 100 + ' m');
+    const tip = (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>0 °C auf ${r100(h.fz[j])}</span><span>Schnee ab ${est && sl[j] != null ? '≈ ' : ''}${r100(sl[j])}</span>`;
+    return { html, tip, est, sl };
+  }
+  function lpRender(box, s) {
+    const h = HF.get(s.id);
+    if (!h) { box.innerHTML = '<div class="msg">Stundenwerte nicht verfügbar.</div>'; return; }
+    const F = lpFrame(h, h.temp);
+    if (!F) { box.innerHTML = '<div class="msg">Für diese Tage gibt es noch keinen Stundenverlauf.</div>'; return; }
+    const { i0, x0, x1, now, X, W, I, at, hours, days, blocks, past, vGrid, xLabels, path, mapY } = F;
+    void i0; void now; void hours; void days;
 
     // 1 · Temperatur und Niederschlag
     const H1 = 176, pt = 8, pb = 2;
@@ -12613,36 +12782,15 @@ pako/dist/pako.esm.mjs:
         <div class="lp-r"></div>
       </div>
       <div class="lp-leg"><span><i class="w"></i>Wind (Mittel)</span><span><i class="g"></i>Böen</span><span>Pfeil: wohin der Wind weht · Zahl: Mittel über 3 Stunden</span></div>`;
-    box.innerHTML = c1 + c2 + c3;
-
-    // gemeinsam wischen; Tipp zeigt die Werte der Stunde
-    const scs = [...box.querySelectorAll('.lp-s')];
-    let syncing = false;
-    scs.forEach((sc) => sc.addEventListener('scroll', () => {
-      if (syncing) return;
-      syncing = true;
-      for (const o of scs) if (o !== sc) o.scrollLeft = sc.scrollLeft;
-      requestAnimationFrame(() => { syncing = false; });
-    }, { passive: true }));
-    const f1 = (v, u, d = 0) => (v == null ? '–' : v.toFixed(d).replace('-', '−') + u);
+    const Z = lpZero(F, h, siteAlt(s, h) ?? s.alt);
+    box.innerHTML = c1 + c2 + c3 + (Z ? Z.html : '<p class="note">Nullgrad- und Schneefallgrenze erscheinen nach der nächsten Aktualisierung der Stundenwerte.</p>');
     const tips = [
-      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>${f1(h.temp[j], ' °C', 1)}${h.q10 && h.q10[j] != null ? ` <small>(${f1(h.q10[j], '', 0)} bis ${f1(h.q90[j], '', 0)})</small>` : ''}</span><span>${f1(h.rr[j], ' mm', 1)}${hasPP && h.pp[j] != null ? ` · ${Math.round(h.pp[j])} %` : ''}</span>`,
+      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>${lpF1(h.temp[j], ' °C', 1)}${h.q10 && h.q10[j] != null ? ` <small>(${lpF1(h.q10[j], '', 0)} bis ${lpF1(h.q90[j], '', 0)})</small>` : ''}</span><span>${lpF1(h.rr[j], ' mm', 1)}${hasPP && h.pp[j] != null ? ` · ${Math.round(h.pp[j])} %` : ''}</span>`,
       (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>${hasSun && h.sun[j] != null ? Math.round(h.sun[j] / 60) + ' min Sonne' : '–'}</span>`,
-      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>Wind ${f1(h.ws[j], ' km/h')}${h.wd[j] != null ? ' aus ' + compass(h.wd[j]) : ''}</span><span>Böen ${f1(h.wg[j], ' km/h')}</span>`,
+      (j) => `<b>${esc(lpDay(h.times[j]))} ${hm(h.times[j])}</b><span>Wind ${lpF1(h.ws[j], ' km/h')}${h.wd[j] != null ? ' aus ' + compass(h.wd[j]) : ''}</span><span>Böen ${lpF1(h.wg[j], ' km/h')}</span>`,
+      ...(Z ? [Z.tip] : []),
     ];
-    scs.forEach((sc, k) => {
-      const inner = sc.firstElementChild, tip = inner.querySelector('.lp-tip');
-      sc.addEventListener('click', (ev) => {
-        const r = inner.getBoundingClientRect(), t = x0 + ((ev.clientX - r.left) / LP_PX) * 36e5;
-        let j = i0; for (const q of I) if (Math.abs(h.times[q] - t) < Math.abs(h.times[j] - t)) j = q;
-        const x = X(h.times[j]);
-        box.querySelectorAll('.lp-cur').forEach((c) => { c.setAttribute('x1', x); c.setAttribute('x2', x); c.setAttribute('visibility', 'visible'); });
-        box.querySelectorAll('.lp-tip').forEach((o) => { if (o !== tip) o.hidden = true; });
-        tip.innerHTML = tips[k](j);
-        tip.hidden = false;
-        tip.style.left = clamp(x - tip.offsetWidth / 2, sc.scrollLeft + 2, sc.scrollLeft + sc.clientWidth - tip.offsetWidth - 2) + 'px';
-      });
-    });
+    lpWire(box, F, h, tips);
     lpScroll(box, null, false);
   }
   // Grafiken zu einem Tag wischen (heute: einige Stunden vor jetzt)
@@ -14629,7 +14777,25 @@ pako/dist/pako.esm.mjs:
 
 /* ── 70-cams.js ── */
   /* ═════════════════════════ Webcams (OpenStreetMap, Wikidata, optional Windy) ═════════════════════════ */
-  const CAMS = { list: null, loading: null, err: null, counts: {} };
+  const CAMS = { list: null, loading: null, err: null, counts: {}, cache: {} };
+  /* Zwischenspeicher der Webcam-Listen in IndexedDB: Die Listen sind gross (tausende Kameras) – im localStorage
+     schlug das Speichern auf dem iPhone still fehl (Speicher voll), und die App lud bei jedem Öffnen alles neu.
+     Ältere Einträge im localStorage werden übernommen und dort gelöscht. */
+  async function camsCacheGet(k) {
+    if (k in CAMS.cache) return CAMS.cache[k];
+    let c = await IDB.get('cams.' + k);
+    const old = store.get('cams.' + k, null);
+    if (old) { if (!c || (old.at || 0) > (c.at || 0)) { c = old; IDB.set('cams.' + k, old); } try { localStorage.removeItem('windsack.cams.' + k); } catch { /* egal */ } }
+    CAMS.cache[k] = c && c.list ? c : null;
+    return CAMS.cache[k];
+  }
+  function camsCacheSet(k, v) { CAMS.cache[k] = v; IDB.set('cams.' + k, v); }
+  // Beim Start: die zusammengeführte Liste vom letzten Mal sofort bereitstellen (Karte und Kachel ohne Warten)
+  async function camsWarm() {
+    if (CAMS.list) return;
+    const c = await IDB.get('camsAll');
+    if (c && Array.isArray(c.list) && c.list.length && !CAMS.list) { CAMS.list = c.list; CAMS.counts = c.counts || {}; CAMS.at = c.at || 0; BUS.emit('cams'); }
+  }
   const camLayer = L.layerGroup();
   const OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
   const OVERPASS_Q = '[out:json][timeout:50];area["ISO3166-1"="CH"][admin_level=2]->.ch;'
@@ -14730,15 +14896,15 @@ pako/dist/pako.esm.mjs:
     if (CAMS.loading) return CAMS.loading;
     CAMS.loading = (async () => {
       const key = store.get('windyKey', '');
-      const cached = (k, days) => { const c = store.get('cams.' + k, null); return !force && c && c.list && Date.now() - c.at < days * 864e5 ? c.list : null; };
+      const cached = async (k, days) => { const c = await camsCacheGet(k); return !force && c && c.list && Date.now() - c.at < days * 864e5 ? c.list : null; };
       const src = [['rs', camsRoundshot, 0], ['osm', camsOsm, 7], ['wd', camsWikidata, 7], ['ms', camsMeteo, 7]];
       if (key) src.push(['windy', () => camsWindy(key), 1]);
       const res = await Promise.allSettled(src.map(async ([k, fn, days]) => {
         if (!days) return fn(); // ohne Zwischenspeicher (Roundshot: eingebaute Liste)
-        const c = cached(k, days);
+        const c = await cached(k, days);
         if (c) return c;
         const list = await fn();
-        store.set('cams.' + k, { at: Date.now(), list });
+        camsCacheSet(k, { at: Date.now(), list });
         return list;
       }));
       const all = [];
@@ -14746,7 +14912,7 @@ pako/dist/pako.esm.mjs:
       res.forEach((r, i) => {
         const k = src[i][0];
         if (r.status === 'fulfilled') { CAMS.counts[k] = r.value.length; all.push(...r.value); }
-        else { CAMS.counts[k] = -1; const c = store.get('cams.' + k, null); if (c && c.list) all.push(...c.list); }
+        else { CAMS.counts[k] = -1; const c = CAMS.cache[k]; if (c && c.list) all.push(...c.list); }
       });
       // Doppelte (gleicher Link) zusammenführen
       const seen = new Map();
@@ -14757,7 +14923,9 @@ pako/dist/pako.esm.mjs:
         else if (prev.nopos && Number.isFinite(c.lat) && Number.isFinite(c.lon)) Object.assign(prev, { lat: c.lat, lon: c.lon, nopos: false }); // Position aus OSM
       }
       CAMS.list = [...seen.values()];
+      CAMS.at = Date.now();
       CAMS.err = res.every((r) => r.status === 'rejected') ? res[0].reason : null;
+      if (CAMS.list.length) IDB.set('camsAll', { at: CAMS.at, counts: CAMS.counts, list: CAMS.list });
       return CAMS.list;
     })().finally(() => { CAMS.loading = null; });
     return CAMS.loading;
@@ -14799,7 +14967,7 @@ pako/dist/pako.esm.mjs:
       img.src = src;
     } catch { put(''); }
   }
-  const windyBad = () => !!store.get('windyKey', '') && CAMS.counts.windy != null && CAMS.counts.windy < 0 && !(store.get('cams.windy', null) || {}).list;
+  const windyBad = () => !!store.get('windyKey', '') && CAMS.counts.windy != null && CAMS.counts.windy < 0 && !(CAMS.cache.windy || {}).list;
   const windyUrl = () => {
     if (S.mode !== 'cams-map') return 'https://www.windy.com/webcams';
     const c = map.getCenter();
@@ -14817,7 +14985,7 @@ pako/dist/pako.esm.mjs:
       ${cur ? '<button class="btn" id="windy-del">Schlüssel entfernen</button>' : ''}
       <a class="btn" href="${esc(windyUrl())}" target="_blank" rel="noopener">Webcams auf windy.com ansehen ↗</a>`, { cls: 'info', label: 'Windy-Schlüssel' });
     const apply = async (k) => {
-      store.set('windyKey', k); store.set('cams.windy', null);
+      store.set('windyKey', k); camsCacheSet('windy', null);
       closeSheet();
       toast(k ? 'Windy-Schlüssel gespeichert – lade Webcams …' : 'Windy-Schlüssel entfernt', 2500);
       CAMS.list = null;
@@ -19239,6 +19407,7 @@ ${wpts}
       if (alive()) body.innerHTML = quakeListHtml();
       return;
     }
+    if (seg === 'unwetter') { await renderUnwetter(body, alive); return; }
     if (seg === 'aurora') {
       try { await auroraLoad(); } catch (e) { if (alive()) body.innerHTML = auroraErrHtml(e); return; }
       if (alive()) body.innerHTML = auroraHtml();
@@ -19482,6 +19651,190 @@ ${wpts}
     if (badge) badge.remove();
     const unread = asUnread(), alarm = al ? MELD.al.list.some((a) => a.level === 'Alarm') : false;
     if (unread) $('#tile-meld').insertAdjacentHTML('beforeend', `<span class="tile-badge as${alarm ? ' alarm' : ''}" title="neue Meldungen">${unread}</span>`);
+  }
+
+/* ── 79u-unwetter.js ── */
+  /* ═════════════════════════ Unwetter: MeteoSchweiz-Warnungen und Powderalert in einer Karte ═════════════════════════
+     Die Warnungen der MeteoSchweiz lassen sich im Browser nicht abrufen. Die GitHub-Aktion fragt sie alle 30 Minuten
+     für rund 60 Orte (alle Landesteile, Wallis dichter) und für «Meine Orte» ab (Schnittstelle der MeteoSchweiz-App,
+     je Postleitzahl) und legt sie als warnings.json in den Datenspiegel; sie verschickt auch die Mitteilungen.
+     Dazu kommt der Ausblick des Powderalerts (powder.json). */
+  const WN = { d: null, at: 0, err: null };
+  const WN_COL = { 2: '#f2cf1d', 3: '#f08a00', 4: '#e2001a', 5: '#8b0000' };
+  const WN_LVL = { 2: 'mässige Gefahr', 3: 'erhebliche Gefahr', 4: 'grosse Gefahr', 5: 'sehr grosse Gefahr' };
+  // Art der Warnung: zuerst aus dem Text (eindeutig), sonst aus der Kennzahl der MeteoSchweiz-App
+  const WN_KW = [['Gewitter', /gewitter/i], ['Hitze', /hitze/i], ['Waldbrand', /waldbrand/i], ['Hochwasser', /hochwasser/i], ['Lawinen', /lawine/i],
+    ['Strassenglätte', /glätte|glatteis/i], ['Frost', /frost/i], ['Schnee', /schnee/i], ['Wind', /wind|sturm|böen/i], ['Regen', /regen|niederschl/i], ['Trockenheit', /trocken/i]];
+  const WN_TYPE = { 0: 'Wind', 1: 'Gewitter', 2: 'Regen', 3: 'Schnee', 4: 'Strassenglätte', 5: 'Frost', 7: 'Hitze', 8: 'Lawinen', 10: 'Waldbrand', 11: 'Hochwasser', 13: 'Trockenheit' };
+  const wnType = (w) => { const k = WN_KW.find(([, re]) => re.test(w.tx || '')); return k ? k[0] : WN_TYPE[w.t] || 'Warnung'; };
+  const fWn = new Intl.DateTimeFormat('de-CH', { timeZone: TZ, weekday: 'short', hour: '2-digit', minute: '2-digit' });
+  const wnTime = (w) => `${w.f ? fWn.format(w.f).replace(',', '') : 'jetzt'}${w.to ? ' – ' + (ymdLocal(w.to) === ymdLocal(w.f || Date.now()) ? hm(w.to) : fWn.format(w.to).replace(',', '')) : ''}`;
+  async function wnLoad(force = false) {
+    if (!force && WN.d && Date.now() - WN.at < 5 * 60e3) return WN.d;
+    try { const j = await mirrorGet('warnings.json', 3); WN.d = j && j.pts ? j : null; WN.err = null; } catch (e) { WN.err = e; if (!WN.d) throw e; }
+    WN.at = Date.now();
+    return WN.d;
+  }
+  // Gültige Warnungen zusammenfassen: gleiche Art, Stufe und Zeit → eine Warnung mit allen betroffenen Orten
+  function wnGroups(d) {
+    const now = Date.now(), g = new Map();
+    for (const [plz, p] of Object.entries((d && d.pts) || {})) {
+      for (const w of p.w || []) {
+        if (w.l < 2 || (w.to && w.to < now)) continue;
+        const ty = wnType(w), k = `${ty}|${w.l}|${w.f || 0}|${w.to || 0}|${w.o ? 1 : 0}`;
+        if (!g.has(k)) g.set(k, { ty, l: w.l, f: w.f, to: w.to, o: !!w.o, tx: w.tx, pl: [] });
+        g.get(k).pl.push({ plz, n: p.n || plz, la: p.la, lo: p.lo });
+      }
+    }
+    return [...g.values()].sort((a, b) => b.l - a.l || (a.o - b.o) || (a.f || 0) - (b.f || 0));
+  }
+  function wnPlaceMax(d) {
+    const now = Date.now(), m = [];
+    for (const [plz, p] of Object.entries((d && d.pts) || {})) {
+      let pt = Number.isFinite(p.la) ? [p.la, p.lo] : null;
+      if (!pt && LFS.meta) { const q = lfSearch(plz, 5).find((x) => String(x[8] || '').startsWith(plz)); if (q) pt = [q[5], q[6]]; }
+      if (!pt) continue;
+      const ws = (p.w || []).filter((w) => w.l >= 2 && !w.o && (!w.to || w.to > now));
+      m.push({ plz, n: p.n || plz, la: pt[0], lo: pt[1], l: ws.length ? Math.max(...ws.map((w) => w.l)) : 0, ty: ws.length ? [...new Set(ws.map(wnType))] : [] });
+    }
+    return m;
+  }
+  async function renderUnwetter(body, alive) {
+    let d = null, err = null;
+    const [wr] = await Promise.allSettled([wnLoad(), pwMirror()]);
+    if (wr.status === 'fulfilled') d = wr.value; else err = wr.reason;
+    if (!alive()) return;
+    const thr = pushPrefs().pw || 30;
+    const today = SH_PW_FMT.format(Date.now());
+    const pw = PW.mir ? shPwEvents(PW.mir.days, PW.mir.pts, PW.mir.far || [], thr).filter((e) => e.ok && e.day > today) : [];
+    const pwBest = pw.length ? pw.reduce((a, b) => (b.max > a.max ? b : a)) : null;
+    // Karte: Orte in der Farbe der höchsten Warnstufe, dazu die Powder-Orte des nächsten Powdertags
+    const P = d ? wnPlaceMax(d) : [];
+    // Reihenfolge: Orte ohne Warnung, Powder, darüber die Warnungen (höchste Stufe zuoberst)
+    let dots = P.filter((p) => !p.l).map((p) => dotAt(p.la, p.lo, 4, 'rgba(120,135,150,0.55)')).join('');
+    if (pwBest && PW.mir) {
+      const k = PW.mir.days.indexOf(pwBest.day);
+      PW.mir.pts.forEach((a, i) => {
+        const cm = a[k], q = SH_PW[i];
+        if (cm == null || cm < thr || !q) return;
+        dots += `<g><circle cx="${wx(q[3]).toFixed(1)}" cy="${wy(q[2]).toFixed(1)}" r="10" fill="#2f6fd0" stroke="#fff" stroke-width="2"/><text x="${wx(q[3]).toFixed(1)}" y="${(wy(q[2]) + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${Math.round(cm)}</text></g>`;
+      });
+    }
+    dots += P.filter((p) => p.l).sort((a, b) => a.l - b.l).map((p) => dotAt(p.la, p.lo, 9 + (p.l - 2) * 2, WN_COL[p.l])).join('');
+    const G = d ? wnGroups(d) : [];
+    const act = G.filter((x) => !x.o), out = G.filter((x) => x.o);
+    const maxL = act.length ? Math.max(...act.map((x) => x.l)) : 0;
+    const head = act.length
+      ? `${act.length} ${act.length === 1 ? 'Warnung' : 'Warnungen'} · höchste Stufe ${maxL} (${WN_LVL[maxL]})`
+      : d ? 'Keine Warnungen ab Stufe 2 an den abgefragten Orten' : 'Warnungen nicht verfügbar';
+    const card = (x) => `<details class="wn-it" style="--c:${WN_COL[x.l]}"><summary><span class="wn-l">${x.l}</span><span class="wn-t"><b>${esc(x.ty)}${x.o ? ' · Vorinformation' : ''}</b><small>${esc(wnTime(x))} · ${esc(x.pl.slice(0, 6).map((p) => p.n).join(', '))}${x.pl.length > 6 ? ` und ${x.pl.length - 6} weitere` : ''}</small></span></summary>
+        <p class="note">${esc(x.tx || `Gefahrenstufe ${x.l}: ${WN_LVL[x.l] || ''}.`)}</p>${x.pl.length > 6 ? `<p class="note"><b>Orte:</b> ${esc(x.pl.map((p) => p.n).join(', '))}</p>` : ''}</details>`;
+    const pwRows = pw.slice(0, 4).map((e) => `<div class="wn-pw"><b>${esc(shPwLabel(e.day))}</b><span>bis ${Math.round(e.max)} cm · ${esc(e.top.slice(0, 4).map(([i, cm]) => `${SH_PW[i][0]} ${Math.round(cm)}`).join(', '))}${e.far ? ' · Fernsicht' : ''}</span></div>`).join('');
+    body.innerHTML = `<article class="card wn-card">
+        <div><div class="eyebrow">MeteoSchweiz · Powderalert</div><h2 class="card-title">Unwetter &amp; Powder</h2></div>
+        <div class="wn-map">${miniMap('hill', null, dots)}</div>
+        <div class="wn-leg">${[2, 3, 4, 5].map((l) => `<span><i style="background:${WN_COL[l]}"></i>${l}</span>`).join('')}<span>Gefahrenstufe</span><span><i class="pw"></i>Powder ab ${thr} cm${pwBest ? ' · ' + esc(shPwLabel(pwBest.day)) : ''}</span></div>
+        <p class="wn-sum"><b>${esc(head)}</b>${pwBest ? `<br>Powder in Sicht: ${esc(shPwLabel(pwBest.day))} bis ${Math.round(pwBest.max)} cm` : PW.mir ? `<br>Kein Powdertag ab ${thr} cm in Sicht` : ''}</p>
+      </article>
+      ${err && !d ? (err.setup || err.stale ? `<article class="card"><p class="note">${err.setup ? 'Die MeteoSchweiz-Warnungen kommen über den Datenspiegel der GitHub-Aktion.' : 'Die Warnungen im Datenspiegel sind veraltet – läuft die GitHub-Aktion?'} Die neue Fassung von windsack-bot.mjs muss im Repository liegen.</p>${setupBtn}</article>` : `<div class="msg err">Warnungen nicht verfügbar: ${esc(errText(err))}</div>`) : ''}
+      ${act.length ? `<h3 class="sec-t out">Warnungen</h3><div class="wn-list">${act.map(card).join('')}</div>` : ''}
+      ${out.length ? `<h3 class="sec-t out">Vorinformationen</h3><div class="wn-list">${out.map(card).join('')}</div>` : ''}
+      <h3 class="sec-t out">Powderalert</h3>
+      <article class="card">${pwRows || `<p class="note">${PW.mir ? `Die Prognose zeigt in den nächsten 7 Tagen keinen Powdertag ab ${thr} cm an mindestens zwei Orten.` : 'Ausblick nicht verfügbar (Datenspiegel).'}</p>`}
+        <button class="btn" data-nav="schnee/powder">${IC.powder || IC.snowflake}Powder-Karte öffnen</button></article>
+      <button class="btn" data-push-setup>${IC.bell}Mitteilungen: Unwetter und Powderalert</button>
+      <p class="note">Quelle: MeteoSchweiz (Warnungen der MeteoSchweiz-App, abgefragt je Postleitzahl für ${d ? Object.keys(d.pts).length : 'rund 60'} Orte und «Meine Orte»)${d ? `, Stand ${esc(hm(tsOf(d.at)))}` : ''}. Massgebend sind die Warnungen auf <a href="https://www.meteoschweiz.admin.ch/wetter/gefahren.html" target="_blank" rel="noopener">meteoschweiz.ch</a> und <a href="https://www.naturgefahren.ch" target="_blank" rel="noopener">naturgefahren.ch</a>. Powderalert: Neuschnee-Prognose der GitHub-Aktion (ICON über Open-Meteo).</p>`;
+  }
+
+  /* ═════════════════════════ Walliser Alpen: Nullgrad- und Schneefallgrenze ═════════════════════════
+     Mittel aus fünf Orten (Zermatt, Saas-Fee, Arolla, Lötschental, Goms), Modell ICON (DWD) über Open-Meteo,
+     eine Stunde zwischengespeichert. Fehlt die Schneefallgrenze, gilt Nullgradgrenze − 300 m (geschätzt). */
+  const WAL_PTS = [['Zermatt', 46.02, 7.75], ['Saas-Fee', 46.11, 7.93], ['Arolla', 46.03, 7.48], ['Lötschental', 46.41, 7.80], ['Goms', 46.49, 8.26]];
+  const WAL = { d: null, p: null };
+  function wallisLoad(force = false) {
+    const c = WAL.d || store.get('wallis', null);
+    if (!force && c && c.times && Date.now() - c.at < 60 * 60e3) { WAL.d = c; return Promise.resolve(c); }
+    if (WAL.p) return WAL.p;
+    WAL.p = (async () => {
+      const url = `${OM}?latitude=${WAL_PTS.map((p) => p[1]).join(',')}&longitude=${WAL_PTS.map((p) => p[2]).join(',')}`
+        + '&hourly=freezing_level_height,snowfall_height,precipitation&models=icon_seamless&timeformat=unixtime&past_days=1&forecast_days=7';
+      const arr = [].concat(await getJSON(url, 30000));
+      const base = arr[0] && arr[0].hourly;
+      if (!base || !Array.isArray(base.time)) throw new Error('keine Stundenwerte');
+      const times = base.time.map((t) => t * 1000);
+      const mean = (k) => times.map((_, i) => { let s = 0, n = 0; for (const o of arr) { const v = o && o.hourly && o.hourly[k] ? o.hourly[k][i] : null; if (v != null && Number.isFinite(v)) { s += v; n++; } } return n ? s / n : null; });
+      WAL.d = { at: Date.now(), times, fz: mean('freezing_level_height'), sl: mean('snowfall_height'), rr: mean('precipitation') };
+      store.set('wallis', WAL.d);
+      return WAL.d;
+    })().finally(() => { WAL.p = null; });
+    return WAL.p;
+  }
+  const walAt = (d, t) => { let j = -1; for (let i = 0; i < d.times.length; i++) if (d.times[i] <= t) j = i; return j; };
+  const r100 = (v) => (v == null ? null : Math.round(v / 100) * 100);
+  // Schneefallgrenze einer Stunde (Modellwert, sonst geschätzt)
+  const walSl = (d, j) => (d.sl[j] != null ? d.sl[j] : d.fz[j] != null ? d.fz[j] - 300 : null);
+  function wallisNow(d) {
+    const j = walAt(d, Date.now());
+    if (j < 0) return null;
+    const j24 = walAt(d, Date.now() + 24 * 36e5);
+    return { fz: r100(d.fz[j]), sl: r100(walSl(d, j)), est: d.sl[j] == null, fz24: j24 >= 0 ? r100(d.fz[j24]) : null };
+  }
+  async function renderWallis() {
+    const body = $('#wallis-body');
+    $('#page-wallis').scrollTop = 0;
+    body.innerHTML = '<div class="msg">Lade Nullgrad- und Schneefallgrenze …</div>';
+    let d;
+    try { d = await wallisLoad(); } catch (e) {
+      if (S.view === 'wallis') { body.innerHTML = `<div class="msg err">Nicht verfügbar: ${esc(errText(e))}</div><button class="btn" data-wal-retry>Nochmals versuchen</button>`; body.querySelector('[data-wal-retry]').addEventListener('click', () => renderWallis()); }
+      return;
+    }
+    if (S.view !== 'wallis') return;
+    const n = wallisNow(d);
+    const h = { times: d.times, fz: d.fz, sl: d.sl.some((v) => v != null) ? d.sl : null, rr: d.rr };
+    const F = lpFrame(h, h.fz), Z = F ? lpZero(F, h, null) : null;
+    // Tage: Nullgradgrenze tiefst–höchst, Schneefallgrenze während Niederschlag, Niederschlag
+    const days = [];
+    const t0 = localMidnight(ymdLocal(Date.now()));
+    for (let k = 0; k < 7; k++) {
+      const a = t0 + k * 864e5, b = a + 864e5, J = [];
+      d.times.forEach((t, j) => { if (t > a && t <= b) J.push(j); });
+      const fz = J.map((j) => d.fz[j]).filter((v) => v != null);
+      if (fz.length < 12) continue;
+      const wet = J.filter((j) => (d.rr[j] || 0) >= 0.1), sl = (wet.length ? wet : J).map((j) => walSl(d, j)).filter((v) => v != null);
+      const rr = J.reduce((s, j) => s + (d.rr[j] || 0), 0);
+      days.push({ a, fz0: r100(Math.min(...fz)), fz1: r100(Math.max(...fz)), sl0: sl.length ? r100(Math.min(...sl)) : null, sl1: sl.length ? r100(Math.max(...sl)) : null, wet: wet.length > 0, rr });
+    }
+    const rng = (x, y) => (x == null ? '–' : x === y ? `${x} m` : `${x}–${y} m`);
+    body.innerHTML = `<article class="card wal-now">
+        <div class="wal-big"><div><small>Nullgradgrenze jetzt</small><b style="color:var(--lp-fz)">${n && n.fz != null ? n.fz + ' m' : '–'}</b>${n && n.fz24 != null ? `<span>in 24 h: ${n.fz24} m</span>` : ''}</div>
+          <div><small>Schneefallgrenze jetzt</small><b style="color:var(--lp-sl)">${n && n.sl != null ? (n.est ? '≈ ' : '') + n.sl + ' m' : '–'}</b><span>${n && n.est ? 'geschätzt (0 °C − 300 m)' : 'Modell ICON'}</span></div></div>
+        <p class="note">Mittel aus ${WAL_PTS.map((p) => p[0]).join(', ')}.</p></article>
+      ${Z ? `<article class="card"><div class="lp wal-lp">${Z.html}</div></article>` : ''}
+      <h3 class="sec-t out">Die nächsten Tage</h3>
+      <div class="list">${days.map((x) => `<div class="row wal-row"><span class="row-t"><b>${esc(lpDay(x.a + 12 * 36e5))}</b><small>${x.rr >= 0.5 ? `Niederschlag ${x.rr < 10 ? x.rr.toFixed(1) : Math.round(x.rr)} mm` : 'trocken'}</small></span>
+        <span class="wal-v"><span><i style="background:var(--lp-fz)"></i>0 °C ${rng(x.fz0, x.fz1)}</span><span><i style="background:var(--lp-sl)"></i>Schnee ${x.wet ? 'ab ' : '≈ '}${rng(x.sl0, x.sl1)}</span></span></div>`).join('')}</div>
+      <p class="note">Nullgradgrenze: Höhe, auf der die Luft 0 °C hat. Schneefallgrenze: ab dieser Höhe fällt Niederschlag als Schnee – meist 200–400 m unter der Nullgradgrenze, bei Föhn und Inversionen auch anders. An Tagen ohne Niederschlag ist sie ein Richtwert. Daten: ICON (DWD) über <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, Stand ${esc(hm(d.at))}.</p>`;
+    const lp = body.querySelector('.wal-lp');
+    if (lp && Z) { lpWire(lp, F, h, [Z.tip]); lpScroll(lp, null, false); }
+  }
+  // Kachel auf der Startseite (Thema Winter)
+  const WAL_ART = `<svg class="art" viewBox="0 0 200 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs><linearGradient id="walsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8db7e3"/><stop offset="1" stop-color="#dfeaf6"/></linearGradient></defs>
+    <rect width="200" height="180" fill="url(#walsky)"/>
+    <path d="M0 180 L0 166 L26 154 L48 160 L78 136 L92 141 L108 118 L126 140 L146 148 L170 134 L200 146 L200 180Z" fill="#6f879d"/>
+    <path d="M78 136 L92 141 L108 118 L126 140 L117 138 L109 145 L100 140 L90 145Z M26 154 L48 160 L40 161 L32 158Z M170 134 L200 146 L190 146 L178 140Z" fill="#fff"/>
+    <path d="M0 130 C40 126 80 134 120 127 S180 122 200 125" fill="none" stroke="#d9481c" stroke-width="3" stroke-dasharray="7 5"/>
+    <path d="M0 146 C40 142 80 150 120 144 S180 140 200 143" fill="none" stroke="#2f6fd0" stroke-width="3"/>
+    <text x="6" y="124" font-size="11" font-weight="800" fill="#b23a12">0 °C</text><text x="6" y="164" font-size="11" font-weight="800" fill="#fff">Schnee</text></svg>`;
+  function wallisTile() {
+    const tm = $('#tm-wallis'), tf = $('#tf-wallis');
+    if (!tm || !tf) return;
+    if (!tm.firstChild) tm.innerHTML = WAL_ART;
+    const d = WAL.d || store.get('wallis', null);
+    const n = d && d.times ? wallisNow(d) : null;
+    tf.innerHTML = n ? `<b>0 °C auf ${n.fz} m</b><span>Schnee ab ${n.est ? '≈ ' : ''}${n.sl} m · Walliser Alpen</span>` : '<b>Nullgrad- und Schneefallgrenze</b><span>Walliser Alpen · 7 Tage</span>';
+    // höchstens alle 10 Minuten ein Versuch (die Kachel wird oft neu gezeichnet)
+    if ((!d || !d.times || Date.now() - d.at > 60 * 60e3) && Date.now() - (WAL.tryAt || 0) > 10 * 60e3) { WAL.tryAt = Date.now(); wallisLoad().then(() => rerenderHome()).catch(() => null); }
   }
 
 /* ── 80-home.js ── */
@@ -19755,9 +20108,9 @@ ${wpts}
   const TOPICS = [
     { k: 'wetter', t: 'Wetter', s: 'Wind, Föhn, Niederschlag, Modelle, Webcams', ic: 'wx' },
     { k: 'karten', t: 'Karten', s: 'Landeskarte, Touren, Rundblick', ic: 'map' },
-    { k: 'winter', t: 'Winter', s: 'Schnee, Lawinen, Powder, Skitouren', ic: 'snowflake' },
+    { k: 'winter', t: 'Winter', s: 'Schnee, Lawinen, Powder, Nullgradgrenze', ic: 'snowflake' },
     { k: 'fliegen', t: 'Fliegen', s: 'Thermik', ic: 'xc' },
-    { k: 'meld', t: 'Meldungen', s: 'Alarme, Nordlicht, Erdbeben', ic: 'bell' },
+    { k: 'meld', t: 'Meldungen', s: 'Alarme, Unwetter, Nordlicht, Erdbeben', ic: 'bell' },
   ];
   const TILES = [
     { k: 'tag', th: 'wetter', ic: 'report', nav: 'tag', t: 'Tagesbericht', s: 'Umgebung meiner Orte', map: 'grau' },
@@ -19769,12 +20122,13 @@ ${wpts}
     { k: 'karte', th: 'karten', ic: 'map', nav: 'karte', t: 'Karte', s: 'swisstopo', map: 'farbe' },
     { k: 'peak', th: 'karten', ic: 'pano', nav: 'peak', t: 'Panorama', s: 'Gipfel · Kamera', map: null },
     { k: 'schnee', th: 'winter', ic: 'snowflake', nav: 'schnee', t: 'Schnee & Lawinen', s: 'SLF · Bulletin · Powder', map: 'grau' },
+    { k: 'wallis', th: 'winter', ic: 'mtn', nav: 'wallis', t: 'Walliser Alpen', s: 'Nullgrad · Schneefallgrenze', map: null },
     { k: 'skitour', th: 'winter', ic: 'ski', nav: 'karte/skitour', t: 'Skitour planen', s: 'Route · Lawinen-Check', map: 'farbe' },
     { k: 'xc', th: 'fliegen', ic: 'xc', nav: 'xc', t: 'XC Therm', s: 'ICON-D2', map: null },
-    { k: 'meld', th: 'meld', ic: 'alert', nav: 'meldungen/alert', t: 'Meldungen', s: 'Alertswiss · Nordlicht · Erdbeben', map: 'grau' },
+    { k: 'meld', th: 'meld', ic: 'alert', nav: 'meldungen/alert', t: 'Meldungen', s: 'Alertswiss · Unwetter · Nordlicht', map: 'grau' },
   ];
   // Thema einer Ansicht (bestimmt deren Farbe)
-  const VIEW_TOPIC = { tag: 'wetter', wind: 'wetter', foehn: 'wetter', anim: 'wetter', cams: 'wetter', ort: 'wetter', orte: 'wetter', modelle: 'wetter', karte: 'karten', peak: 'karten', schnee: 'winter', xc: 'fliegen', meldungen: 'meld' };
+  const VIEW_TOPIC = { tag: 'wetter', wind: 'wetter', foehn: 'wetter', anim: 'wetter', cams: 'wetter', ort: 'wetter', orte: 'wetter', modelle: 'wetter', wallis: 'winter', karte: 'karten', peak: 'karten', schnee: 'winter', xc: 'fliegen', meldungen: 'meld' };
   // Eigene Reihenfolge (lange drücken und ziehen, innerhalb eines Themas); neue Blätter erscheinen an ihrer Standardstelle
   function tileOrder() {
     const def = TILES.map((d) => d.k), saved = store.get('tileOrder', null);
@@ -19862,7 +20216,7 @@ ${wpts}
     const rTxt = !R.latest ? '' : radarWetCH(R.latest) >= 6 ? 'Niederschlag im Radar' : R.latest.wet ? 'In der Schweiz trocken' : 'Kein Niederschlag';
     $('#tf-anim').innerHTML = R.latest ? `<b>${rTxt}</b><span>Radar ${hm(R.latest.t)} · ${esc(ago(R.latest.t))}</span>` : `<span>${R.err ? 'Radar nicht erreichbar' : 'Radarbild wird geladen …'}</span>`;
     // Webcams
-    const cams = CAMS.list || [...(store.get('cams.osm', null)?.list || []), ...(store.get('cams.wd', null)?.list || [])];
+    const cams = CAMS.list || [];
     const inCh = cams.filter((c) => Number.isFinite(c.lat) && Number.isFinite(c.lon) && c.lat > 45.6 && c.lat < 48 && c.lon > 5.7 && c.lon < 10.7);
     $('#tm-cams').innerHTML = miniMap('hill', null, inCh.slice(0, 700).map((c) => dotAt(c.lat, c.lon, c.src === 'Roundshot' ? 5.5 : 4.5, c.src === 'Roundshot' ? 'var(--accent)' : 'var(--slate)')).join(''));
     const nRs = cams.filter((c) => c.src === 'Roundshot').length;
@@ -19882,6 +20236,7 @@ ${wpts}
     }
     meldTile();
     tagTile();
+    wallisTile();
     // Panorama (PeakFinder) für den gewählten Ort
     $('#tm-peak').innerHTML = PF_ART;
     $('#tf-peak').innerHTML = '<b>Gipfel ringsum</b><span>Rundblick ab Standort · Gipfel im Kamerabild</span>';
@@ -21877,7 +22232,23 @@ ${wpts}
      Ablauf: Erlaubnis → Schlüsselpaar (VAPID) auf dem Gerät erzeugen → Abo beim Push-Dienst von Apple/Google →
      Code mit Abo, Schlüssel und Auswahl als Secret «WINDSACK_PUSH» im Repository speichern. */
   const PUSH = { reg: null, sub: null, busy: false };
-  const pushPrefs = () => { const p = Object.assign({ a: 1, n: 6.67, q: 0, pw: 0 }, store.get('pushPrefs', {})); p.pw = SH_PW_THR.includes(+p.pw) ? +p.pw : 0; return p; };
+  const pushPrefs = () => { const p = Object.assign({ a: 1, n: 6.67, q: 0, pw: 0, w: 0 }, store.get('pushPrefs', {})); p.pw = SH_PW_THR.includes(+p.pw) ? +p.pw : 0; p.w = [2, 3, 4].includes(+p.w) ? +p.w : 0; return p; };
+  /* Orte für die Unwetterwarnungen: Postleitzahlen aus «Meine Orte» (Ort der Lokalprognose, sonst der nächste Ort mit
+     PLZ), höchstens 12 – je [PLZ, Name, Breite, Länge]. Die GitHub-Aktion fragt diese zusätzlich ab. */
+  function pushPlaces() {
+    const out = [], seen = new Set();
+    for (const e of FAV.list) {
+      const t = entryTarget(e);
+      let q = t.pt && t.pt[8] ? t.pt : null;
+      if (!q && Number.isFinite(t.lat) && LFS.meta) q = lfNearest(t.lat, t.lon, 1, (x) => lfKind(x) === 'Ort' && !!x[8])[0] || null;
+      const plz = q && q[8] ? String(q[8]).slice(0, 4) : '';
+      if (!/^\d{4}$/.test(plz) || seen.has(plz)) continue;
+      seen.add(plz);
+      out.push([plz, shortName(e.name).slice(0, 30), +(+(q[5] ?? t.lat)).toFixed(3), +(+(q[6] ?? t.lon)).toFixed(3)]);
+      if (out.length >= 12) break;
+    }
+    return out;
+  }
   const b64u = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const unb64u = (s) => Uint8Array.from(atob(String(s).replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((String(s).length + 3) % 4)), (c) => c.charCodeAt(0));
   const isIos = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -21936,7 +22307,7 @@ ${wpts}
     const s = PUSH.sub ? PUSH.sub.toJSON() : store.get('pushSub', null);
     if (!s || !s.endpoint || !s.keys) return '';
     const k = await vapidKeys(), p = pushPrefs();
-    const o = { v: 1, n: deviceName(), pub: k.pub, priv: k.priv, sub: { endpoint: s.endpoint, keys: { p256dh: s.keys.p256dh, auth: s.keys.auth } }, p: { a: p.a ? 1 : 0, n: +p.n || 0, q: +p.q || 0, pw: +p.pw || 0 }, at: new Date().toISOString().slice(0, 10) };
+    const o = { v: 1, n: deviceName(), pub: k.pub, priv: k.priv, sub: { endpoint: s.endpoint, keys: { p256dh: s.keys.p256dh, auth: s.keys.auth } }, p: { a: p.a ? 1 : 0, n: +p.n || 0, q: +p.q || 0, pw: +p.pw || 0, w: +p.w || 0, wp: p.w ? pushPlaces() : [] }, at: new Date().toISOString().slice(0, 10) };
     return 'ws1.' + b64u(new TextEncoder().encode(JSON.stringify(o)));
   }
   async function endpointHash(ep) {
@@ -21974,6 +22345,10 @@ ${wpts}
         <label class="ps-row"><input type="checkbox" data-pp="n"${p.n ? ' checked' : ''}><span><b>Nordlicht</b><small>wenn Polarlichter in der Schweiz möglich sind: Vorhersage für die Nacht und «jetzt» (ab Kp 7)</small></span></label>
         <label class="ps-row sub"><input type="checkbox" data-pp="n6"${p.n && p.n < 6.5 ? ' checked' : ''}${p.n ? '' : ' disabled'}><span><b>Empfindlicher: schon ab Kp 6</b><small>nur mit Kamera und bei besten Bedingungen sichtbar</small></span></label>
         <label class="ps-row"><input type="checkbox" data-pp="q"${p.q ? ' checked' : ''}><span><b>Erdbeben ab Magnitude 3</b><small>Schweiz und Grenzgebiet (Erdbebendienst SED)</small></span></label>
+        <label class="ps-row"><input type="checkbox" data-pp="w"${p.w ? ' checked' : ''}><span><b>Unwetterwarnungen MeteoSchweiz</b><small>neue und verschärfte Warnungen für «Meine Orte»${(() => { const pl = pushPlaces(); return pl.length ? ' (' + esc(pl.map((x) => x[1]).join(', ')) + ')' : ' – noch keine Orte mit Postleitzahl, dann für die ganze Schweiz ab Stufe 4'; })()}</small></span></label>
+        <div class="ps-row sub ps-thr" id="ps-w"${p.w ? '' : ' hidden'}><span><b>Ab welcher Gefahrenstufe?</b>
+          <span class="segs txt" role="radiogroup" aria-label="Gefahrenstufe">${[2, 3, 4].map((l) => `<button class="seg" role="radio" data-wthr="${l}" aria-checked="${(p.w || 3) === l}"><span>Stufe ${l}</span></button>`).join('')}</span>
+          <small>2 mässig · 3 erheblich · 4 gross. Ändern sich «Meine Orte», den Code neu ins Secret kopieren.</small></span></div>
         <label class="ps-row"><input type="checkbox" data-pp="pw"${p.pw ? ' checked' : ''}><span><b>Powderalert – ganze Schweiz</b><small>sobald die Prognose viel Neuschnee zeigt (bis 7 Tage voraus), bei deutlich mehr Schnee und am Vorabend zur Bestätigung</small></span></label>
         <div class="ps-row sub ps-thr" id="ps-pw"${p.pw ? '' : ' hidden'}><span><b>Ab wie viel Neuschnee in 24 Stunden?</b>
           <span class="segs txt" role="radiogroup" aria-label="Schwelle Powderalert">${SH_PW_THR.map((t) => `<button class="seg" role="radio" data-pwthr="${t}" aria-checked="${(p.pw || 30) === t}"><span>${t} cm</span></button>`).join('')}</span>
@@ -22010,7 +22385,7 @@ ${wpts}
       else row(perm === 'granted' ? true : perm === 'denied' ? false : null, perm === 'granted' ? 'Mitteilungen erlaubt' : perm === 'denied' ? 'Mitteilungen gesperrt' : 'Noch nicht erlaubt', perm === 'denied' ? 'In den iPhone-Einstellungen → Mitteilungen → Windsack erlauben.' : '');
       if (sup) row(!!sub, sub ? 'Dieses Gerät ist angemeldet' : 'Dieses Gerät ist nicht angemeldet', sub ? 'Push-Dienst: ' + (hostOf(sub.endpoint) || '–') : '');
       const age = mirrorAge(st);
-      const SRC_N = { alertswiss: 'Alertswiss', swpc: 'Nordlicht', quakes: 'Erdbeben', slf: 'SLF', lawinen: 'Lawinen', powder: 'Powder', roundshot: 'Roundshot' };
+      const SRC_N = { alertswiss: 'Alertswiss', warnings: 'Unwetter', swpc: 'Nordlicht', quakes: 'Erdbeben', slf: 'SLF', lawinen: 'Lawinen', powder: 'Powder', roundshot: 'Roundshot' };
       if (st) row(age < 45 * 60e3, age < 45 * 60e3 ? 'GitHub-Aktion läuft' : 'GitHub-Aktion stockt', `letzter Lauf ${ago(tsOf(st.at))}${st.src ? ' · ' + Object.entries(st.src).map(([k, v]) => `${SRC_N[k] || k} ${v && v.ok ? '✓' : '✕'}`).join(' · ') : ''}`);
       else row(false, 'GitHub-Aktion nicht gefunden', `Kein Datenspiegel im Repository ${ghRepo()} (Zweig «data»).`);
       if (st && hash) {
@@ -22034,6 +22409,11 @@ ${wpts}
       if (c.dataset.pp === 'n') { q.n = c.checked ? 6.67 : 0; const s6 = inner.querySelector('[data-pp="n6"]'); s6.disabled = !c.checked; s6.checked = false; }
       if (c.dataset.pp === 'n6') q.n = c.checked ? 6 : 6.67;
       if (c.dataset.pp === 'q') q.q = c.checked ? 3 : 0;
+      if (c.dataset.pp === 'w') {
+        const cur = inner.querySelector('[data-wthr][aria-checked="true"]');
+        q.w = c.checked ? (cur ? +cur.dataset.wthr : 3) : 0;
+        inner.querySelector('#ps-w').hidden = !c.checked;
+      }
       if (c.dataset.pp === 'pw') {
         const cur = inner.querySelector('[data-pwthr][aria-checked="true"]');
         q.pw = c.checked ? (cur ? +cur.dataset.pwthr : 30) : 0;
@@ -22044,6 +22424,16 @@ ${wpts}
       if (PUSH.sub || store.get('pushSub', null)) toast('Auswahl geändert – neuen Code ins Secret WINDSACK_PUSH kopieren', 3500);
     });
     inner.addEventListener('click', async (e) => {
+      const wt = e.target.closest('[data-wthr]');
+      if (wt) {
+        inner.querySelectorAll('[data-wthr]').forEach((x) => x.setAttribute('aria-checked', String(x === wt)));
+        const q = pushPrefs();
+        q.w = +wt.dataset.wthr;
+        store.set('pushPrefs', q);
+        refreshCode();
+        if (PUSH.sub || store.get('pushSub', null)) toast('Auswahl geändert – neuen Code ins Secret WINDSACK_PUSH kopieren', 3500);
+        return;
+      }
       const th = e.target.closest('[data-pwthr]');
       if (th) {
         inner.querySelectorAll('[data-pwthr]').forEach((x) => x.setAttribute('aria-checked', String(x === th)));
@@ -22214,8 +22604,8 @@ ${wpts}
       mode: (seg) => 'schnee-' + seg, act: 'info',
     },
     meldungen: {
-      title: 'Meldungen', segs: [{ k: 'alert', label: 'Alertswiss', ic: 'alert' }, { k: 'aurora', label: 'Nordlicht', ic: 'aurora' }, { k: 'quake', label: 'Erdbeben', ic: 'quake' }],
-      sub: (seg) => (seg === 'aurora' ? 'Polarlichter in der Schweiz · NOAA' : seg === 'quake' ? 'Erdbebendienst SED · 30 Tage' : 'Alarm, Warnung, Information'),
+      title: 'Meldungen', segs: [{ k: 'alert', label: 'Alertswiss', ic: 'alert' }, { k: 'unwetter', label: 'Unwetter', ic: 'bolt' }, { k: 'aurora', label: 'Nordlicht', ic: 'aurora' }, { k: 'quake', label: 'Erdbeben', ic: 'quake' }],
+      sub: (seg) => (seg === 'aurora' ? 'Polarlichter in der Schweiz · NOAA' : seg === 'quake' ? 'Erdbebendienst SED · 30 Tage' : seg === 'unwetter' ? 'Warnungen MeteoSchweiz · Powderalert' : 'Alarm, Warnung, Information'),
       page: () => 'page-meld', act: 'bell',
     },
     xc: { title: 'XC Therm', sub: () => 'ICON-D2 Wind & Thermik', frame: 'xc', act: 'ext' },
@@ -22226,6 +22616,7 @@ ${wpts}
     ort: { title: 'Bericht', sub: () => '', page: () => 'page-ort', act: 'star' },
     tag: { title: 'Tagesbericht', sub: () => 'Umgebung von «Meine Orte»', page: () => 'page-tag', act: 'share' },
     orte: { title: 'Orte', sub: () => 'Suchen und «Meine Orte» verwalten', page: () => 'page-orte', act: 'edit' },
+    wallis: { title: 'Walliser Alpen', sub: () => 'Nullgrad- und Schneefallgrenze · 7 Tage', page: () => 'page-wallis', act: 'info' },
     modelle: { title: 'Wettermodelle', sub: () => `${MM_MODELS.length} Modelle im Vergleich`, page: () => 'page-modelle', act: 'info' },
   };
 
@@ -22291,12 +22682,15 @@ ${wpts}
     setMapMode(mode);
     view.classList.toggle('full', mode === 'karte'); // Karte: ganzer Bildschirm, ohne Kopfzeile
     if (vw === 'foehn' && seg === 'dp') { $('#page-dp').scrollTop = 0; ensureDp(); }
-    if (vw === 'cams') { if (!CAMS.list && !CAMS.loading) ensureCams(); if (seg === 'list') renderCamList(); }
+    // Webcams: gespeicherte Liste sofort zeigen; neu laden nur, wenn sie fehlt oder älter als ein Tag ist (die
+    // einzelnen Quellen haben eigene Zwischenspeicher von 1–7 Tagen)
+    if (vw === 'cams') { if (!CAMS.loading && (!CAMS.list || Date.now() - (CAMS.at || 0) > 864e5)) ensureCams(); if (seg === 'list') renderCamList(); }
     if (vw === 'xc') ensureXc();
     if (vw === 'ort') renderReport(arg);
     if (vw === 'tag') renderTag();
     if (vw === 'orte') renderOrte(true);
     if (vw === 'modelle') renderModelle(arg);
+    if (vw === 'wallis') renderWallis();
     if (vw === 'anim') animSetTab(seg);
     if (vw === 'meldungen') renderMeld(seg);
     if (vw === 'peak') { if (seg === 'cam') arEnter(arg); else renderPeak(arg); }
@@ -22571,6 +22965,9 @@ ${wpts}
       <p class="note"><b>Skitouren:</b> Karten von <a href="https://www.skitourenguru.com/" target="_blank" rel="noopener">Skitourenguru</a> – automatisch erzeugte Aufstiegskorridore oder das Tourengelände (ab Zoom 9) – oder die SAC-Skitourenrouten von swisstopo. Dazu die Lawinengefahr an der Kartenmitte aus dem Bulletin. Die tägliche Risikobewertung jeder Route (grün, orange, rot) gibt es nur auf skitourenguru.com; der Knopf öffnet sie. Karten von Skitourenguru: nur für private, nicht kommerzielle Nutzung. <b>Eigene Skitour planen</b> öffnet den Tourenplaner der Karte mit Hangneigung, Schlüsselstellen und Lawinen-Check (Erklärung im Info-Blatt der Karte).</p>
       <p class="note"><b>Geländeebenen</b> (Symbol rechts): Hangneigung ab 30° (swisstopo) und das Lawinengelände ATH und CAT des SLF. Sie zeigen das Gelände, nicht die aktuelle Lawinensituation.</p>
       <p class="note">Daten: WSL-Institut für Schnee- und Lawinenforschung SLF (CC BY 4.0), MeteoSchweiz, swisstopo. Die Anzeigen ersetzen keine Lawinenbeurteilung vor Ort.</p>`,
+    wallis: () => `<h2 class="sheet-t">Walliser Alpen</h2>
+      <p class="note"><b>Nullgradgrenze:</b> die Höhe, auf der die Luft 0 °C hat. <b>Schneefallgrenze:</b> ab dieser Höhe fällt Niederschlag als Schnee; sie liegt meist 200–400 m unter der Nullgradgrenze. Fehlt sie im Modell, rechnet die App mit 300 m darunter (gestrichelt, «≈»).</p>
+      <p class="note">Werte: Mittel aus ${WAL_PTS.map((p) => p[0]).join(', ')} – Modell ICON des DWD über Open-Meteo, stündlich für 7 Tage. Die violetten Balken zeigen, wann es Niederschlag gibt (dann zählt die Schneefallgrenze). Beide Grenzen gibt es auch im Bericht jedes Ortes (Grafik «Nullgrad- und Schneefallgrenze» und Tagesinfo).</p>`,
     modelle: () => `<h2 class="sheet-t">Wettermodelle</h2>
       <p class="note"><b>Was du siehst:</b> Für einen Ort alle ${MM_MODELS.length} Wettermodelle, die Open-Meteo für die Schweiz rechnet – von ICON-CH1 der MeteoSchweiz (1 km) bis zu den weltweiten Modellen IFS, AIFS, GFS und GEM. Wähle oben Temperatur, Niederschlag (Summe ab jetzt), Wind, Böen oder Bewölkung.</p>
       <p class="note"><b>Farben:</b> Jeder Wetterdienst hat eine eigene Farbe; ein zweites Modell desselben Dienstes ist gestrichelt (ICON-CH1 durchgezogen, ICON-CH2 gestrichelt). Die kräftige Linie ist der Median aller Modelle, die farbige Fläche die Spannweite vom tiefsten bis zum höchsten Modell. Ein Tipp auf ein Modell hebt es hervor, ein Tipp auf die Grafik zeigt darunter die Werte aller Modelle zu dieser Zeit.</p>
@@ -22746,6 +23143,7 @@ ${wpts}
     refreshLive();
     loadDp().then(() => { renderGauges(); BUS.emit('dp'); }).catch(() => null);
     homeLoad();
+    camsWarm();
     setTimeout(() => { if (!R.latest) radarRefresh(); }, 2500);
     // Bodenwind-Prognose im Hintergrund (Vorschau auf der Startseite, schneller Wechsel in die Prognose)
     setTimeout(() => { loadForecast('ground').then(() => BUS.emit('fc')).catch(() => null); }, 7000);

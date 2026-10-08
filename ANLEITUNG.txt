@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.6)
+Inhalt dieses Ordners (Version 11.7)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,31 @@ Inhalt dieses Ordners (Version 11.6)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.7
+  Ersetzen auf GitHub: index.html UND windsack-bot.mjs (die GitHub-Aktion holt neu die Unwetterwarnungen).
+  Für Mitteilungen zu Unwettern: in der App unter Meldungen > Glocke «Unwetterwarnungen MeteoSchweiz» einschalten,
+  Stufe wählen, «Code kopieren» und das Secret WINDSACK_PUSH auf GitHub durch den neuen Code ersetzen.
+  - Wochenprognose: Ein Tipp auf einen Tag zeigt wieder die Tagesinfo darunter – Wetter, Temperatur, Niederschlag
+    (Menge, Wahrscheinlichkeit, von wann bis wann), Sonnenstunden mit Sonnenauf- und -untergang, Wind und Böen,
+    Nullgrad- und Schneefallgrenze. Nochmals tippen schliesst sie; «Stundenverlauf in den Grafiken» springt zu den
+    Grafiken dieses Tages.
+  - Bericht: neue Grafik «Nullgrad- und Schneefallgrenze» (stündlich, mit der Höhe des Ortes und dem Niederschlag).
+  - Walliser Alpen (neue Kachel im Thema Winter, Adresse #/wallis): Nullgrad- und Schneefallgrenze jetzt und für
+    7 Tage, als Grafik und je Tag – Mittel aus Zermatt, Saas-Fee, Arolla, Lötschental und Goms (ICON über Open-Meteo).
+    Fehlt die Schneefallgrenze im Modell, rechnet die App mit 300 m unter der Nullgradgrenze (mit «≈» markiert).
+  - Meldungen > Unwetter (neuer Reiter): eine Karte mit den Unwetterwarnungen der MeteoSchweiz (Punkte in der Farbe
+    der Gefahrenstufe 2–5) zusammen mit dem Powderalert (blaue Zahlen: Neuschnee in cm am nächsten Powdertag),
+    darunter die Warnungen mit Zeitraum, Orten und Text, die Vorinformationen und die nächsten Powdertage.
+    Die Warnungen holt die GitHub-Aktion alle 30 Minuten für rund 60 Orte in allen Landesteilen (Wallis dichter)
+    und für «Meine Orte». Quelle ist die Schnittstelle der MeteoSchweiz-App (je Postleitzahl, inoffiziell – die
+    MeteoSchweiz bietet die Warnungen noch nicht als offene Daten an). Massgebend bleibt meteoschweiz.ch.
+  - Mitteilungen: «Unwetterwarnungen MeteoSchweiz» ab Stufe 2, 3 oder 4 für die Orte aus «Meine Orte» (ohne Orte:
+    ganze Schweiz ab Stufe 4). Gemeldet werden neue und verschärfte Warnungen, Stufe 4 und 5 mit hoher Dringlichkeit.
+    Ändern sich «Meine Orte», den Code neu ins Secret kopieren.
+  - Webcams: Die Liste (tausende Kameras) wird jetzt im grossen Speicher des Browsers (IndexedDB) abgelegt. Bisher
+    war der kleine Speicher auf dem iPhone voll, das Speichern schlug still fehl und die App lud die Webcams bei jedem
+    Öffnen neu. Jetzt erscheinen sie sofort; neu geladen wird höchstens einmal am Tag (je Quelle alle 1–7 Tage).
 
 Neu in Version 11.6
   Ersetzen auf GitHub: nur index.html (matterhorn.jpg aus 11.5 bleibt).
@@ -57,7 +82,7 @@ Neu in Version 11.3
     Zurückkehren in die App und alle 30 Minuten – es wird nur der Anfang der Datei gelesen. «×» fragt nach drei
     Stunden wieder. Von Hand: Windsack-Logo > «Nach neuer Version suchen».
     Wichtig für spätere Versionen: Die Nummer steht im Kopf von index.html (<meta name="windsack-version"
-    content="11.6 · 08.10.2026">). Nur eine höhere Nummer (oder bei gleicher Nummer ein späteres Datum) löst den
+    content="11.7 · 08.10.2026">). Nur eine höhere Nummer (oder bei gleicher Nummer ein späteres Datum) löst den
     Hinweis aus.
 
 Neu in Version 11.2
