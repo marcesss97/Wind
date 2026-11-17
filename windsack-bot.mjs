@@ -611,7 +611,8 @@ async function doQuakes() {
 
 /* ───── SLF-Messnetz: alle Stationen, letzte Werte, 24-h-Verlauf, 7 Tage Schnee ───── */
 async function doSlf() {
-  if (NOW - state.slfAt < 25 * 60e3 && keep('slf.json')) { keep('slf-ser.json'); src('slf', true, { kept: true }); return; }
+  // höchstens einmal je Viertelstunde (0, 15, 30, 45) neu – der Plan der Aktion hat zu jeder Viertelstunde einen Lauf
+  if (Math.floor(NOW / 9e5) === Math.floor(state.slfAt / 9e5) && keep('slf.json')) { keep('slf-ser.json'); src('slf', true, { kept: true }); return; }
   const B = URLS.slf;
   const [st, sp, ms, ds, spm] = await Promise.allSettled([get(B + 'imis/stations'), get(B + 'study-plot/stations'), get(B + 'imis/measurements', { timeout: 120000 }),
     get(B + 'imis/daily-snow?period_in_days=7'), get(B + 'study-plot/measurements')]);

@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.8)
+Inhalt dieses Ordners (Version 11.9)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,13 @@ Inhalt dieses Ordners (Version 11.8)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 11.9
+  Ersetzen auf GitHub: index.html, windsack-bot.mjs UND .github/workflows/windsack.yml (neuer Zeitplan).
+  - Schnee & Lawinen → Messwerte: Die Schneemesswerte (SLF-Stationen) werden alle 15 Minuten aktualisiert
+    (bisher alle 30 Minuten). Die GitHub-Aktion läuft dazu zusätzlich zu jeder Viertelstunde (0, 10, 15, 20, 30,
+    40, 45, 50) und holt das SLF-Messnetz einmal je Viertelstunde. Ist die Karte «Messwerte» offen, lädt die App
+    die neuen Werte selbst nach; die Schneemessungen der MeteoSchweiz fragt sie ebenfalls alle 15 Minuten ab.
 
 Neu in Version 11.8
   - Unwetter: Die Art der Warnung kommt bei Gewitter, Regen, Hitze, Waldbrand und Hochwasser aus der Kennzahl der
