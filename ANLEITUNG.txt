@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 15.0)
+Inhalt dieses Ordners (Version 15.1)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,12 @@ Inhalt dieses Ordners (Version 15.0)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 15.1
+  Ersetzen auf GitHub: index.html.
+  - Startseite genau wie das Vorbild: kein Dock, keine Themen-Überschriften über den Kacheln, oben nur Logo und
+    Suche, Stundenkasten ohne Windzeile (Wind und Böen stehen weiter auf der Ortskarte). Die Schnellwahl bleibt
+    über den Titel jeder Ansicht erreichbar; die Daten aktualisieren sich wie bisher von selbst.
 
 Neu in Version 15.0
   Ersetzen auf GitHub: index.html.

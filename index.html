@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="15.0 · 17.11.2026">
+<meta name="windsack-version" content="15.1 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2846,12 +2846,14 @@ details .as-desc { margin-top: 6px; }
 .tile.wide .tile-badge { top: auto; right: auto; left: 12px; bottom: 12px; }
 .tile-ph { border-radius: 14px; }
 
-/* ── Dock: erscheint erst bei den Kacheln ── */
-.dock { transition: transform 0.25s ease, opacity 0.25s ease; }
-.dock:not(.on) { transform: translate(-50%, 90px); opacity: 0; pointer-events: none; }
-.dock:not(.on) > * { pointer-events: none; }
-.dock .topics-bar, .dock-btn { border: 0; border-radius: 14px; box-shadow: var(--float); }
-.tb { border-radius: 10px; }
+/* ── Wie das Vorbild: kein Dock, keine Themen-Überschriften, oben nur Logo und Suche, Stundenkasten ohne Windzeile ── */
+.dock, .topic-h, .sky-status, #btn-refresh { display: none; }
+.sky-top { justify-content: space-between; }
+.hours { height: 122px; }
+.tiles { gap: 12px; }
+.home-body { padding-bottom: calc(var(--safe-b) + 28px); }
+.tiles-edit.on { bottom: calc(var(--safe-b) + 10px); }
+#home:not([hidden]) ~ .toast, #home:not([hidden]) ~ .upd { bottom: calc(var(--safe-b) + 18px); }
 
 /* ── Ansicht und Seiten ── */
 .vh { background: var(--surface); }
@@ -9796,7 +9798,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.0 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.1 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
