@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="15.4 · 17.11.2026">
+<meta name="windsack-version" content="15.5 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -9803,7 +9803,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.4 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.5 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -10478,6 +10478,27 @@ pako/dist/pako.esm.mjs:
 
   /* ───── SLF-Messnetz ───── */
   // Jüngster gültiger Wert je Feld (Sensoren fallen einzeln aus); älter als 3 h vor dem letzten Wert zählt nicht
+  // Neuschnee der letzten 24 Stunden aus der Schneehöhe der automatischen Stationen (30-min-Werte): Zuwachs von der
+  // tiefsten Schneehöhe der letzten 24 h bis jetzt. So ändert der Wert laufend, nicht nur einmal am Morgen (HN_1D).
+  // Unter 1 cm zählt als 0 (Messrauschen); es braucht mindestens drei Viertel der Werte und einen jungen letzten Wert.
+  function shSlfHn24(rows) {
+    const by = new Map();
+    for (const r of Array.isArray(rows) ? rows : []) {
+      const t = shIso(r && r.measure_date), v = r && r.HS;
+      if (!r || !r.station_code || !Number.isFinite(t) || v == null || v === '' || !Number.isFinite(+v)) continue;
+      (by.get(r.station_code) || by.set(r.station_code, []).get(r.station_code)).push([t, +v]);
+    }
+    const out = new Map();
+    for (const [code, a] of by) {
+      a.sort((x, y) => x[0] - y[0]);
+      const [tl, hl] = a[a.length - 1], w = a.filter((p) => p[0] >= tl - 24 * 36e5);
+      if (w.length < 36 || w[0][0] > tl - 22 * 36e5) continue;
+      const hn = hl - Math.min(...w.map((p) => p[1]));
+      out.set(code, { t: tl, HN: hn < 1 ? 0 : Math.round(hn) });
+    }
+    return out;
+  }
+
   function shSlfLatest(rows) {
     const F = [['HS', 'HS'], ['TA', 'TA_30MIN_MEAN'], ['RH', 'RH_30MIN_MEAN'], ['TSS', 'TSS_30MIN_MEAN'], ['VW', 'VW_30MIN_MEAN'], ['VWX', 'VW_30MIN_MAX'], ['DW', 'DW_30MIN_MEAN'], ['RSWR', 'RSWR_30MIN_MEAN']];
     const m = new Map();
@@ -16554,12 +16575,13 @@ pako/dist/pako.esm.mjs:
 
   // Einheitliches Modell aus dem Spiegel …
   function slfFromMirror(j) {
-    const d = { at: tsOf(j.at), src: 'mirror', st: new Map(), last: new Map(), hn: new Map(), daily: new Map(), spm: new Map() };
+    const d = { at: tsOf(j.at), src: 'mirror', st: new Map(), last: new Map(), hn: new Map(), hn24: new Map(), daily: new Map(), spm: new Map() };
     for (const r of j.st || []) { const [code, name, lat, lon, ele, canton, type] = r; if (code && Number.isFinite(lat)) d.st.set(code, { code, name: name || code, lat, lon, ele: nn(ele), canton: canton || '', kind: 'imis', type: type || '' }); }
     for (const r of j.sp || []) { const [code, name, lat, lon, ele, canton] = r; if (code && Number.isFinite(lat) && !d.st.has(code)) d.st.set(code, { code, name: name || code, lat, lon, ele: nn(ele), canton: canton || '', kind: 'sp', type: '' }); }
     const f = Array.isArray(j.f) ? j.f : ['t', 'HS', 'TA', 'RH', 'TSS', 'VW', 'VWX', 'DW', 'RSWR'];
     for (const [code, arr] of Object.entries(j.last || {})) { if (!Array.isArray(arr)) continue; const o = {}; f.forEach((k, i) => { o[k] = k === 't' ? secMs(arr[i]) : nn(arr[i]); }); d.last.set(code, o); }
     for (const [code, a] of Object.entries(j.hn || {})) if (Array.isArray(a)) d.hn.set(code, { t: secMs(a[0]), HN: nn(a[1]) });
+    for (const [code, a] of Object.entries(j.hn24 || {})) if (Array.isArray(a)) d.hn24.set(code, { t: secMs(a[0]), HN: nn(a[1]) });
     for (const [code, a] of Object.entries(j.daily || {})) if (Array.isArray(a)) d.daily.set(code, a.map((x) => [secMs(x[0]), nn(x[1]), nn(x[2])]));
     for (const [code, a] of Object.entries(j.spm || {})) if (Array.isArray(a)) d.spm.set(code, { t: secMs(a[0]), HS: nn(a[1]), HN: nn(a[2]), HNW: nn(a[3]) });
     return d;
@@ -16569,7 +16591,7 @@ pako/dist/pako.esm.mjs:
     const g = (p) => getJSON(SLF_BASE + p, 30000);
     const [st, sp, ds, spm] = await Promise.allSettled([g('imis/stations'), g('study-plot/stations'), g('imis/daily-snow?period_in_days=7'), g('study-plot/measurements')]);
     if (st.status === 'rejected' && sp.status === 'rejected') throw st.reason;
-    const d = { at: Date.now(), src: 'direct', st: new Map(), last: new Map(), hn: new Map(), daily: new Map(), spm: new Map() };
+    const d = { at: Date.now(), src: 'direct', st: new Map(), last: new Map(), hn: new Map(), hn24: new Map(), daily: new Map(), spm: new Map() };
     const take = (arr, kind) => {
       for (const x of Array.isArray(arr) ? arr : []) {
         if (!x || !x.code || !Number.isFinite(+x.lat) || d.st.has(x.code)) continue;
@@ -16594,12 +16616,13 @@ pako/dist/pako.esm.mjs:
       }
     }
     if (needMeteo) {
-      try { for (const [code, o] of shSlfLatest(await g('imis/measurements'))) d.last.set(code, o); } catch { /* nur Schnee */ }
+      try { const rows = await g('imis/measurements'); for (const [code, o] of shSlfLatest(rows)) d.last.set(code, o); d.hn24 = shSlfHn24(rows); } catch { /* nur Schnee */ }
     }
     return d;
   }
   async function slfLoad(force = false) {
-    const needMeteo = slfField() === 'TA' || slfField() === 'VW';
+    // Wind, Temperatur und der laufende Neuschnee brauchen die 30-min-Werte der automatischen Stationen
+    const needMeteo = slfField() === 'TA' || slfField() === 'VW' || slfField() === 'HN';
     if (!force && SLFD.d && Date.now() - SLFD.at < SLF_EVERY - 30e3 && (!needMeteo || SLFD.d.last.size || SLFD.d.src === 'mirror')) return SLFD.d;
     if (!force && !SLFD.d && SLFD.err && Date.now() - SLFD.errAt < 3 * 60e3) throw SLFD.err; // nicht bei jedem Antippen neu versuchen
     if (SLFD.p) return SLFD.p;
@@ -16634,7 +16657,11 @@ pako/dist/pako.esm.mjs:
     const day = d.daily.get(s.code), dl = day && day.length ? day[day.length - 1] : null, dOk = dl && Date.now() - dl[0] < 50 * 36e5 ? dl : null;
     if (f === 'HS') return fresh && fresh.HS != null ? fresh.HS : spOk && spOk.HS != null ? spOk.HS : dOk ? dOk[1] : null;
     if (f === 'HN') {
-      if (days === 1) { const h = d.hn.get(s.code); return h && h.HN != null && Date.now() - h.t < 50 * 36e5 ? h.HN : spOk ? spOk.HN : null; }
+      if (days === 1) {
+        // automatische Station: laufender Wert der letzten 24 h; sonst der Tageswert vom Morgen
+        const l = d.hn24 && d.hn24.get(s.code); if (l && l.HN != null && Date.now() - l.t < 6 * 36e5) return l.HN;
+        const h = d.hn.get(s.code); return h && h.HN != null && Date.now() - h.t < 50 * 36e5 ? h.HN : spOk ? spOk.HN : null;
+      }
       // Summe der Tageswerte (Messung am Morgen); fehlt mehr als ein Fünftel der Tage, gibt es keinen Wert
       if (!dOk || Date.now() - dOk[0] > 30 * 36e5) return null; // die Reihe muss bis heute (oder gestern früh) reichen
       let sum = 0, n = 0;
@@ -16750,7 +16777,8 @@ pako/dist/pako.esm.mjs:
     const hs = d ? slfVal(d, s, 'HS') : null, hn = d ? slfVal(d, s, 'HN', 1) : null;
     const cells = [];
     if (hs != null || s.type !== 'WIND') cells.push([f1(hs, 'cm'), 'Schneehöhe']);
-    if (hn != null) cells.push([f1(hn, 'cm'), 'Neuschnee 1 Tag']);
+    const hnLive = d && d.hn24 && d.hn24.get(s.code), live = hnLive && Date.now() - hnLive.t < 6 * 36e5;
+    if (hn != null) cells.push([f1(hn, 'cm'), live ? 'Neuschnee 24 h' : 'Neuschnee 1 Tag']);
     if (fresh && fresh.TA != null) cells.push([f1(fresh.TA, '°C'), 'Luft']);
     if (fresh && fresh.TSS != null) cells.push([f1(fresh.TSS, '°C'), 'Schneeoberfläche']);
     if (fresh && fresh.VW != null) cells.push([`${Math.round(fresh.VW * 3.6)} km/h ${fresh.DW != null ? compass(fresh.DW) : ''}`, `Wind${fresh.VWX != null ? ' · Böen ' + Math.round(fresh.VWX * 3.6) : ''}`]);
@@ -16963,7 +16991,8 @@ pako/dist/pako.esm.mjs:
     const d = SLFD.d;
     let t = 0;
     if (d) {
-      if (f === 'HN') { for (const h of d.hn.values()) if (h && h.HN != null && h.t > t) t = h.t; for (const p of d.spm.values()) if (p && p.HN != null && p.t > t) t = p.t; }
+      if (f === 'HN' && snDays() === 1 && d.hn24) for (const h of d.hn24.values()) if (h && h.HN != null && h.t > t && Date.now() - h.t < 6 * 36e5) t = h.t;
+      if (f === 'HN' && !t) { for (const h of d.hn.values()) if (h && h.HN != null && h.t > t) t = h.t; for (const p of d.spm.values()) if (p && p.HN != null && p.t > t) t = p.t; }
       else { const k = f === 'VW' ? 'VW' : f; for (const l of d.last.values()) if (l && l[k] != null && l.t > t) t = l.t; if (f === 'HS' && !t) for (const p of d.spm.values()) if (p && p.HS != null && p.t > t) t = p.t; }
     }
     if (!t && (f === 'HS' || f === 'HN')) for (const s of MSS.d[f] || []) if (s.t > t) t = s.t;
