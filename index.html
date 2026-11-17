@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="14.0 · 17.11.2026">
+<meta name="windsack-version" content="15.0 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -19,6 +19,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADwUlEQVR42tWT3U9TdxjHf3/BgFKYxlFaCvW0hVqgllIKBWlpy4vaIjCQl/AiCkscDBSNXqgEQ1ATTcyWbGZBcVtEFzURuajZMFtmsk2TjQQvFl8uvDDGEGNgd+S73zlup5xzaH+FxDRr8gn0PM/v+3zOc05JekEAiYSk5/uRSEia1YdEQtK2VSGRkDSLB4mEqC2VSCREnbcDsUijTeNfXEVd52dg9W4Eos6tQCw2Wz346dFjHD/7FVi9G4Gkmt1gMXUzjCNj5xFP73ohqaYysLg+ex8PHzzA8x4Nwi16nG+rFISCXYMwl4cQT0Y0SKqxFCzeCfyCt/1bBJ6erMPqzw+fuDC3V48vd3MYqvegcd8w8j0NUPNDGNlEZXSBxbRM4NVYjUTg0YBTrP01tke8vrT8N270lmEytBXHfHkIFNsU2UTFOcFienZOIrA0HpAIzA+XReQmQpLaHwftYu23Dq0im6i2FoOFXGBZJrAwUh6ROxeU1oYi23m5P0ORTVIMDrCQC7yRCfw5VCrWXss2MD/gEGvP6EsszyYpOUVgIRd4MSp9B34/GBnyZNU7wH8e9heItZ9btYpsKrAdLKZnf5QIPD7x7lewsrKCV68XcbPXhXCzDtfq9TjX5sXExUsYOXUGPYPHUO12wZlvBZdbiA8NymySkm0Di29uh3HtyhW0OHPhs1lgtxUhx+6Fig+J43wsSLK+ECwmb9xFbWu/8L+vuR/xnIkXkpxVABaT12dQu7cPXYdG8ezlIg6fvqjoSTeXIp4sOSRZZwULXiDYMwRn06eYujMHf/dR6Bw1Qk1F16gvq4e5uhsae/Wa51X6AoyMfw5TSY2iRpJ028Di8vezaD80IQxZjcZRC87bJrmmLd5J7yxyVpVdCG/7IH5deIrDZy9hk8UtySZJWgtWk2EPQFeyGynUmv+uyrHhW3rXHSNnFALRyHKFhLtTcw5RsDDYJ/w1Bbrxkc0nziNJmXkQoF8yHXViiLGqA1uslTBUtuC7mfvrEuDJqWiCyd8Zta4rCVJJuoEPNGYkaXLphV1Rm2MJGKvaFY8hXgw7mukGhOHBmI1rCRh9HcgqDdFH5kfGdr+QwdGtRcvgvK300QT/3UyXeJ1kuxskjaZAJ7LLG4Q3WkcPcJ5WiQC/Vr17Dx0aEAZLoDL8GV7uvyxDxcfCo5X2BgR5jm6PRIZ3CXaaompF8NXb99AyMApeVmNfY/AaIlrnLnE7sRAE+LtUWkaYuhVGw4Ej7MEbgGidO5lNJy98jfLG3vcj8D5C/1cC/wBj4x1kdQuaGQAAAABJRU5ErkJggg==">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap">
 <style>/* required styles */
 
 .leaflet-pane,
@@ -2774,6 +2776,88 @@ details .as-desc { margin-top: 6px; }
 .sheet { background: var(--surface); border: 0; border-radius: var(--r-card) var(--r-card) 0 0; box-shadow: var(--shadow-lg); -webkit-backdrop-filter: none; backdrop-filter: none; }
 .toast { background: var(--ink); color: var(--bg); border: 0; border-radius: 12px; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .upd { background: var(--surface); border-color: var(--hair); border-radius: var(--r-card); -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* ───────────────────────── Himmel (Version 15) ─────────────────────────
+   Nach dem Vorbild der MeteoSchweiz-App: blaugrauer Himmel mit blasser Bergsilhouette, weisse Schrift, darunter
+   heller Grund mit weissen Karten. Kacheln: das Kartenbild füllt die ganze Kachel, der Titel steht direkt darauf,
+   unten ein weisser Fuss mit dem Wichtigsten. Schrift Noto Sans, Akzent ein gedämpftes Blaugrau. */
+:root {
+  --font-ui: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg: #eef2f6; --surface: #ffffff; --surface-2: #eef2f6; --hair: #dde4ea; --hair-strong: #bcc7d0;
+  --ink: #000000; --ink-2: #33414c; --muted: #5a6772;
+  --acc: #3f7386; --acc-i: #2c6074; --acc-s: #e2edf1; --acc-a: rgba(63, 115, 134, 0.14);
+  --shadow: 0 1px 3px rgba(40, 60, 80, 0.14); --float: 0 2px 10px rgba(40, 60, 80, 0.20);
+  --r-card: 14px;
+  --sky-1: #6f9bc5; --sky-2: #84a8c8; --sky-3: #9cb5c9; --sky-4: #a9bccb;
+  --halo-t: #ffffff;
+}
+:root[data-theme="dark"] {
+  --bg: #10161c; --surface: #1b242d; --surface-2: #25303a; --hair: #2c3843; --hair-strong: #455564;
+  --ink: #ffffff; --ink-2: #c3ced7; --muted: #94a2ae;
+  --acc: #4a8296; --acc-i: #8fc6d8; --acc-s: #1c2f38; --acc-a: rgba(74, 130, 150, 0.24);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4); --float: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --sky-1: #1d2f42; --sky-2: #25394d; --sky-3: #2c4155; --sky-4: #2f4558;
+  --halo-t: #10161c;
+}
+
+/* ── Himmel ── */
+.sky { background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 36%, var(--sky-3) 72%, var(--sky-4) 100%); padding-bottom: 20px; }
+.sky::after { display: none; }
+:root[data-theme="dark"] .sky::after { display: none; }
+.sky-photo, :root[data-theme="dark"] .sky-photo { filter: grayscale(1) contrast(0.9); opacity: 0.22; mix-blend-mode: luminosity; }
+.sky-photo::after { display: none; }
+.sky .now, .sky-top, .all-locs { text-shadow: none; }
+.sky-logo span:last-child { display: none; }
+.sky-logo .logo svg { width: 38px; height: 28px; }
+.sky-status { background: none; border: 0; padding: 0 6px 0 0; overflow: visible; font-size: 11.5px; opacity: 0.9; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.sky-btn { background: none; border: 0; width: 44px; height: 44px; margin-left: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.sky-btn svg { width: 26px; height: 26px; }
+.now { padding-top: 26px; }
+.now-name { font-size: 25px; font-weight: 700; }
+.now-text { font-size: 19px; font-weight: 400; line-height: 1.35; }
+.now-temp { font-size: 25px; font-weight: 700; margin-top: 14px; letter-spacing: 0; }
+.now-ic { width: 128px; height: 128px; margin: -6px 0 0 0; }
+.hours { border: 1.5px solid rgba(255, 255, 255, 0.95); border-radius: 14px; background: rgba(70, 100, 130, 0.30); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; margin-top: 22px; }
+:root[data-theme="dark"] .hours { background: rgba(10, 20, 32, 0.35); }
+/* Ortskarte: weiss, darunter angedeutet die weiteren Karten */
+.loc { border: 0; border-radius: 14px; background: var(--surface); box-shadow: 0 1px 3px rgba(40, 60, 80, 0.18), 0 9px 0 -5px rgba(255, 255, 255, 0.78), 0 18px 0 -10px rgba(255, 255, 255, 0.5); }
+:root[data-theme="dark"] .loc { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 9px 0 -5px rgba(255, 255, 255, 0.16), 0 18px 0 -10px rgba(255, 255, 255, 0.09); }
+.locs { padding-bottom: 24px; }
+.loc-h .h3 { font-size: 20px; font-weight: 700; }
+.locs-dots { margin-top: -10px; }
+.all-locs { font-size: 14px; opacity: 1; }
+
+/* ── Kacheln: Karte füllt die Kachel, Titel darauf ── */
+.home-body { padding-top: 20px; gap: 16px; }
+.tiles { gap: 22px; }
+.topic-ic { display: none; }
+.topic-t b { font-size: 19px; font-weight: 700; }
+.tile { border: 0; border-radius: 14px; box-shadow: var(--shadow); background: var(--surface); }
+.tile-h { position: absolute; left: 0; right: 0; top: 0; z-index: 2; padding: 13px 14px 0; pointer-events: none; }
+.tile-h .h2 { font-size: 19px; font-weight: 700; padding-right: 0; color: var(--ink); text-shadow: 0 0 3px var(--halo-t), 0 0 6px var(--halo-t), 0 0 10px var(--halo-t); }
+.tile-h small, .tile-ic { display: none; }
+.tile-map { margin: 0; border-radius: 0; aspect-ratio: 1.42; background: var(--surface-2); }
+.tile-f { padding: 9px 14px 12px; min-height: 58px; }
+.tile-f b { font-size: 14.5px; font-weight: 700; }
+.tile-badge { top: 12px; right: 12px; z-index: 3; }
+.tile.wide .tile-h { position: relative; grid-column: 2; padding: 13px 14px 4px; }
+.tile.wide .tile-h .h2 { text-shadow: none; }
+.tile.wide .tile-map { margin: 0; aspect-ratio: auto; min-height: 118px; }
+.tile.wide .tile-badge { top: auto; right: auto; left: 12px; bottom: 12px; }
+.tile-ph { border-radius: 14px; }
+
+/* ── Dock: erscheint erst bei den Kacheln ── */
+.dock { transition: transform 0.25s ease, opacity 0.25s ease; }
+.dock:not(.on) { transform: translate(-50%, 90px); opacity: 0; pointer-events: none; }
+.dock:not(.on) > * { pointer-events: none; }
+.dock .topics-bar, .dock-btn { border: 0; border-radius: 14px; box-shadow: var(--float); }
+.tb { border-radius: 10px; }
+
+/* ── Ansicht und Seiten ── */
+.vh { background: var(--surface); }
+.card, .list, .link, .promo { border: 0; border-radius: 14px; box-shadow: var(--shadow); }
+.chip-b, .gauge, .fstrip, .legend, .chipbar, .sn-scale, .an-note, .tl, .rl, .kinfo, .tourp, .mbot.legend.card, .fab { border: 0; }
+.sheet { border-radius: 18px 18px 0 0; }
 </style>
 </head>
 <body>
@@ -9712,7 +9796,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '14.0 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.0 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -20556,6 +20640,8 @@ ${wpts}
     // Angetipptes Thema bleibt markiert, bis man selbst weiterrollt (das letzte lässt sich nicht bis oben rollen)
     if (topicsGoal) cur = topicsGoal;
     bar.querySelectorAll('[data-go]').forEach((b) => b.setAttribute('aria-current', String(b.dataset.go === cur)));
+    // oben gehört der Bildschirm dem Himmel: das Dock erscheint erst, wenn man zu den Kacheln rollt
+    $('#dock').classList.toggle('on', !!cur || sc.scrollTop > $('#sky').offsetHeight * 0.35);
   }
   let topicsRaf = 0, topicsGoal = null;
   $('#home-scroll').addEventListener('scroll', () => { if (!topicsRaf) topicsRaf = requestAnimationFrame(() => { topicsRaf = 0; topicsSync(); }); }, { passive: true });
@@ -23434,7 +23520,7 @@ ${wpts}
     const m = document.querySelector('meta[name="theme-color"]');
     if (!m) return;
     const root = document.documentElement, dark = root.dataset.theme === 'dark';
-    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? '--bg' : '--sky-1').trim();
+    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? '--surface' : '--sky-1').trim();
     if (v) m.setAttribute('content', v);
   }
   applyTheme();
