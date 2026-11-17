@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="12.1 · 17.11.2026">
+<meta name="windsack-version" content="12.2 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -695,24 +695,24 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --muted: #627080;
   --hair: #e2e8ef;
   --hair-strong: #c4cedb;
-  --c-wetter: #1f7cf2; --c-wetter-i: #1463d0; --c-wetter-s: #e1eefe; --c-wetter-a: rgba(31, 124, 242, 0.14);
-  --c-karten: #12a35f; --c-karten-i: #0d7d49; --c-karten-s: #dcf6e8; --c-karten-a: rgba(18, 163, 95, 0.15);
-  --c-winter: #6c5cf5; --c-winter-i: #5243d6; --c-winter-s: #eae8ff; --c-winter-a: rgba(108, 92, 245, 0.14);
-  --c-fliegen: #e97a0c; --c-fliegen-i: #a85504; --c-fliegen-s: #ffeedb; --c-fliegen-a: rgba(233, 122, 12, 0.16);
-  --c-meld: #ee4654; --c-meld-i: #c62b3a; --c-meld-s: #ffe5e7; --c-meld-a: rgba(238, 70, 84, 0.14);
+  --c-wetter: #0f7bff; --c-wetter-i: #0a5bd6; --c-wetter-s: #d6e8ff; --c-wetter-a: rgba(15, 123, 255, 0.24); --c-wetter-d: #0a4fd0;
+  --c-karten: #06b368; --c-karten-i: #04794a; --c-karten-s: #cff5e1; --c-karten-a: rgba(6, 179, 104, 0.24); --c-karten-d: #04834c;
+  --c-winter: #6a48ff; --c-winter-i: #4f2fe0; --c-winter-s: #e2dcff; --c-winter-a: rgba(106, 72, 255, 0.24); --c-winter-d: #4a28dc;
+  --c-fliegen: #ff7f0a; --c-fliegen-i: #b85300; --c-fliegen-s: #ffe6c9; --c-fliegen-a: rgba(255, 127, 10, 0.26); --c-fliegen-d: #e85a00;
+  --c-meld: #f5273f; --c-meld-i: #c9142c; --c-meld-s: #ffdade; --c-meld-a: rgba(245, 39, 63, 0.24); --c-meld-d: #c9102c;
   /* Glas: Kante (heller Rand), Kartenfläche, Weichzeichner, Lichtschein im Hintergrund */
   --edge: rgba(255, 255, 255, 0.9); --edge-2: rgba(20, 45, 90, 0.07);
   --card: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78));
   --glass-strong: rgba(250, 252, 255, 0.86); --glass-map: rgba(255, 255, 255, 0.82);
   --blur: blur(18px) saturate(1.7);
-  --amb-1: rgba(60, 140, 255, 0.16); --amb-2: rgba(150, 110, 255, 0.12);
+  --amb-1: rgba(30, 120, 255, 0.26); --amb-2: rgba(140, 80, 255, 0.20);
   --glow: 0 6px 20px;
   --r-card: 22px;
-  --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a);
+  --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a); --tcd: var(--c-wetter-d);
   --accent: var(--tci);
   --accent-soft: var(--tca);
   --on-accent: #ffffff;
-  --slate: var(--tci); --on-slate: #ffffff; --on-tc: #ffffff;
+  --slate: var(--tcd); --on-slate: #ffffff; --on-tc: #ffffff;
   --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --critical: #d03b3b;
   --foehn1: #ffaf33; --foehn2: #c81e14;
   --s-mean: #2a78d6; --s-gust: #eb6834; --s-meas: #151d24; --s-fc: #2a78d6;
@@ -745,18 +745,18 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* Dunkles Design: Standard. «Hell» oder «Wie iPhone» im Info-Blatt der Startseite (Windsack-Logo). */
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #060a11; --surface: #111a26; --surface-2: #1a2533; --glass: rgba(14, 22, 34, 0.66);
-    --ink: #eef3f8; --ink-2: #b3bfcc; --muted: #8795a6; --hair: #212d3b; --hair-strong: #384a5e;
-    --c-wetter: #4da3ff; --c-wetter-i: #82beff; --c-wetter-s: #12273f; --c-wetter-a: rgba(77, 163, 255, 0.22);
-    --c-karten: #34d98f; --c-karten-i: #6fe7b0; --c-karten-s: #0f3024; --c-karten-a: rgba(52, 217, 143, 0.20);
-    --c-winter: #9b8cff; --c-winter-i: #b9aeff; --c-winter-s: #221f4b; --c-winter-a: rgba(155, 140, 255, 0.22);
-    --c-fliegen: #ffa64d; --c-fliegen-i: #ffc07c; --c-fliegen-s: #3a2813; --c-fliegen-a: rgba(255, 166, 77, 0.20);
-    --c-meld: #ff6b70; --c-meld-i: #ff9497; --c-meld-s: #3e1c21; --c-meld-a: rgba(255, 107, 112, 0.20);
+    --bg: #04070d; --surface: #0e1826; --surface-2: #182536; --glass: rgba(10, 17, 28, 0.72);
+    --ink: #f4f8fc; --ink-2: #c3cedb; --muted: #93a2b5; --hair: #212d3b; --hair-strong: #384a5e;
+    --c-wetter: #1f8fff; --c-wetter-i: #5db1ff; --c-wetter-s: #0c2a4d; --c-wetter-a: rgba(31, 143, 255, 0.34); --c-wetter-d: #0a5ce6;
+    --c-karten: #0fcf7c; --c-karten-i: #3fe39b; --c-karten-s: #07382a; --c-karten-a: rgba(15, 207, 124, 0.30); --c-karten-d: #05995c;
+    --c-winter: #7f5cff; --c-winter-i: #a48dff; --c-winter-s: #23195c; --c-winter-a: rgba(127, 92, 255, 0.36); --c-winter-d: #5430ea;
+    --c-fliegen: #ff8a14; --c-fliegen-i: #ffab4d; --c-fliegen-s: #472706; --c-fliegen-a: rgba(255, 138, 20, 0.32); --c-fliegen-d: #f05f00;
+    --c-meld: #ff3d55; --c-meld-i: #ff7384; --c-meld-s: #4a1320; --c-meld-a: rgba(255, 61, 85, 0.34); --c-meld-d: #d9163a;
     --edge: rgba(255, 255, 255, 0.11); --edge-2: rgba(255, 255, 255, 0.05);
     --card: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 62%), var(--surface);
-    --glass-strong: rgba(13, 20, 31, 0.84); --glass-map: rgba(12, 19, 30, 0.80);
-    --amb-1: rgba(50, 130, 255, 0.20); --amb-2: rgba(130, 90, 255, 0.15);
-    --on-accent: #06121c; --on-slate: #0b1218; --on-tc: #0b1218;
+    --glass-strong: rgba(13, 20, 31, 0.84); --glass-map: rgba(8, 14, 24, 0.88);
+    --amb-1: rgba(30, 120, 255, 0.34); --amb-2: rgba(130, 70, 255, 0.26);
+    --on-accent: #06121c; --on-slate: #ffffff; --on-tc: #ffffff;
     --s-mean: #3f8de6; --s-gust: #e0652f; --s-meas: #e8eef2; --s-fc: #3f8de6; --s-temp: #ff4d4d; --s-band: rgba(255, 77, 77, 0.24); --s-rain: #3f8de6;
     --moon-dark: #2b3a46; --moon-lit: #f2d06b; --moon-edge: rgba(0, 0, 0, 0.35);
     --wx-moon: #c3cedb; --wx-cloud: #c9cfd4; --wx-cloud-s: #8a949c; --wx-dark: #8d979f; --wx-rain: #5aa2ec; --wx-snow: #a7cdf2;
@@ -767,20 +767,20 @@ svg.leaflet-image-layer.leaflet-interactive path {
     --lp-fz: #f27a4c; --lp-sl: #6fa8f0;
     --lp-sun: #e8c53d; --lp-wind: #a196f7; --lp-gust: #7d72c4; --lp-pp: #7db2f5; --lp-pill: #1d2e44;
     --ph-1: rgba(10, 20, 36, 0.70); --ph-2: rgba(10, 20, 36, 0.42); --ph-3: rgba(10, 20, 36, 0.18); --ph-4: rgba(8, 14, 24, 0.55);
-    --fab: rgba(12, 19, 30, 0.78); --fab-on: var(--tc); --fab-ink: #eef3f8;
+    --fab: rgba(8, 14, 24, 0.88); --fab-on: var(--tc); --fab-ink: #eef3f8;
     --tl-obs: #56626c; --tl-fc: #7fb3c2; --tl-bubble: #2d5561; --tl-bubble-ink: #e8f3f6; --tl-bubble-fc: #7fb3c2; --tl-bubble-fc-ink: #0b1a20;
     /* Karten bleiben auch im dunklen Design weiss (keine Invertierung) */
     --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.045), 0 10px 26px rgba(0, 0, 0, 0.40);
     --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 48px rgba(0, 0, 0, 0.58);
 }
 /* Themenfarbe: auf der Startseite je Abschnitt (.th-…), in einer Ansicht für die ganze App (data-th am Wurzelelement) */
-.th-wetter, :root[data-th="wetter"] { --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a); }
-.th-karten, :root[data-th="karten"] { --tc: var(--c-karten); --tci: var(--c-karten-i); --tcs: var(--c-karten-s); --tca: var(--c-karten-a); }
-.th-winter, :root[data-th="winter"] { --tc: var(--c-winter); --tci: var(--c-winter-i); --tcs: var(--c-winter-s); --tca: var(--c-winter-a); }
-.th-fliegen, :root[data-th="fliegen"] { --tc: var(--c-fliegen); --tci: var(--c-fliegen-i); --tcs: var(--c-fliegen-s); --tca: var(--c-fliegen-a); }
-.th-meld, :root[data-th="meld"] { --tc: var(--c-meld); --tci: var(--c-meld-i); --tcs: var(--c-meld-s); --tca: var(--c-meld-a); }
+.th-wetter, :root[data-th="wetter"] { --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a); --tcd: var(--c-wetter-d); }
+.th-karten, :root[data-th="karten"] { --tc: var(--c-karten); --tci: var(--c-karten-i); --tcs: var(--c-karten-s); --tca: var(--c-karten-a); --tcd: var(--c-karten-d); }
+.th-winter, :root[data-th="winter"] { --tc: var(--c-winter); --tci: var(--c-winter-i); --tcs: var(--c-winter-s); --tca: var(--c-winter-a); --tcd: var(--c-winter-d); }
+.th-fliegen, :root[data-th="fliegen"] { --tc: var(--c-fliegen); --tci: var(--c-fliegen-i); --tcs: var(--c-fliegen-s); --tca: var(--c-fliegen-a); --tcd: var(--c-fliegen-d); }
+.th-meld, :root[data-th="meld"] { --tc: var(--c-meld); --tci: var(--c-meld-i); --tcs: var(--c-meld-s); --tca: var(--c-meld-a); --tcd: var(--c-meld-d); }
 /* abgeleitete Farben dort neu rechnen, wo das Thema wechselt */
-.topic, .tb { --accent: var(--tci); --accent-soft: var(--tca); --slate: var(--tci); }
+.topic, .tb { --accent: var(--tci); --accent-soft: var(--tca); --slate: var(--tcd); }
 
 /* Helles Design: Die iPhone-Statusleiste ist weiss (App zeichnet darunter) → Band in der Themenfarbe hinter der Uhrzeit */
 :root[data-theme="light"] .vh::before {
@@ -929,7 +929,7 @@ a { color: var(--accent); }
 .tb-ic { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--tcs); display: grid; place-items: center; }
 .tb-ic svg { width: 19px; height: 19px; display: block; }
 .tb-l { display: none; white-space: nowrap; }
-.tb[aria-current="true"] { flex: 0 0 auto; background: var(--tci); color: var(--on-slate); padding: 0 15px 0 5px; }
+.tb[aria-current="true"] { flex: 0 0 auto; background: var(--tcd); color: var(--on-slate); padding: 0 15px 0 5px; }
 .tb[aria-current="true"] .tb-ic { background: rgba(255, 255, 255, 0.24); }
 .tb[aria-current="true"] .tb-l { display: inline; }
 .tb:active { transform: scale(0.96); }
@@ -939,7 +939,7 @@ a { color: var(--accent); }
 .topic-h { display: flex; align-items: center; gap: 11px; padding: 0 2px; }
 .topic-ic {
   flex: none; width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: var(--on-tc);
-  background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: 0 4px 10px var(--tca);
+  background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: 0 4px 10px var(--tca);
 }
 .topic-ic svg { width: 23px; height: 23px; display: block; }
 .topic-t { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
@@ -1023,7 +1023,7 @@ a { color: var(--accent); }
 }
 .seg svg { width: 22px; height: 22px; flex: none; }
 .seg span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.seg[aria-selected="true"], .seg[aria-checked="true"] { background: var(--tci); color: var(--on-slate); box-shadow: 0 2px 6px var(--tca); }
+.seg[aria-selected="true"], .seg[aria-checked="true"] { background: var(--tcd); color: var(--on-slate); box-shadow: 0 2px 6px var(--tca); }
 .sheet .segs { margin: 0; max-width: none; }
 .segs.txt .seg span { display: inline; }
 .segs.many .seg span { display: none; }
@@ -2078,7 +2078,7 @@ details .as-desc { margin-top: 6px; }
 .kfabs.k-tl { left: calc(var(--safe-l) + 12px); }
 .kfabs.k-tr { right: calc(var(--safe-r) + 12px); }
 .mapwrap.karte .fab { background: var(--surface); color: var(--tci); box-shadow: 0 2px 10px rgba(20, 40, 60, 0.3); -webkit-backdrop-filter: none; backdrop-filter: none; }
-.mapwrap.karte .fab[aria-pressed="true"] { background: var(--tci); color: var(--on-slate); }
+.mapwrap.karte .fab[aria-pressed="true"] { background: var(--tcd); color: var(--on-slate); }
 .k-needle { display: grid; place-items: center; width: 30px; height: 30px; }
 .k-needle svg { width: 30px; height: 30px; display: block; }
 /* Massstab unten links */
@@ -2495,7 +2495,7 @@ details .as-desc { margin-top: 6px; }
 }
 .tile:active { transform: scale(0.975); }
 .tile-h {
-  background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
+  background: linear-gradient(120deg, var(--tca), transparent 75%), var(--glass-strong); -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
   border-bottom: 1px solid var(--edge-2); padding: 12px 14px 9px;
 }
 .tile-h::after { display: none; }
@@ -2503,7 +2503,7 @@ details .as-desc { margin-top: 6px; }
 .tile-ic svg { width: 20px; height: 20px; }
 .tile-h .h2 { padding-right: 36px; }
 .tile-h small { font-size: 11.5px; font-weight: 600; margin-top: 3px; }
-.tile-ic { right: 10px; top: 9px; width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.tile-ic { right: 10px; top: 9px; width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
 .tile.wide .tile-h { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; }
 .tile-f { padding: 9px 14px 13px; }
 .tile-badge { border-radius: 999px; padding: 3px 9px; box-shadow: 0 4px 12px var(--tca); }
@@ -2525,7 +2525,7 @@ details .as-desc { margin-top: 6px; }
 .tb { height: 46px; transition: background 0.2s, flex 0.2s; }
 .tb-ic { width: 36px; height: 36px; background: none; }
 .tb-ic svg { width: 22px; height: 22px; }
-.tb[aria-current="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); padding: 0 16px 0 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 18px var(--tca); }
+.tb[aria-current="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); padding: 0 16px 0 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 18px var(--tca); }
 .tb[aria-current="true"] .tb-ic { background: none; }
 .dock-btn {
   flex: none; width: 60px; height: 60px; border-radius: 50%; padding: 0; display: grid; place-items: center; color: var(--ink);
@@ -2557,7 +2557,7 @@ details .as-desc { margin-top: 6px; }
 }
 .qj-it:active { transform: scale(0.97); }
 .qj-it[aria-current="true"] { border-color: var(--tc); background: var(--tca); }
-.qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
 .qj-ic svg { width: 22px; height: 22px; }
 .qj-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .qj-t b { font: 650 14px/1.15 var(--font-ui); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -2586,7 +2586,7 @@ details .as-desc { margin-top: 6px; }
 .seg { min-height: 42px; transition: background 0.18s, color 0.18s; }
 .seg svg { width: 24px; height: 24px; }
 .segs.icons .seg svg { width: 27px; height: 27px; }
-.seg[aria-selected="true"], .seg[aria-checked="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.seg[aria-selected="true"], .seg[aria-checked="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
 .vbody { margin-top: -26px; }
 .vpage { padding-top: 26px; }
 .xcwrap { top: 26px; }
@@ -2597,13 +2597,13 @@ details .as-desc { margin-top: 6px; }
   -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
 }
-.chip-b[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.chip-b[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
 .gauge, .fstrip, .legend, .sn-scale { border-radius: 18px; }
 .fab {
   border: 1px solid var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
 }
-.fab[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.fab[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
 .tl, .rl, .kinfo, .tourp, .mbot.legend.card {
   background: var(--glass-strong); border: 1px solid var(--edge);
   -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
@@ -2619,7 +2619,7 @@ details .as-desc { margin-top: 6px; }
 .card .list { background: none; }
 .btn { border-radius: 14px; border-color: var(--edge-2); background: var(--surface-2); transition: transform 0.12s; }
 .btn:active { transform: scale(0.98); }
-.btn.primary { background: linear-gradient(145deg, var(--tc), var(--tci)); border-color: transparent; color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.btn.primary { background: linear-gradient(145deg, var(--tc), var(--tcd)); border-color: transparent; color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
 .icon-btn { border-radius: 50%; border-color: var(--edge-2); }
 .search { border-radius: 16px; background: var(--card); border-color: var(--edge-2); }
 .search:focus-within { border-color: var(--tc); box-shadow: 0 0 0 4px var(--tca); }
@@ -9577,7 +9577,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.1 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.2 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
