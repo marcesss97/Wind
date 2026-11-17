@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="12.2 · 17.11.2026">
+<meta name="windsack-version" content="13.0 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2639,6 +2639,142 @@ details .as-desc { margin-top: 6px; }
 }
 .upd { border-radius: 22px; border-color: var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); }
 @media (prefers-reduced-motion: reduce) { .tile, .tb, .seg, .btn { transition: none; } }
+/* ───────────────────────── Farbe (Version 13) ─────────────────────────
+   Ganz neues Erscheinungsbild: neutraler Grund (Anthrazit bzw. Hellgrau), darauf jede Funktion in ihrer eigenen
+   kräftigen Farbe – als farbige Kachel auf der Startseite, als Kopfzeile in der Ansicht und als Symbol in der
+   Schnellwahl. Kartenbilder der Kacheln im dunklen Design dunkel. Die Regeln überschreiben «Glas» weiter oben. */
+:root {
+  --bg: #f3f4f7; --surface: #ffffff; --surface-2: #eceef3; --hair: #e3e5ec; --hair-strong: #c5c9d4;
+  --ink: #0d0f14; --ink-2: #3d4350; --muted: #666d7c;
+  --glass: rgba(255, 255, 255, 0.80); --glass-strong: rgba(255, 255, 255, 0.92); --glass-map: rgba(255, 255, 255, 0.90);
+  --card: var(--surface);
+  --amb-1: transparent; --amb-2: transparent;
+  --edge: rgba(13, 15, 20, 0.07); --edge-2: rgba(13, 15, 20, 0.06);
+  --shadow: 0 1px 2px rgba(13, 15, 20, 0.05), 0 8px 24px rgba(13, 15, 20, 0.08);
+  --shadow-lg: 0 18px 44px rgba(13, 15, 20, 0.18);
+  --fab: #ffffff; --fab-ink: #0d0f14;
+  --r-card: 26px;
+  --sky-1: #2a3350;
+}
+:root[data-theme="dark"] {
+  --bg: #0b0b0e; --surface: #17181d; --surface-2: #22242b; --hair: #2a2c35; --hair-strong: #454856;
+  --ink: #ffffff; --ink-2: #c9ccd6; --muted: #979baa;
+  --glass: rgba(18, 19, 24, 0.82); --glass-strong: rgba(20, 21, 27, 0.94); --glass-map: rgba(16, 17, 22, 0.92);
+  --card: var(--surface);
+  --edge: rgba(255, 255, 255, 0.09); --edge-2: rgba(255, 255, 255, 0.07);
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 22px 50px rgba(0, 0, 0, 0.62);
+  --fab: #17181d; --fab-ink: #ffffff;
+  --tile-map-filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.95);
+  --ph-1: rgba(8, 10, 18, 0.55); --ph-2: rgba(8, 10, 18, 0.22); --ph-3: rgba(8, 10, 18, 0.05); --ph-4: rgba(8, 10, 18, 0.50);
+  --sky-1: #0b0b0e;
+}
+/* Eigene Farbe je Funktion: kräftig (--tc) und tief (--tcd); die Zwischentöne werden daraus gemischt */
+[data-c="tag"], :root[data-c="tag"] { --tc: #3d7bff; --tcd: #2a3fe6; }
+[data-c="wind"], :root[data-c="wind"] { --tc: #00b7f0; --tcd: #0073e6; }
+[data-c="foehn"], :root[data-c="foehn"] { --tc: #ff9a1f; --tcd: #f0441f; }
+[data-c="anim"], :root[data-c="anim"] { --tc: #7a5cff; --tcd: #b12fe0; }
+[data-c="cams"], :root[data-c="cams"] { --tc: #ff4f8b; --tcd: #e0246a; }
+[data-c="modelle"], :root[data-c="modelle"] { --tc: #00c4a7; --tcd: #008fb3; }
+[data-c="karte"], :root[data-c="karte"] { --tc: #1fc46b; --tcd: #0b8f58; }
+[data-c="peak"], :root[data-c="peak"] { --tc: #8fcc1a; --tcd: #2f9e44; }
+[data-c="schnee"], :root[data-c="schnee"] { --tc: #3fb6ff; --tcd: #3b5bdb; }
+[data-c="wallis"], :root[data-c="wallis"] { --tc: #8b6bff; --tcd: #5a3fe0; }
+[data-c="skitour"], :root[data-c="skitour"] { --tc: #c44dff; --tcd: #e0338f; }
+[data-c="xc"], :root[data-c="xc"] { --tc: #ffb400; --tcd: #ff6a00; }
+[data-c="meld"], :root[data-c="meld"] { --tc: #ff4d5e; --tcd: #c9102c; }
+[data-c], :root[data-c] {
+  --tci: color-mix(in srgb, var(--tcd) 82%, #000); --tca: color-mix(in srgb, var(--tc) 26%, transparent);
+  --tcs: color-mix(in srgb, var(--tc) 16%, var(--surface));
+  --accent: var(--tci); --accent-soft: var(--tca); --slate: var(--tcd);
+}
+:root[data-theme="dark"] [data-c], :root[data-theme="dark"][data-c] {
+  --tci: color-mix(in srgb, var(--tc) 72%, #fff); --tca: color-mix(in srgb, var(--tc) 34%, transparent);
+  --tcs: color-mix(in srgb, var(--tc) 22%, var(--surface));
+}
+#app, .scr.view { background: var(--bg); }
+
+/* ── Startseite ── */
+:root[data-theme="dark"] .sky-photo { filter: brightness(0.86) saturate(1.2); }
+.sky-photo { filter: saturate(1.15); }
+.now-name { font-size: 30px; font-weight: 800; }
+.now-temp { font-size: 54px; font-weight: 800; line-height: 1; margin-top: 8px; letter-spacing: -0.04em; }
+.now-text { font-size: 16px; font-weight: 500; }
+.hours { border-radius: 24px; border-color: rgba(255, 255, 255, 0.28); background: rgba(12, 14, 22, 0.46); }
+.loc { border-radius: var(--r-card); background: var(--glass-strong); border-color: var(--edge); }
+:root[data-theme="dark"] .loc { background: rgba(18, 19, 24, 0.86); }
+.topic-h::after { display: none; }
+.topic-t { max-width: none; }
+.topic-t b { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+.topic-ic { width: 46px; height: 46px; border-radius: 16px; box-shadow: 0 10px 24px var(--tca); }
+.topic-ic svg { width: 26px; height: 26px; }
+.tgrid { gap: 14px; }
+/* Kachel: ganz in ihrer Farbe, Kartenbild als Fenster, weisse Schrift */
+.tile {
+  border-radius: var(--r-card); padding: 0 0 2px; color: #fff;
+  background: linear-gradient(155deg, var(--tc) 0%, var(--tcd) 100%);
+  box-shadow: 0 12px 28px var(--tca);
+}
+.tile::after { border: 0; -webkit-mask-image: none; mask-image: none; background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 42%); }
+.tile-h { position: relative; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; padding: 14px 14px 10px; min-height: 62px; }
+.tile-h .h2 { font-size: 16.5px; font-weight: 800; color: #fff; padding-right: 36px; }
+.tile-h small { color: rgba(255, 255, 255, 0.86); font-weight: 600; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-ic { right: 10px; top: 10px; width: 30px; height: 30px; border-radius: 10px; background: rgba(255, 255, 255, 0.22); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28); }
+.tile-ic svg { width: 19px; height: 19px; }
+.tile-map { margin: 0 8px; border-radius: 18px; aspect-ratio: 1.25; background: #101116; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
+:root[data-theme="light"] .tile-map { background: #f6f6f6; }
+.mm-tint { display: none; }
+.tile-f { color: rgba(255, 255, 255, 0.88); padding: 10px 14px 12px; }
+.tile-f b { color: #fff; font-weight: 750; }
+.tile-badge { background: #fff; color: var(--tcd); top: 78px; right: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); }
+.tile.wide .tile-map { margin: 8px 0 8px 8px; min-height: 126px; }
+.tile.wide .tile-badge { bottom: 16px; left: 16px; top: auto; right: auto; }
+.tile-art { color: #fff; }
+.tiles.arranging .tile { box-shadow: 0 0 0 3px var(--ink), 0 12px 28px var(--tca); }
+
+/* ── Dock ── */
+.dock .topics-bar, .dock-btn { background: var(--glass-strong); border-color: var(--edge); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34); }
+.dock .topics-bar { border-radius: 24px; }
+.tb { border-radius: 18px; }
+.dock-btn { border-radius: 22px; background: var(--ink); color: var(--bg); border-color: transparent; }
+
+/* ── Schnellwahl ── */
+.qj-it { border-radius: 18px; }
+.qj-ic { width: 38px; height: 38px; border-radius: 13px; color: #fff; box-shadow: 0 6px 14px var(--tca); }
+.qj-g h3 { color: var(--muted); }
+.qj-g h3::after { background: var(--hair); }
+
+/* ── Ansicht: Kopfzeile in der Farbe der Funktion ── */
+.vh {
+  background: linear-gradient(135deg, var(--tc), var(--tcd)); color: #fff; border: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0 0 28px 28px; box-shadow: 0 12px 30px var(--tca);
+}
+:root[data-theme="light"] .vh::before { background: none; }
+.vh-t h1 { color: #fff; font-weight: 800; font-size: 21px; }
+.vh-t p { color: rgba(255, 255, 255, 0.86); }
+.vh-t:active { background: rgba(255, 255, 255, 0.16); }
+.vh-chev { color: #fff; }
+.vh-btn { background: rgba(255, 255, 255, 0.20); border-color: transparent; color: #fff; }
+.vh-btn:active { background: rgba(255, 255, 255, 0.34); }
+.vh-btn.star[aria-pressed="true"] { color: #ffe066; }
+.vh .segs { background: rgba(0, 0, 0, 0.20); border-color: transparent; }
+.vh .seg { color: rgba(255, 255, 255, 0.92); }
+.vh .seg[aria-selected="true"] { background: #fff; color: var(--tcd); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22); }
+.vbody { margin-top: -28px; }
+.vpage { padding-top: 28px; }
+.xcwrap { top: 28px; }
+
+/* ── Karte und Seiten ── */
+.chip-b, .gauge, .fstrip, .legend, .chipbar, .sn-scale, .an-note, .fab { box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22); }
+.fab { background: var(--fab); color: var(--fab-ink); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.fab[aria-pressed="true"], .mapwrap.karte .fab[aria-pressed="true"] { color: #fff; }
+.card { border: 1px solid var(--edge-2); }
+.eyebrow { color: var(--tci); font-weight: 800; }
+.card-title { font-weight: 800; }
+.btn { border-radius: 16px; font-weight: 650; }
+.sheet { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 30px 30px 0 0; }
+.sheet h2.sheet-t { font-weight: 800; font-size: 24px; }
+.backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(0, 0, 0, 0.55); }
 </style>
 </head>
 <body>
@@ -9577,7 +9713,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.2 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '13.0 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -20388,7 +20524,7 @@ ${wpts}
     def.forEach((k, i) => { if (!out.includes(k)) out.splice(Math.min(i, out.length), 0, k); });
     return out;
   }
-  const tileHtml = (d) => `<div class="tile" role="button" tabindex="0" data-nav="${d.nav}" data-k="${d.k}" id="tile-${d.k}" aria-label="${esc(d.t)}">
+  const tileHtml = (d) => `<div class="tile" role="button" tabindex="0" data-nav="${d.nav}" data-k="${d.k}" data-c="${d.k}" id="tile-${d.k}" aria-label="${esc(d.t)}">
       <div class="tile-h"><span class="tile-ic">${IC[d.ic] || ''}</span><span class="h2">${esc(d.t)}</span><small>${esc(d.s)}</small></div>
       <div class="tile-map${d.map === 'farbe' ? ' color' : ''}" id="tm-${d.k}"></div><div class="tile-f" id="tf-${d.k}"></div></div>`;
   // Bei ungerader Zahl füllt das letzte Blatt eines Themas die ganze Breite (Karte links, Text rechts).
@@ -20442,14 +20578,14 @@ ${wpts}
     const out = [];
     for (const d of TILES) {
       const vw = d.nav.split('/')[0], cfg = V[vw];
-      out.push({ nav: d.nav, vw, t: d.t, s: d.s, ic: d.ic, th: d.th, top: true });
-      if (cfg && cfg.segs && d.k !== 'skitour') for (const sg of cfg.segs) out.push({ nav: `${vw}/${sg.k}`, vw, seg: sg.k, t: sg.label, s: d.t, ic: sg.ic, th: d.th });
+      out.push({ nav: d.nav, vw, t: d.t, s: d.s, ic: d.ic, th: d.th, c: d.k, top: true });
+      if (cfg && cfg.segs && d.k !== 'skitour') for (const sg of cfg.segs) out.push({ nav: `${vw}/${sg.k}`, vw, seg: sg.k, t: sg.label, s: d.t, ic: sg.ic, th: d.th, c: d.k });
     }
     out.push({ nav: 'orte', vw: 'orte', t: 'Orte', s: 'Suchen und «Meine Orte» verwalten', ic: 'pin', th: 'wetter', top: true, extra: true });
     return out;
   }
   const qjNorm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const qjItem = (it, cur) => `<button class="qj-it th-${it.th}" data-nav="${esc(it.nav)}" aria-current="${cur}"><span class="qj-ic">${IC[it.ic] || ''}</span><span class="qj-t"><b>${esc(it.t)}</b><small>${esc(it.s)}</small></span></button>`;
+  const qjItem = (it, cur) => `<button class="qj-it th-${it.th}"${it.c ? ` data-c="${it.c}"` : ''} data-nav="${esc(it.nav)}" aria-current="${cur}"><span class="qj-ic">${IC[it.ic] || ''}</span><span class="qj-t"><b>${esc(it.t)}</b><small>${esc(it.s)}</small></span></button>`;
   function quickBody(q) {
     const items = quickItems(), n = qjNorm(q.trim());
     const isCur = (it) => !!S.view && it.vw === S.view && (it.seg ? it.seg === S.seg : true);
@@ -22969,6 +23105,8 @@ ${wpts}
     const fresh = view.hidden;
     S.view = vw; S.seg = seg; S.arg = arg;
     document.documentElement.dataset.th = VIEW_TOPIC[vw] || 'wetter';
+    // eigene Farbe der Funktion (wie ihre Kachel); Bericht und Orte: Farbe des Themas
+    { const c = vw === 'meldungen' ? 'meld' : TILES.some((d) => d.k === vw) ? vw : ''; if (c) document.documentElement.dataset.c = c; else delete document.documentElement.dataset.c; }
     barColor();
     showView(fresh);
     $('#vh-title').textContent = (cfg.titleFor && cfg.titleFor(seg)) || cfg.title;
@@ -23008,6 +23146,7 @@ ${wpts}
     TL.stop();
     S.view = ''; S.seg = ''; S.arg = '';
     delete document.documentElement.dataset.th;
+    delete document.documentElement.dataset.c;
     barColor();
     home.hidden = false;
     renderHome();
@@ -23299,7 +23438,7 @@ ${wpts}
     const m = document.querySelector('meta[name="theme-color"]');
     if (!m) return;
     const root = document.documentElement, dark = root.dataset.theme === 'dark';
-    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? (dark ? '--tcs' : '--tci') : '--sky-1').trim();
+    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? '--tc' : '--sky-1').trim();
     if (v) m.setAttribute('content', v);
   }
   applyTheme();

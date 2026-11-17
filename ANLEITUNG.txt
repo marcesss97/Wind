@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 12.2)
+Inhalt dieses Ordners (Version 13.0)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,17 @@ Inhalt dieses Ordners (Version 12.2)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 13.0
+  Ersetzen auf GitHub: index.html.
+  - Ganz neues Design «Farbe»: neutraler Grund (Anthrazit im dunklen, Hellgrau im hellen Design), darauf hat jede
+    Funktion ihre eigene kräftige Farbe – Tagesbericht blau, Wind türkis, Föhn orange-rot, Animationen violett,
+    Webcams pink, Modelle petrol, Karte grün, Panorama hellgrün, Schnee eisblau, Walliser Alpen violett-blau,
+    Skitour magenta, XC Therm gelb-orange, Meldungen rot.
+  - Startseite: Kacheln ganz in ihrer Farbe mit weisser Schrift, das Kartenbild als Fenster darin (im dunklen
+    Design dunkel); grosse Temperatur im Himmel, Foto kräftiger.
+  - Ansichten: Kopfzeile in der Farbe der Funktion mit weisser Schrift, der gewählte Reiter weiss.
+  - Schnellwahl und Dock in denselben Farben; Knöpfe über der Karte deckend statt gläsern.
 
 Neu in Version 12.2
   Ersetzen auf GitHub: index.html.
