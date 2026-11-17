@@ -1,5 +1,7 @@
 # Windsack · Datenspiegel und Mitteilungen
-# Läuft alle 10 Minuten und zu jeder Viertelstunde (SLF-Schneemesswerte alle 15 Minuten): holt Alertswiss, Nordlicht-Lage (NOAA), SLF-Messnetz, Lawinenunfälle und Roundshot-Standorte,
+# Hält sich selbst am Laufen (GitHub startet geplante Läufe oft nur alle paar Stunden): Ein Lauf holt die Daten
+# rund 50 Minuten lang alle 5 Minuten und stösst am Ende den nächsten an; der Zeitplan ist nur das Sicherheitsnetz.
+# Anhalten: Actions → Windsack → «Disable workflow». Holt Alertswiss, Nordlicht-Lage (NOAA), SLF-Messnetz, Lawinenunfälle und Roundshot-Standorte,
 # legt sie als JSON in den Zweig «data» und schickt Mitteilungen an die Geräte im Secret WINDSACK_PUSH.
 # Das Skript windsack-bot.mjs liegt neben index.html im Repository.
 name: Windsack
@@ -16,7 +18,7 @@ concurrency:
 jobs:
   daten:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 70
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,13 +38,28 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          git clone -q --depth 1 --branch data "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" prev 2>/dev/null || mkdir -p prev
-          rm -rf prev/.git
           BOT=app/windsack-bot.mjs; [ -f "$BOT" ] || BOT=app/docs/windsack-bot.mjs
           [ -f "$BOT" ] || { echo "::error::windsack-bot.mjs fehlt neben index.html im Repository – bitte aus dem ZIP hochladen"; exit 1; }
-          node "$BOT"
-          cd out
-          git init -q -b data
-          git add -A
-          git -c user.name="windsack-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Datenspiegel $(date -u +%Y-%m-%dT%H:%MZ)"
-          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" data
+          for i in 1 2 3 4 5 6 7 8 9 10 11; do
+            rm -rf prev out
+            git clone -q --depth 1 --branch data "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" prev 2>/dev/null || mkdir -p prev
+            rm -rf prev/.git
+            if node "$BOT"; then
+              ( cd out
+                git init -q -b data
+                git add -A
+                git -c user.name="windsack-bot" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Datenspiegel $(date -u +%Y-%m-%dT%H:%MZ)"
+                git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git" data ) || echo "::warning::Durchgang $i: Ablegen fehlgeschlagen"
+            else
+              echo "::warning::Durchgang $i fehlgeschlagen"
+            fi
+            [ "$i" = 11 ] || sleep 290
+          done
+      - name: Nächsten Lauf anstossen
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+        run: |
+          curl -sS -o /dev/null -w "Nächster Lauf: HTTP %{http_code}\n" -X POST -H "authorization: Bearer ${GITHUB_TOKEN}" -H "accept: application/vnd.github+json" "https://api.github.com/repos/${REPO}/actions/workflows/windsack.yml/dispatches" -d "{\"ref\":\"${REF}\"}" || true
