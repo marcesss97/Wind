@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="13.0 · 17.11.2026">
+<meta name="windsack-version" content="14.0 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -939,7 +939,7 @@ a { color: var(--accent); }
 .topic-h { display: flex; align-items: center; gap: 11px; padding: 0 2px; }
 .topic-ic {
   flex: none; width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; color: var(--on-tc);
-  background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: 0 4px 10px var(--tca);
+  background: var(--tc);
 }
 .topic-ic svg { width: 23px; height: 23px; display: block; }
 .topic-t { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
@@ -2468,7 +2468,6 @@ details .as-desc { margin-top: 6px; }
   -webkit-backdrop-filter: var(--blur, blur(18px)); backdrop-filter: var(--blur, blur(18px));
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
 }
-:root[data-theme="dark"] .loc { background: rgba(12, 19, 30, 0.60); }
 .loc-live { border-radius: 999px; background: var(--edge-2); border: 1px solid var(--edge-2); padding: 2px 10px 2px 2px; }
 .loc-days > div { border-left-color: var(--edge-2); }
 .locs-dots i { width: 6px; height: 6px; transition: width 0.2s; }
@@ -2479,7 +2478,7 @@ details .as-desc { margin-top: 6px; }
 .home-body { gap: 22px; padding-top: 10px; padding-bottom: calc(var(--safe-b) + 104px); }
 .tiles { gap: 30px; }
 .topic-h { gap: 12px; }
-.topic-ic { width: 42px; height: 42px; border-radius: 14px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.topic-ic { width: 42px; height: 42px; border-radius: 14px; box-shadow: none; }
 .topic-t b { font-size: 22px; }
 .topic-t small { font-size: 12px; letter-spacing: 0.01em; }
 .topic-h::after { content: ""; flex: 1; height: 1px; margin-left: 4px; background: linear-gradient(90deg, var(--tca), transparent); }
@@ -2503,7 +2502,7 @@ details .as-desc { margin-top: 6px; }
 .tile-ic svg { width: 20px; height: 20px; }
 .tile-h .h2 { padding-right: 36px; }
 .tile-h small { font-size: 11.5px; font-weight: 600; margin-top: 3px; }
-.tile-ic { right: 10px; top: 9px; width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.tile-ic { right: 10px; top: 9px; width: 32px; height: 32px; border-radius: 11px; background: var(--tc); box-shadow: none; }
 .tile.wide .tile-h { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; }
 .tile-f { padding: 9px 14px 13px; }
 .tile-badge { border-radius: 999px; padding: 3px 9px; box-shadow: 0 4px 12px var(--tca); }
@@ -2525,7 +2524,7 @@ details .as-desc { margin-top: 6px; }
 .tb { height: 46px; transition: background 0.2s, flex 0.2s; }
 .tb-ic { width: 36px; height: 36px; background: none; }
 .tb-ic svg { width: 22px; height: 22px; }
-.tb[aria-current="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); padding: 0 16px 0 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 18px var(--tca); }
+.tb[aria-current="true"] { background: var(--tc); color: var(--on-tc); padding: 0 16px 0 6px; box-shadow: none; }
 .tb[aria-current="true"] .tb-ic { background: none; }
 .dock-btn {
   flex: none; width: 60px; height: 60px; border-radius: 50%; padding: 0; display: grid; place-items: center; color: var(--ink);
@@ -2557,7 +2556,7 @@ details .as-desc { margin-top: 6px; }
 }
 .qj-it:active { transform: scale(0.97); }
 .qj-it[aria-current="true"] { border-color: var(--tc); background: var(--tca); }
-.qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: linear-gradient(145deg, var(--tc), var(--tcd)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: var(--tc); box-shadow: none; }
 .qj-ic svg { width: 22px; height: 22px; }
 .qj-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .qj-t b { font: 650 14px/1.15 var(--font-ui); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -2586,7 +2585,7 @@ details .as-desc { margin-top: 6px; }
 .seg { min-height: 42px; transition: background 0.18s, color 0.18s; }
 .seg svg { width: 24px; height: 24px; }
 .segs.icons .seg svg { width: 27px; height: 27px; }
-.seg[aria-selected="true"], .seg[aria-checked="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.seg[aria-selected="true"], .seg[aria-checked="true"] { background: var(--tc); color: var(--on-tc); box-shadow: none; }
 .vbody { margin-top: -26px; }
 .vpage { padding-top: 26px; }
 .xcwrap { top: 26px; }
@@ -2597,13 +2596,13 @@ details .as-desc { margin-top: 6px; }
   -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
 }
-.chip-b[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.chip-b[aria-pressed="true"] { background: var(--tc); color: var(--on-tc); border-color: transparent; box-shadow: none; }
 .gauge, .fstrip, .legend, .sn-scale { border-radius: 18px; }
 .fab {
   border: 1px solid var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
 }
-.fab[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tcd)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.fab[aria-pressed="true"] { background: var(--tc); color: var(--on-tc); border-color: transparent; box-shadow: none; }
 .tl, .rl, .kinfo, .tourp, .mbot.legend.card {
   background: var(--glass-strong); border: 1px solid var(--edge);
   -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
@@ -2619,7 +2618,7 @@ details .as-desc { margin-top: 6px; }
 .card .list { background: none; }
 .btn { border-radius: 14px; border-color: var(--edge-2); background: var(--surface-2); transition: transform 0.12s; }
 .btn:active { transform: scale(0.98); }
-.btn.primary { background: linear-gradient(145deg, var(--tc), var(--tcd)); border-color: transparent; color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.btn.primary { background: var(--tc); border-color: transparent; color: var(--on-tc); box-shadow: none; }
 .icon-btn { border-radius: 50%; border-color: var(--edge-2); }
 .search { border-radius: 16px; background: var(--card); border-color: var(--edge-2); }
 .search:focus-within { border-color: var(--tc); box-shadow: 0 0 0 4px var(--tca); }
@@ -2639,142 +2638,142 @@ details .as-desc { margin-top: 6px; }
 }
 .upd { border-radius: 22px; border-color: var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); }
 @media (prefers-reduced-motion: reduce) { .tile, .tb, .seg, .btn { transition: none; } }
-/* ───────────────────────── Farbe (Version 13) ─────────────────────────
-   Ganz neues Erscheinungsbild: neutraler Grund (Anthrazit bzw. Hellgrau), darauf jede Funktion in ihrer eigenen
-   kräftigen Farbe – als farbige Kachel auf der Startseite, als Kopfzeile in der Ansicht und als Symbol in der
-   Schnellwahl. Kartenbilder der Kacheln im dunklen Design dunkel. Die Regeln überschreiben «Glas» weiter oben. */
+/* ───────────────────────── Klar (Version 14) ─────────────────────────
+   Einheitlich und ruhig: neutrale Flächen mit feiner Linie, eine einzige Akzentfarbe (Blau) für Auswahl, Knöpfe
+   und Verweise, keine Verläufe, kein Leuchten. Farbe tragen nur die Daten (Windskala, Radar, Gefahrenstufen).
+   Radien: Flächen 20, Fenster darin 14, Knöpfe 12, Auswahl-Pillen rund. Überschreibt «Glas» weiter oben. */
 :root {
-  --bg: #f3f4f7; --surface: #ffffff; --surface-2: #eceef3; --hair: #e3e5ec; --hair-strong: #c5c9d4;
-  --ink: #0d0f14; --ink-2: #3d4350; --muted: #666d7c;
-  --glass: rgba(255, 255, 255, 0.80); --glass-strong: rgba(255, 255, 255, 0.92); --glass-map: rgba(255, 255, 255, 0.90);
-  --card: var(--surface);
-  --amb-1: transparent; --amb-2: transparent;
-  --edge: rgba(13, 15, 20, 0.07); --edge-2: rgba(13, 15, 20, 0.06);
-  --shadow: 0 1px 2px rgba(13, 15, 20, 0.05), 0 8px 24px rgba(13, 15, 20, 0.08);
-  --shadow-lg: 0 18px 44px rgba(13, 15, 20, 0.18);
-  --fab: #ffffff; --fab-ink: #0d0f14;
-  --r-card: 26px;
-  --sky-1: #2a3350;
+  --bg: #f4f5f7; --surface: #ffffff; --surface-2: #eef0f3; --hair: #e2e4e9; --hair-strong: #c6c9d1;
+  --ink: #111318; --ink-2: #414652; --muted: #6a707d;
+  --acc: #2563eb; --acc-i: #1d4fd0; --acc-s: #e7eefd; --acc-a: rgba(37, 99, 235, 0.12);
+  --glass: var(--surface); --glass-strong: var(--surface); --glass-map: var(--surface); --card: var(--surface);
+  --edge: var(--hair); --edge-2: var(--hair);
+  --shadow: 0 1px 2px rgba(17, 19, 24, 0.05); --shadow-lg: 0 12px 32px rgba(17, 19, 24, 0.14);
+  --float: 0 4px 14px rgba(17, 19, 24, 0.12);
+  --fab: var(--surface); --fab-on: var(--acc); --fab-ink: var(--ink);
+  --on-tc: #ffffff; --on-slate: #ffffff; --on-accent: #ffffff;
+  --r-card: 20px; --sky-1: #2a3350;
 }
 :root[data-theme="dark"] {
-  --bg: #0b0b0e; --surface: #17181d; --surface-2: #22242b; --hair: #2a2c35; --hair-strong: #454856;
-  --ink: #ffffff; --ink-2: #c9ccd6; --muted: #979baa;
-  --glass: rgba(18, 19, 24, 0.82); --glass-strong: rgba(20, 21, 27, 0.94); --glass-map: rgba(16, 17, 22, 0.92);
-  --card: var(--surface);
-  --edge: rgba(255, 255, 255, 0.09); --edge-2: rgba(255, 255, 255, 0.07);
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 22px 50px rgba(0, 0, 0, 0.62);
-  --fab: #17181d; --fab-ink: #ffffff;
-  --tile-map-filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.95);
-  --ph-1: rgba(8, 10, 18, 0.55); --ph-2: rgba(8, 10, 18, 0.22); --ph-3: rgba(8, 10, 18, 0.05); --ph-4: rgba(8, 10, 18, 0.50);
-  --sky-1: #0b0b0e;
+  --bg: #0e0f11; --surface: #17181b; --surface-2: #212327; --hair: #2a2c31; --hair-strong: #40434b;
+  --ink: #f4f5f6; --ink-2: #bcbfc6; --muted: #8b8f98;
+  --acc: #3d7ff5; --acc-i: #7fabff; --acc-s: #18243a; --acc-a: rgba(61, 127, 245, 0.18);
+  --glass: var(--surface); --glass-strong: var(--surface); --glass-map: var(--surface); --card: var(--surface);
+  --edge: var(--hair); --edge-2: var(--hair);
+  --shadow: none; --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --float: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --fab: var(--surface); --fab-on: var(--acc); --fab-ink: var(--ink);
+  --on-tc: #ffffff; --on-slate: #ffffff; --on-accent: #ffffff;
+  --tile-map-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.95);
+  --sky-1: #0e0f11;
 }
-/* Eigene Farbe je Funktion: kräftig (--tc) und tief (--tcd); die Zwischentöne werden daraus gemischt */
-[data-c="tag"], :root[data-c="tag"] { --tc: #3d7bff; --tcd: #2a3fe6; }
-[data-c="wind"], :root[data-c="wind"] { --tc: #00b7f0; --tcd: #0073e6; }
-[data-c="foehn"], :root[data-c="foehn"] { --tc: #ff9a1f; --tcd: #f0441f; }
-[data-c="anim"], :root[data-c="anim"] { --tc: #7a5cff; --tcd: #b12fe0; }
-[data-c="cams"], :root[data-c="cams"] { --tc: #ff4f8b; --tcd: #e0246a; }
-[data-c="modelle"], :root[data-c="modelle"] { --tc: #00c4a7; --tcd: #008fb3; }
-[data-c="karte"], :root[data-c="karte"] { --tc: #1fc46b; --tcd: #0b8f58; }
-[data-c="peak"], :root[data-c="peak"] { --tc: #8fcc1a; --tcd: #2f9e44; }
-[data-c="schnee"], :root[data-c="schnee"] { --tc: #3fb6ff; --tcd: #3b5bdb; }
-[data-c="wallis"], :root[data-c="wallis"] { --tc: #8b6bff; --tcd: #5a3fe0; }
-[data-c="skitour"], :root[data-c="skitour"] { --tc: #c44dff; --tcd: #e0338f; }
-[data-c="xc"], :root[data-c="xc"] { --tc: #ffb400; --tcd: #ff6a00; }
-[data-c="meld"], :root[data-c="meld"] { --tc: #ff4d5e; --tcd: #c9102c; }
-[data-c], :root[data-c] {
-  --tci: color-mix(in srgb, var(--tcd) 82%, #000); --tca: color-mix(in srgb, var(--tc) 26%, transparent);
-  --tcs: color-mix(in srgb, var(--tc) 16%, var(--surface));
-  --accent: var(--tci); --accent-soft: var(--tca); --slate: var(--tcd);
-}
-:root[data-theme="dark"] [data-c], :root[data-theme="dark"][data-c] {
-  --tci: color-mix(in srgb, var(--tc) 72%, #fff); --tca: color-mix(in srgb, var(--tc) 34%, transparent);
-  --tcs: color-mix(in srgb, var(--tc) 22%, var(--surface));
+/* eine Farbe für alle Themen */
+:root, :root[data-th], .th-wetter, .th-karten, .th-winter, .th-fliegen, .th-meld {
+  --tc: var(--acc); --tcd: var(--acc); --tci: var(--acc-i); --tcs: var(--acc-s); --tca: var(--acc-a);
+  --accent: var(--acc-i); --accent-soft: var(--acc-a); --slate: var(--acc);
 }
 #app, .scr.view { background: var(--bg); }
+.num, .card-title, .topic-t b, .vh-t h1, .now-name, .sheet h2.sheet-t { letter-spacing: -0.015em; }
 
 /* ── Startseite ── */
-:root[data-theme="dark"] .sky-photo { filter: brightness(0.86) saturate(1.2); }
-.sky-photo { filter: saturate(1.15); }
-.now-name { font-size: 30px; font-weight: 800; }
-.now-temp { font-size: 54px; font-weight: 800; line-height: 1; margin-top: 8px; letter-spacing: -0.04em; }
-.now-text { font-size: 16px; font-weight: 500; }
-.hours { border-radius: 24px; border-color: rgba(255, 255, 255, 0.28); background: rgba(12, 14, 22, 0.46); }
-.loc { border-radius: var(--r-card); background: var(--glass-strong); border-color: var(--edge); }
-:root[data-theme="dark"] .loc { background: rgba(18, 19, 24, 0.86); }
+.sky-status, .sky-btn { background: rgba(14, 15, 17, 0.36); border-color: rgba(255, 255, 255, 0.16); }
+.now-name { font-size: 26px; font-weight: 700; }
+.now-temp { font-size: 40px; font-weight: 700; line-height: 1.05; }
+.hours { border-radius: var(--r-card); border-color: rgba(255, 255, 255, 0.2); background: rgba(14, 15, 17, 0.5); box-shadow: none; }
+.loc { border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--float); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.loc-live { background: var(--surface-2); border-color: transparent; }
+.loc-days > div { border-left-color: var(--hair); }
+.home-body { gap: 18px; padding-top: 14px; }
+.tiles { gap: 28px; }
+.topic-h { gap: 10px; padding: 0 4px; }
 .topic-h::after { display: none; }
-.topic-t { max-width: none; }
-.topic-t b { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
-.topic-ic { width: 46px; height: 46px; border-radius: 16px; box-shadow: 0 10px 24px var(--tca); }
-.topic-ic svg { width: 26px; height: 26px; }
-.tgrid { gap: 14px; }
-/* Kachel: ganz in ihrer Farbe, Kartenbild als Fenster, weisse Schrift */
-.tile {
-  border-radius: var(--r-card); padding: 0 0 2px; color: #fff;
-  background: linear-gradient(155deg, var(--tc) 0%, var(--tcd) 100%);
-  box-shadow: 0 12px 28px var(--tca);
-}
-.tile::after { border: 0; -webkit-mask-image: none; mask-image: none; background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 42%); }
-.tile-h { position: relative; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; padding: 14px 14px 10px; min-height: 62px; }
-.tile-h .h2 { font-size: 16.5px; font-weight: 800; color: #fff; padding-right: 36px; }
-.tile-h small { color: rgba(255, 255, 255, 0.86); font-weight: 600; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tile-ic { right: 10px; top: 10px; width: 30px; height: 30px; border-radius: 10px; background: rgba(255, 255, 255, 0.22); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28); }
-.tile-ic svg { width: 19px; height: 19px; }
-.tile-map { margin: 0 8px; border-radius: 18px; aspect-ratio: 1.25; background: #101116; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
-:root[data-theme="light"] .tile-map { background: #f6f6f6; }
+.topic-ic { width: 28px; height: 28px; border-radius: 0; background: none; box-shadow: none; color: var(--ink); }
+.topic-ic svg { width: 24px; height: 24px; }
+.topic-t { flex-direction: row; align-items: baseline; gap: 10px; max-width: none; flex: 1; }
+.topic-t b { font-size: 20px; font-weight: 700; }
+.topic-t small { font-size: 12.5px; }
+.tgrid { gap: 12px; }
+.tile { border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow); color: var(--ink); padding: 0; }
+.tile::after { display: none; }
+.tile-h { position: relative; background: none; border: 0; padding: 13px 14px 10px; min-height: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.tile-h .h2 { font-size: 16px; font-weight: 700; color: var(--ink); padding-right: 30px; }
+.tile-h small { color: var(--muted); font-weight: 500; font-size: 12px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-ic { right: 12px; top: 12px; width: 22px; height: 22px; border-radius: 0; background: none; box-shadow: none; color: var(--acc-i); }
+.tile-ic svg { width: 22px; height: 22px; }
+.tile-map { margin: 0 8px; border-radius: 14px; aspect-ratio: 1.25; background: var(--surface-2); }
 .mm-tint { display: none; }
-.tile-f { color: rgba(255, 255, 255, 0.88); padding: 10px 14px 12px; }
-.tile-f b { color: #fff; font-weight: 750; }
-.tile-badge { background: #fff; color: var(--tcd); top: 78px; right: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); }
-.tile.wide .tile-map { margin: 8px 0 8px 8px; min-height: 126px; }
-.tile.wide .tile-badge { bottom: 16px; left: 16px; top: auto; right: auto; }
-.tile-art { color: #fff; }
-.tiles.arranging .tile { box-shadow: 0 0 0 3px var(--ink), 0 12px 28px var(--tca); }
+.tile-f { padding: 10px 14px 13px; color: var(--muted); }
+.tile-f b { color: var(--ink); font-weight: 650; }
+.tile-badge { top: 70px; right: 16px; border-radius: 999px; background: var(--acc); color: #fff; box-shadow: none; }
+.tile.wide .tile-h { padding-bottom: 6px; }
+.tile.wide .tile-map { margin: 8px 0 8px 8px; min-height: 122px; }
+.tile.wide .tile-badge { top: auto; right: auto; left: 16px; bottom: 16px; }
+.tile-ph { border-radius: var(--r-card); }
+.tiles.arranging .tile { box-shadow: 0 0 0 2px var(--acc); }
+.tiles-edit.on { background: var(--surface); border: 1px solid var(--hair); border-radius: var(--r-card); box-shadow: var(--float); -webkit-backdrop-filter: none; backdrop-filter: none; }
 
 /* ── Dock ── */
-.dock .topics-bar, .dock-btn { background: var(--glass-strong); border-color: var(--edge); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34); }
-.dock .topics-bar { border-radius: 24px; }
-.tb { border-radius: 18px; }
-.dock-btn { border-radius: 22px; background: var(--ink); color: var(--bg); border-color: transparent; }
+.dock .topics-bar, .dock-btn { background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--float); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.dock .topics-bar { border-radius: 20px; height: 58px; padding: 5px; }
+.dock-btn { width: 58px; height: 58px; border-radius: 20px; color: var(--ink); }
+.tb { border-radius: 15px; color: var(--muted); }
+.tb[aria-current="true"] { background: var(--acc-a); color: var(--acc-i); box-shadow: none; padding: 0 14px 0 6px; }
 
 /* ── Schnellwahl ── */
-.qj-it { border-radius: 18px; }
-.qj-ic { width: 38px; height: 38px; border-radius: 13px; color: #fff; box-shadow: 0 6px 14px var(--tca); }
+.qj-chip, .qj-it { background: var(--surface-2); border-color: transparent; }
+.qj-it { border-radius: 14px; }
+.qj-it[aria-current="true"] { background: var(--acc-a); border-color: transparent; }
+.qj-ic { width: 26px; height: 26px; border-radius: 0; background: none; box-shadow: none; color: var(--acc-i); }
+.qj-ic svg { width: 24px; height: 24px; }
 .qj-g h3 { color: var(--muted); }
-.qj-g h3::after { background: var(--hair); }
+.qj-g h3::after { display: none; }
 
-/* ── Ansicht: Kopfzeile in der Farbe der Funktion ── */
-.vh {
-  background: linear-gradient(135deg, var(--tc), var(--tcd)); color: #fff; border: 0;
-  -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0 0 28px 28px; box-shadow: 0 12px 30px var(--tca);
-}
+/* ── Ansicht ── */
+.vh { background: var(--bg); color: var(--ink); border: 0; border-bottom: 1px solid var(--hair); border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding-bottom: 10px; }
 :root[data-theme="light"] .vh::before { background: none; }
-.vh-t h1 { color: #fff; font-weight: 800; font-size: 21px; }
-.vh-t p { color: rgba(255, 255, 255, 0.86); }
-.vh-t:active { background: rgba(255, 255, 255, 0.16); }
-.vh-chev { color: #fff; }
-.vh-btn { background: rgba(255, 255, 255, 0.20); border-color: transparent; color: #fff; }
-.vh-btn:active { background: rgba(255, 255, 255, 0.34); }
-.vh-btn.star[aria-pressed="true"] { color: #ffe066; }
-.vh .segs { background: rgba(0, 0, 0, 0.20); border-color: transparent; }
-.vh .seg { color: rgba(255, 255, 255, 0.92); }
-.vh .seg[aria-selected="true"] { background: #fff; color: var(--tcd); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22); }
-.vbody { margin-top: -28px; }
-.vpage { padding-top: 28px; }
-.xcwrap { top: 28px; }
+.vh-t h1 { font-size: 18px; font-weight: 700; }
+.vh-t p { font-size: 12.5px; color: var(--muted); }
+.vh-t:active { background: var(--surface-2); }
+.vh-chev { color: var(--muted); }
+.vh-btn { background: var(--surface-2); border-color: transparent; color: var(--ink); }
+.vh-btn:active { background: var(--hair); }
+.segs { background: var(--surface-2); border-color: transparent; border-radius: 14px; padding: 3px; }
+.seg { border-radius: 11px; min-height: 40px; color: var(--ink-2); }
+.seg[aria-selected="true"], .seg[aria-checked="true"] { background: var(--acc); color: #fff; box-shadow: none; }
+.vbody { margin-top: 0; }
+.vpage { padding-top: 0; }
+.xcwrap { top: 0; }
+.map-meta { top: 6px; }
+.mtop { top: 30px; }
 
-/* ── Karte und Seiten ── */
-.chip-b, .gauge, .fstrip, .legend, .chipbar, .sn-scale, .an-note, .fab { box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22); }
-.fab { background: var(--fab); color: var(--fab-ink); -webkit-backdrop-filter: none; backdrop-filter: none; }
-.fab[aria-pressed="true"], .mapwrap.karte .fab[aria-pressed="true"] { color: #fff; }
-.card { border: 1px solid var(--edge-2); }
-.eyebrow { color: var(--tci); font-weight: 800; }
-.card-title { font-weight: 800; }
-.btn { border-radius: 16px; font-weight: 650; }
-.sheet { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 30px 30px 0 0; }
-.sheet h2.sheet-t { font-weight: 800; font-size: 24px; }
-.backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(0, 0, 0, 0.55); }
+/* ── Karte: Leisten und Knöpfe ── */
+.chip-b, .gauge, .fstrip, .legend, .chipbar, .sn-scale, .an-note, .tl, .rl, .kinfo, .tourp, .mbot.legend.card {
+  background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--float); -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.gauge, .fstrip, .legend, .sn-scale, .kinfo, .tourp, .mbot.legend.card { border-radius: 14px; }
+.chip-b[aria-pressed="true"] { background: var(--acc); color: #fff; border-color: var(--acc); box-shadow: var(--float); }
+.fab { background: var(--surface); color: var(--ink); border: 1px solid var(--hair); box-shadow: var(--float); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.fab[aria-pressed="true"], .mapwrap.karte .fab[aria-pressed="true"] { background: var(--acc); color: #fff; border-color: var(--acc); box-shadow: var(--float); }
+.kpanel { background: var(--surface); border-top: 1px solid var(--hair); border-radius: var(--r-card) var(--r-card) 0 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ── Seiten ── */
+.card { border-radius: var(--r-card); background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow); }
+.card .card { background: var(--surface-2); border: 0; }
+.list, .link, .promo { background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; box-shadow: var(--shadow); }
+.card .list { border: 0; background: none; }
+.eyebrow { color: var(--muted); letter-spacing: 0.08em; }
+.btn { border-radius: 12px; background: var(--surface-2); border-color: transparent; }
+.btn.primary { background: var(--acc); color: #fff; border-color: var(--acc); box-shadow: none; }
+.icon-btn { background: var(--surface-2); border-color: transparent; }
+.search { border-radius: 12px; background: var(--surface); border-color: var(--hair); box-shadow: none; }
+.search:focus-within { border-color: var(--acc); box-shadow: 0 0 0 3px var(--acc-a); }
+.chip, .msg { border-color: transparent; }
+
+/* ── Blatt, Hinweise ── */
+.backdrop { background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.sheet { background: var(--surface); border: 0; border-radius: var(--r-card) var(--r-card) 0 0; box-shadow: var(--shadow-lg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.toast { background: var(--ink); color: var(--bg); border: 0; border-radius: 12px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.upd { background: var(--surface); border-color: var(--hair); border-radius: var(--r-card); -webkit-backdrop-filter: none; backdrop-filter: none; }
 </style>
 </head>
 <body>
@@ -9713,7 +9712,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '13.0 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '14.0 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -20524,7 +20523,7 @@ ${wpts}
     def.forEach((k, i) => { if (!out.includes(k)) out.splice(Math.min(i, out.length), 0, k); });
     return out;
   }
-  const tileHtml = (d) => `<div class="tile" role="button" tabindex="0" data-nav="${d.nav}" data-k="${d.k}" data-c="${d.k}" id="tile-${d.k}" aria-label="${esc(d.t)}">
+  const tileHtml = (d) => `<div class="tile" role="button" tabindex="0" data-nav="${d.nav}" data-k="${d.k}" id="tile-${d.k}" aria-label="${esc(d.t)}">
       <div class="tile-h"><span class="tile-ic">${IC[d.ic] || ''}</span><span class="h2">${esc(d.t)}</span><small>${esc(d.s)}</small></div>
       <div class="tile-map${d.map === 'farbe' ? ' color' : ''}" id="tm-${d.k}"></div><div class="tile-f" id="tf-${d.k}"></div></div>`;
   // Bei ungerader Zahl füllt das letzte Blatt eines Themas die ganze Breite (Karte links, Text rechts).
@@ -20578,14 +20577,14 @@ ${wpts}
     const out = [];
     for (const d of TILES) {
       const vw = d.nav.split('/')[0], cfg = V[vw];
-      out.push({ nav: d.nav, vw, t: d.t, s: d.s, ic: d.ic, th: d.th, c: d.k, top: true });
-      if (cfg && cfg.segs && d.k !== 'skitour') for (const sg of cfg.segs) out.push({ nav: `${vw}/${sg.k}`, vw, seg: sg.k, t: sg.label, s: d.t, ic: sg.ic, th: d.th, c: d.k });
+      out.push({ nav: d.nav, vw, t: d.t, s: d.s, ic: d.ic, th: d.th, top: true });
+      if (cfg && cfg.segs && d.k !== 'skitour') for (const sg of cfg.segs) out.push({ nav: `${vw}/${sg.k}`, vw, seg: sg.k, t: sg.label, s: d.t, ic: sg.ic, th: d.th });
     }
     out.push({ nav: 'orte', vw: 'orte', t: 'Orte', s: 'Suchen und «Meine Orte» verwalten', ic: 'pin', th: 'wetter', top: true, extra: true });
     return out;
   }
   const qjNorm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const qjItem = (it, cur) => `<button class="qj-it th-${it.th}"${it.c ? ` data-c="${it.c}"` : ''} data-nav="${esc(it.nav)}" aria-current="${cur}"><span class="qj-ic">${IC[it.ic] || ''}</span><span class="qj-t"><b>${esc(it.t)}</b><small>${esc(it.s)}</small></span></button>`;
+  const qjItem = (it, cur) => `<button class="qj-it th-${it.th}" data-nav="${esc(it.nav)}" aria-current="${cur}"><span class="qj-ic">${IC[it.ic] || ''}</span><span class="qj-t"><b>${esc(it.t)}</b><small>${esc(it.s)}</small></span></button>`;
   function quickBody(q) {
     const items = quickItems(), n = qjNorm(q.trim());
     const isCur = (it) => !!S.view && it.vw === S.view && (it.seg ? it.seg === S.seg : true);
@@ -23105,8 +23104,6 @@ ${wpts}
     const fresh = view.hidden;
     S.view = vw; S.seg = seg; S.arg = arg;
     document.documentElement.dataset.th = VIEW_TOPIC[vw] || 'wetter';
-    // eigene Farbe der Funktion (wie ihre Kachel); Bericht und Orte: Farbe des Themas
-    { const c = vw === 'meldungen' ? 'meld' : TILES.some((d) => d.k === vw) ? vw : ''; if (c) document.documentElement.dataset.c = c; else delete document.documentElement.dataset.c; }
     barColor();
     showView(fresh);
     $('#vh-title').textContent = (cfg.titleFor && cfg.titleFor(seg)) || cfg.title;
@@ -23146,7 +23143,6 @@ ${wpts}
     TL.stop();
     S.view = ''; S.seg = ''; S.arg = '';
     delete document.documentElement.dataset.th;
-    delete document.documentElement.dataset.c;
     barColor();
     home.hidden = false;
     renderHome();
@@ -23438,7 +23434,7 @@ ${wpts}
     const m = document.querySelector('meta[name="theme-color"]');
     if (!m) return;
     const root = document.documentElement, dark = root.dataset.theme === 'dark';
-    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? '--tc' : '--sky-1').trim();
+    const v = getComputedStyle(root).getPropertyValue(root.dataset.th ? '--bg' : '--sky-1').trim();
     if (v) m.setAttribute('content', v);
   }
   applyTheme();
