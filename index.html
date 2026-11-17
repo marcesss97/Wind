@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="15.1 · 17.11.2026">
+<meta name="windsack-version" content="15.2 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2846,6 +2846,10 @@ details .as-desc { margin-top: 6px; }
 .tile.wide .tile-badge { top: auto; right: auto; left: 12px; bottom: 12px; }
 .tile-ph { border-radius: 14px; }
 
+/* ── Wettersymbole: plastisch; im Himmel weisse Wolken, auf weissen Karten graublaue (sonst unsichtbar) ── */
+.wx-c { fill: url(#wxgCw); } .wx-d { fill: url(#wxgD); } .wx-m { fill: url(#wxgMw); } .wx-sn { stroke: var(--wx-snow); }
+.sky .now .wx-c, .sky .hours .wx-c { fill: url(#wxgC); } .sky .now .wx-m, .sky .hours .wx-m { fill: url(#wxgM); } .sky .now .wx-sn, .sky .hours .wx-sn { stroke: #ffffff; }
+:root[data-theme="dark"] .wx-c { fill: url(#wxgC); } :root[data-theme="dark"] .wx-m { fill: url(#wxgM); }
 /* ── Wie das Vorbild: kein Dock, keine Themen-Überschriften, oben nur Logo und Suche, Stundenkasten ohne Windzeile ── */
 .dock, .topic-h, .sky-status, #btn-refresh { display: none; }
 .sky-top { justify-content: space-between; }
@@ -9798,7 +9802,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.1 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.2 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -12178,6 +12182,23 @@ pako/dist/pako.esm.mjs:
     23: [0, 3, '', 0, 1, 0, 0], 24: [0, 3, 'r', 2, 1, 0, 0], 25: [0, 3, 'r', 3, 1, 0, 0], 40: [0, 3, 'r', 1, 1, 0, 0], 41: [0, 2, 'r', 1, 1, 0, 0], 38: [0, 2, 'r', 2, 1, 0, 0], 39: [0, 2, 's', 2, 1, 0, 0], 42: [0, 3, 's', 2, 1, 0, 0],
   };
   let wxSeq = 0;
+  // Plastischer Stil (wie die MeteoSchweiz-App): Verläufe einmal im Dokument, die Symbole verweisen darauf
+  (() => {
+    const host = document.createElement('div');
+    host.innerHTML = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <radialGradient id="wxgS" cx="0.36" cy="0.30" r="0.80"><stop offset="0" stop-color="#fff6a8"/><stop offset="0.5" stop-color="#ffd91f"/><stop offset="1" stop-color="#f3ae00"/></radialGradient>
+      <linearGradient id="wxgC" gradientUnits="userSpaceOnUse" x1="0" y1="4" x2="0" y2="27"><stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#eef2f6"/><stop offset="1" stop-color="#b3c0ce"/></linearGradient>
+      <linearGradient id="wxgCw" gradientUnits="userSpaceOnUse" x1="0" y1="4" x2="0" y2="27"><stop offset="0" stop-color="#e3e9ef"/><stop offset="0.5" stop-color="#c3ced9"/><stop offset="1" stop-color="#8496a8"/></linearGradient>
+      <linearGradient id="wxgMw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe6ed"/><stop offset="1" stop-color="#97a6b6"/></linearGradient>
+      <linearGradient id="wxgD" gradientUnits="userSpaceOnUse" x1="0" y1="4" x2="0" y2="27"><stop offset="0" stop-color="#c4ced8"/><stop offset="1" stop-color="#75828f"/></linearGradient>
+      <linearGradient id="wxgM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c2ccd8"/></linearGradient>
+      <linearGradient id="wxgR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb0f5"/><stop offset="1" stop-color="#1f74d8"/></linearGradient>
+    </defs></svg>`;
+    document.body.appendChild(host.firstChild);
+  })();
+  // Wolke aus runden Ballen (37 × 27), unten schattiert, oben ein Glanzlicht
+  const WX_PUFFS = '<circle cx="10" cy="19" r="7"/><circle cx="18" cy="12.5" r="9"/><circle cx="27.5" cy="15.5" r="7.5"/><circle cx="31" cy="20.5" r="5.5"/><rect x="10" y="17" width="21" height="9"/>';
+  const wxCloud = (dark) => `<g transform="translate(0 0.9)" fill="${dark ? '#5d6975' : '#93a3b3'}" opacity="0.55">${WX_PUFFS}</g><g class="${dark ? 'wx-d' : 'wx-c'}">${WX_PUFFS}</g><ellipse cx="16.5" cy="8.6" rx="5.6" ry="3" fill="#fff" opacity="${dark ? 0.22 : 0.6}"/>`;
   function wxInner(code) {
     const night = code > 100;
     const base = night ? code - 100 : code;
@@ -12191,14 +12212,14 @@ pako/dist/pako.esm.mjs:
       const cx = free ? (high ? 27 : 24) : small ? 20 : peek ? 27 : 17, cy = free ? (high ? 26 : 24) : small ? 19 : peek ? 14 : 16, r = free ? 9.5 : small ? 8.5 : peek ? 6.5 : 7.5;
       if (night) {
         const id = 'wxm' + (++wxSeq);
-        g += `<mask id="${id}"><rect width="48" height="48" fill="#fff"/><circle cx="${cx + r * 0.55}" cy="${cy - r * 0.45}" r="${r * 0.9}" fill="#000"/></mask><circle cx="${cx}" cy="${cy}" r="${r}" style="fill:var(--wx-moon)" mask="url(#${id})"/>`;
+        g += `<mask id="${id}"><rect width="48" height="48" fill="#fff"/><circle cx="${cx + r * 0.55}" cy="${cy - r * 0.45}" r="${r * 0.9}" fill="#000"/></mask><circle cx="${cx}" cy="${cy}" r="${r}" class="wx-m" mask="url(#${id})"/>`;
       } else {
         let rays = '';
         for (let k = 0; k < 8; k++) {
-          const a = (k * Math.PI) / 4 + Math.PI / 8 * 0, r1 = r + 2.6, r2 = r + 6.2;
+          const a = (k * Math.PI) / 4, r1 = r + 2.8, r2 = r + 5.6;
           rays += `M${(cx + r1 * Math.cos(a)).toFixed(1)} ${(cy + r1 * Math.sin(a)).toFixed(1)}L${(cx + r2 * Math.cos(a)).toFixed(1)} ${(cy + r2 * Math.sin(a)).toFixed(1)}`;
         }
-        g += `<path d="${rays}" style="stroke:var(--wx-ray)" stroke-width="2.6" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="${r}" style="fill:var(--wx-sun);stroke:var(--wx-ray)" stroke-width="0.8"/>`;
+        g += `<path d="${rays}" stroke="#ffc61a" stroke-width="3" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#wxgS)"/>`;
       }
     }
     // hohe Wolken: graue Schleier über der Sonne (oben links)
@@ -12206,9 +12227,8 @@ pako/dist/pako.esm.mjs:
     if (fog === 2) g += '<path d="M8 17h32M5 24h38M8 31h32M12 38h24" fill="none" style="stroke:var(--wx-cloud-s)" stroke-width="3" stroke-linecap="round"/>';
     // Wolke
     if (cloud) {
-      const fill = cloud === 3 ? 'var(--wx-dark)' : 'var(--wx-cloud)';
-      const tr = small ? 'translate(19 20) scale(0.72)' : (sun || fog === 1 || pt || thunder) ? 'translate(9 10)' : 'translate(8 13)';
-      g += `<g transform="${tr}"><path d="M8 26h21a7 7 0 0 0 0.6-13.97A10 10 0 0 0 10.4 10.5 7.8 7.8 0 0 0 8 26z" style="fill:${fill};stroke:var(--wx-cloud-s)" stroke-width="1.3" stroke-linejoin="round"/></g>`;
+      const tr = small ? 'translate(19 20) scale(0.72)' : (sun || fog === 1 || pt || thunder) ? 'translate(7.5 10)' : 'translate(6 12)';
+      g += `<g transform="${tr}">${wxCloud(cloud === 3)}</g>`;
     }
     if (fog === 1) g += '<path d="M9 41h30M13 46h22" fill="none" style="stroke:var(--wx-cloud-s)" stroke-width="2.6" stroke-linecap="round"/>';
     // Niederschlag unter der Wolke
@@ -12217,11 +12237,11 @@ pako/dist/pako.esm.mjs:
       const xs = thunder ? (n === 1 ? [16] : n === 2 ? [15, 37] : [12, 17, 37]) : n === 1 ? [26] : n === 2 ? [21, 31] : [17, 26, 35];
       xs.forEach((x, i) => {
         const kind = pt === 'm' ? (i % 2 ? 's' : 'r') : pt;
-        if (kind === 'r') g += `<path d="M${x + 1.5} 39L${x - 1.5} 45.5" style="stroke:var(--wx-rain)" stroke-width="2.6" stroke-linecap="round"/>`;
-        else g += `<path d="M${x} 38.5v7M${x - 3} 40.2l6 3.6M${x + 3} 40.2l-6 3.6" style="stroke:var(--wx-snow)" stroke-width="1.7" stroke-linecap="round"/>`;
+        if (kind === 'r') g += `<path d="M${x} 38.4c2 2.6 2.9 3.9 2.9 5.2a2.9 2.9 0 0 1-5.8 0c0-1.3.9-2.6 2.9-5.2z" fill="url(#wxgR)"/>`;
+        else g += `<path d="M${x} 38.5v7M${x - 3} 40.2l6 3.6M${x + 3} 40.2l-6 3.6" class="wx-sn" stroke-width="2" stroke-linecap="round"/>`;
       });
     }
-    if (thunder) g += '<path d="M27 32l-6.5 8.5h5l-3 7.5 9.5-10.5h-5.2l3-5.5z" style="fill:var(--wx-sun);stroke:var(--halo)" stroke-width="1" stroke-linejoin="round"/>';
+    if (thunder) g += '<path d="M27 32l-6.5 8.5h5l-3 7.5 9.5-10.5h-5.2l3-5.5z" fill="url(#wxgS)" stroke="#e79a00" stroke-width="0.8" stroke-linejoin="round"/>';
     return g;
   }
   const wxSvg = (code) => `<svg viewBox="0 0 48 48" aria-hidden="true">${wxInner(code)}</svg>`;
