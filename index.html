@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="12.0 · 17.11.2026">
+<meta name="windsack-version" content="12.1 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2500,8 +2500,10 @@ details .as-desc { margin-top: 6px; }
 }
 .tile-h::after { display: none; }
 .tile-h .h2 { font-size: 17px; letter-spacing: -0.01em; }
+.tile-ic svg { width: 20px; height: 20px; }
+.tile-h .h2 { padding-right: 36px; }
 .tile-h small { font-size: 11.5px; font-weight: 600; margin-top: 3px; }
-.tile-ic { right: 10px; top: 10px; width: 28px; height: 28px; border-radius: 10px; background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.tile-ic { right: 10px; top: 9px; width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
 .tile.wide .tile-h { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; }
 .tile-f { padding: 9px 14px 13px; }
 .tile-badge { border-radius: 999px; padding: 3px 9px; box-shadow: 0 4px 12px var(--tca); }
@@ -2556,7 +2558,7 @@ details .as-desc { margin-top: 6px; }
 .qj-it:active { transform: scale(0.97); }
 .qj-it[aria-current="true"] { border-color: var(--tc); background: var(--tca); }
 .qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
-.qj-ic svg { width: 20px; height: 20px; }
+.qj-ic svg { width: 22px; height: 22px; }
 .qj-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .qj-t b { font: 650 14px/1.15 var(--font-ui); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .qj-t small { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2582,6 +2584,8 @@ details .as-desc { margin-top: 6px; }
 .vh-t p { font-size: 12.5px; }
 .segs { background: var(--edge-2); border: 1px solid var(--edge-2); padding: 4px; }
 .seg { min-height: 42px; transition: background 0.18s, color 0.18s; }
+.seg svg { width: 24px; height: 24px; }
+.segs.icons .seg svg { width: 27px; height: 27px; }
 .seg[aria-selected="true"], .seg[aria-checked="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
 .vbody { margin-top: -26px; }
 .vpage { padding-top: 26px; }
@@ -2752,7 +2756,7 @@ details .as-desc { margin-top: 6px; }
           <button class="fab" id="fab-satbolt" data-ui="anim" data-tabs="sat" data-opt="satBolt" aria-label="Blitze zeigen" aria-pressed="false" data-ic="bolt"></button>
           <button class="fab" id="fab-hail" data-ui="anim" data-tabs="precip" data-opt="hail" aria-label="Hagel (Radar) zeigen" aria-pressed="false" data-ic="hail"></button>
           <button class="fab" id="fab-ptype" data-ui="anim" data-tabs="precip" data-opt="ptype" aria-label="Niederschlagstyp zeigen" aria-pressed="true" data-ic="ptype"></button>
-          <button class="fab" id="fab-windp" data-ui="anim" data-tabs="temp" data-opt="wind" aria-label="Windströmung zeigen" aria-pressed="true" data-ic="wind"></button>
+          <button class="fab" id="fab-windp" data-ui="anim" data-tabs="temp" data-opt="wind" aria-label="Windströmung zeigen" aria-pressed="true" data-ic="flow"></button>
           <button class="fab" id="fab-vals" data-ui="anim" data-tabs="temp" data-opt="vals" aria-label="Temperaturwerte zeigen" aria-pressed="true" data-ic="tag"></button>
           <button class="fab" id="fab-locate" data-ui="wind-live wind-fc foehn-map anim cams-map schnee-bulletin schnee-mess schnee-powder schnee-lawinen schnee-touren" aria-label="Meinen Standort zeigen" data-ic="locate"></button>
         </div>
@@ -9573,7 +9577,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.0 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.1 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -9872,11 +9876,12 @@ pako/dist/pako.esm.mjs:
 /* ── 07-icons.js ── */
   /* ═════════════════════════ Symbole (24×24, Linie) ═════════════════════════ */
   const svgI = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${extra}>${d}</svg>`;
+  // Stil: gegenständlich, Flächen zart gefüllt (fill-opacity 0.2), Köpfe und Kernpunkte voll – in der Farbe der Schrift
   const IC = {
     back: svgI('<path d="M20 12H4.5"/><path d="m10.5 5.5-6.5 6.5 6.5 6.5"/>'),
-    info: svgI('<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.6" r="0.4" fill="currentColor"/>'),
-    star: svgI('<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'),
-    edit: svgI('<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'),
+    info: svgI('<circle cx="12" cy="12" r="9" fill="currentColor" fill-opacity="0.2"/><path d="M12 11v5.5"/><circle cx="12" cy="7.6" r="1" fill="currentColor" stroke="none"/>'),
+    star: svgI('<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" fill="currentColor" fill-opacity="0.2"/>'),
+    edit: svgI('<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z" fill="currentColor" fill-opacity="0.2"/><path d="m13.5 6.5 4 4"/>'),
     ext: svgI('<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'),
     search: svgI('<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>'),
     refresh: svgI('<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>'),
@@ -9885,80 +9890,81 @@ pako/dist/pako.esm.mjs:
     chevR: svgI('<path d="m9 6 6 6-6 6"/>'),
     up: svgI('<path d="m6 15 6-6 6 6"/>'),
     down: svgI('<path d="m6 9 6 6 6-6"/>'),
-    trash: svgI('<path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/>'),
+    trash: svgI('<path d="M6.5 7l1 13.5h9l1-13.5z" fill="currentColor" fill-opacity="0.2"/><path d="M4 7h16M9 7V4.5h6V7M10 11v6M14 11v6"/>'),
     play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15L19.5 12z"/></svg>',
     pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></svg>',
-    locate: svgI('<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>'),
-    layers: svgI('<path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="m2.5 12 9.5 5 9.5-5"/><path d="m2.5 16 9.5 5 9.5-5"/>'),
+    locate: svgI('<circle cx="12" cy="12" r="6.5" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22"/>'),
+    layers: svgI('<path d="M12 3 2.5 8 12 13l9.5-5z" fill="currentColor" fill-opacity="0.2"/><path d="m2.5 12 9.5 5 9.5-5"/><path d="m2.5 16 9.5 5 9.5-5"/>'),
     diamond: svgI('<rect x="7" y="7" width="10" height="10" rx="1.6" transform="rotate(45 12 12)"/>'),
     ring: svgI('<circle cx="12" cy="12" r="7.5" stroke-width="3"/>'),
-    antenna: svgI('<circle cx="12" cy="12" r="2"/><path d="M7.8 16.2a6 6 0 0 1 0-8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 19a10 10 0 0 1 0-14M19 5a10 10 0 0 1 0 14"/>'),
-    clock: svgI('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
-    wind: svgI('<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h7"/>'),
-    foehn: svgI('<path d="m2.5 19 6-10 4 6 2.5-3.5 6.5 7.5"/><path d="M14 4.5h5a2 2 0 1 1-2 2M11 7.5h4"/>'),
-    chart: svgI('<path d="M3 20h18"/><path d="M3 14c3-6 5-6 7-2s4 4 7-4 3-3 4-2"/>'),
-    rain: svgI('<path d="M7 15.5a3.5 3.5 0 0 1 .4-7A5 5 0 0 1 17 9a3 3 0 0 1 0 6H7z"/><path d="M8.5 18.5 8 20.5M12.5 18.5 12 20.5M16.5 18.5 16 20.5"/>'),
-    cam: svgI('<path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6"/>'),
-    map: svgI('<path d="m3 6 6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>'),
+    antenna: svgI('<circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M7.8 16.2a6 6 0 0 1 0-8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 19a10 10 0 0 1 0-14M19 5a10 10 0 0 1 0 14"/>'),
+    clock: svgI('<circle cx="12" cy="12" r="8.8" fill="currentColor" fill-opacity="0.2"/><path d="M12 7v5l3.4 2.2"/>'),
+    wind: svgI('<path d="M4.5 2.5v19"/><path d="M4.5 4.2 20.5 7.4v3.2L4.5 13.8z" fill="currentColor" fill-opacity="0.2"/><path d="M9.8 5.3v7.4M15.2 6.4v5.2"/>'),
+    flow: svgI('<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h7"/>'),
+    foehn: svgI('<path d="m2 20.5 6.5-10.5 4 6 2.6-3.6 6.9 8.1z" fill="currentColor" fill-opacity="0.2"/><path d="M12.5 4.5h5.4a2.2 2.2 0 1 1-2.1 2.9M9.5 8h5.2"/>'),
+    chart: svgI('<path d="M3.5 3.5v17h17"/><path d="M3.5 20.5v-4.6l4.2-5 3.8 3.4 4.5-7.3 4.5 3v10.5z" fill="currentColor" fill-opacity="0.2" stroke="none"/><path d="m3.5 15.9 4.2-5 3.8 3.4 4.5-7.3 4.5 3"/>'),
+    rain: svgI('<path d="M7 14.5a3.6 3.6 0 0 1-.3-7.2 5 5 0 0 1 9.6-.8 3.6 3.6 0 0 1 1.1 8z" fill="currentColor" fill-opacity="0.2"/><path d="M8.5 17.5 7.6 20.5M12.5 17.5l-.9 3M16.5 17.5l-.9 3"/>'),
+    cam: svgI('<circle cx="12" cy="9.5" r="6.8" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="9.5" r="2.7"/><circle cx="12" cy="9.5" r="0.9" fill="currentColor" stroke="none"/><path d="M9.5 15.8 8 20.5h8l-1.5-4.7"/>'),
+    map: svgI('<path d="m3 6 6-2 6 2 6-2v14l-6 2-6-2-6 2z" fill="currentColor" fill-opacity="0.2"/><path d="M9 4v14M15 6v14"/>'),
     list: svgI('<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="0.6" fill="currentColor"/><circle cx="4.5" cy="12" r="0.6" fill="currentColor"/><circle cx="4.5" cy="18" r="0.6" fill="currentColor"/>'),
-    pin: svgI('<path d="M12 21s-6.5-6.2-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.4"/>'),
-    mtn: svgI('<path d="m2.5 19.5 7-12 3.8 6.3 2.2-3.3 6 9z"/><path d="m8 10 1.5 1.5L11 10"/>'),
-    therm: svgI('<path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 9v8"/>'),
-    xc: svgI('<path d="M4 17c2-1 3.5-1 5 0s3 1 5 0 3.5-1 6 0"/><path d="M7 12.5c1.5-3.5 3-5.5 5-5.5s3.5 2 5 5.5"/><path d="M12 3v2.5"/>'),
-    home: svgI('<path d="m3.5 11 8.5-7 8.5 7"/><path d="M6 9.5V20h12V9.5"/>'),
+    pin: svgI('<path d="M12 21.5s-6.8-6.4-6.8-11.6a6.8 6.8 0 0 1 13.6 0C18.8 15.1 12 21.5 12 21.5z" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="9.8" r="2.4" fill="currentColor" stroke="none"/>'),
+    mtn: svgI('<path d="m2 20 7.4-12.6 3.9 6.4 2.3-3.4L22 20z" fill="currentColor" fill-opacity="0.2"/><path d="m7.4 10.8 2 1.6 2-1.8"/>'),
+    therm: svgI('<path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0z" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="17.6" r="1.7" fill="currentColor" stroke="none"/><path d="M12 9v7"/>'),
+    xc: svgI('<path d="M2.2 10C3.6 5.4 7.6 3 12 3s8.4 2.4 9.8 7c-1.7-1.5-3.3-1.8-4.9-1-1.6-1.1-3.2-1.3-4.9-.7-1.7-.6-3.3-.4-4.9.7-1.6-.8-3.2-.5-4.9 1z" fill="currentColor" fill-opacity="0.2"/><path d="M2.6 9.8 11.2 17.6M7.1 9 11.6 17.2M16.9 9l-4.5 8.2M21.4 9.8 12.8 17.6" stroke-width="1"/><circle cx="12" cy="18.8" r="1.9" fill="currentColor" stroke="none"/><path d="M11 20.6l-.7 1.6M13 20.6l.7 1.6"/>'),
+    home: svgI('<path d="M5.5 10v10.5h13V10L12 4.5z" fill="currentColor" fill-opacity="0.2"/><path d="m3 11.5 9-7.5 9 7.5"/><path d="M10 20.5v-5h4v5"/>'),
     grid: svgI('<rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/>'),
     plus: svgI('<path d="M12 5v14M5 12h14"/>'),
-    gps: svgI('<path d="m3 11 18-7-7 18-2-9z"/>'),
+    gps: svgI('<path d="m3 11 18-7-7 18-2-9z" fill="currentColor" fill-opacity="0.2"/>'),
     gpsOn: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-7-7 18-2-9z"/></svg>',
     headup: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.5 17 20l-5-2.4L7 20z"/><path d="M6.5 5.6a8.4 8.4 0 0 1 11 0" fill="none"/></svg>',
     needle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 15.4 12H8.6z" fill="#e0372b"/><path d="M12 21.2 8.6 12h6.8z" fill="#9aa6b0"/><circle cx="12" cy="12" r="1.5" fill="#fff"/></svg>',
     check: svgI('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
     // Animationen (Reiter und Knöpfe im Stil der MeteoSchweiz-App)
-    drops: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.3 4.2c.5-.3 1.1 0 1.1.6.2 2.6.1 4.6-1 6.4a3.9 3.9 0 0 1-6.7-4c1.2-1.9 3.8-2.4 6.6-3z"/><path d="M20.1 9.4c.5-.2 1 .2 1 .7-.1 2.3-.4 4.1-1.4 5.6a3.5 3.5 0 0 1-6-3.6c1.1-1.6 3.4-2.1 6.4-2.7z"/></svg>',
-    windtemp: svgI('<path d="M6.8 12.5a3.3 3.3 0 0 1-.3-6.5 4.6 4.6 0 0 1 8.8-.9 3.1 3.1 0 0 1 3.4 3"/><path d="M2.5 15h9M2.5 18.5h6.5"/><circle cx="14.6" cy="13.6" r="1.1"/><path d="M21.3 14.4a2.7 2.7 0 1 0 0 4.2"/>'),
-    rainprob: svgI('<path d="M7 14a3.6 3.6 0 0 1-.3-7.2 5 5 0 0 1 9.6-.8A3.6 3.6 0 0 1 17.4 14z"/><path d="m10 11.6 4.2-4.1"/><circle cx="10.3" cy="7.9" r=".9"/><circle cx="13.9" cy="11.3" r=".9"/><path d="m8 17-1 2.5M12 17l-1 2.5M16 17l-1 2.5"/>'),
-    sat: svgI('<rect x="9.6" y="9.6" width="4.8" height="4.8" rx="1" transform="rotate(45 12 12)"/><path d="m8.6 8.6-4.4-4.4 2.2-2.2 4.4 4.4M15.4 15.4l4.4 4.4-2.2 2.2-4.4-4.4"/><path d="m5.3 3.1 1 1M16.7 18.7l1 1"/><path d="M17.5 3.5a3.4 3.4 0 0 1 3 3M17.3 6.3a1 1 0 0 1 .4.4"/>'),
+    drops: svgI('<path d="M8.6 3.2c2.7 3.5 4.7 6.2 4.7 8.9a4.7 4.7 0 0 1-9.4 0c0-2.7 2-5.4 4.7-8.9z" fill="currentColor" fill-opacity="0.2"/><path d="M6.4 12.4a2.3 2.3 0 0 0 2 2.2" stroke-width="1.3"/><path d="M17.4 11.2c1.7 2.2 2.9 3.8 2.9 5.5a2.9 2.9 0 0 1-5.8 0c0-1.7 1.2-3.3 2.9-5.5z" fill="currentColor" fill-opacity="0.2"/>'),
+    windtemp: svgI('<path d="M5.5 13.4V5.4a2.1 2.1 0 1 1 4.2 0v8a3.8 3.8 0 1 1-4.2 0z" fill="currentColor" fill-opacity="0.2"/><circle cx="7.6" cy="16.6" r="1.5" fill="currentColor" stroke="none"/><path d="M7.6 9v6"/><path d="M13 8.5h5.3a2.3 2.3 0 1 0-2.2-3M13 12.5h8M13 16.5h4.6a2 2 0 1 1-1.9 2.6"/>'),
+    rainprob: svgI('<path d="M7 11.8a3.4 3.4 0 0 1-.3-6.8 4.8 4.8 0 0 1 9.2-.8 3.5 3.5 0 0 1 1.3 7.6z" fill="currentColor" fill-opacity="0.2"/><path d="m9.6 21.5 4.8-6.6"/><circle cx="9.2" cy="16.2" r="1.4"/><circle cx="14.8" cy="20.2" r="1.4"/>'),
+    sat: svgI('<g transform="rotate(-45 11 11)"><rect x="8.6" y="7.2" width="4.8" height="7.6" rx="1" fill="currentColor" fill-opacity="0.2"/><rect x="1.4" y="9" width="5.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.2"/><rect x="15" y="9" width="5.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.2"/><path d="M7 11h1.6M13.4 11H15M11 14.8v2.4"/></g><path d="M14.6 21.4a6.8 6.8 0 0 0 6.8-6.8"/><path d="M14.8 18.2a3.4 3.4 0 0 0 3.4-3.4" stroke-width="1.4"/>'),
     bolt: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.6 2.2 5 13.4h5.6L9 21.8l9.4-11.9h-5.9z"/></svg>',
     hail: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="8.2" cy="8.4" r="3"/><circle cx="16.6" cy="10.2" r="2.6"/><circle cx="10.4" cy="16.6" r="2.8"/></svg>',
-    ptype: svgI('<path d="M12 2.8v6.4M9.2 4.4l5.6 3.2M14.8 4.4 9.2 7.6"/><path d="M3 11.5h18"/><path d="M7 14.2v6.4M4.2 15.8 9.8 19M9.8 15.8 4.2 19"/><path d="M17 14.2c-1.5 1.9-2.4 3.1-2.4 4.2a2.4 2.4 0 0 0 4.8 0c0-1.1-.9-2.3-2.4-4.2z"/>'),
-    hut: svgI('<path d="M2.5 20.5h19"/><path d="M4.5 20.5V12L12 5.5l7.5 6.5v8.5"/><path d="M2.5 13.5 12 5l9.5 8.5"/><path d="M10 20.5v-4.5h4v4.5"/>'),
-    tag: svgI('<path d="M4 12.5V4.5h8l8 8-8 8z"/><circle cx="8.3" cy="8.3" r="1.3"/>'),
+    ptype: svgI('<path d="M7 4.5v8M3.5 6.5l7 4M10.5 6.5l-7 4"/><path d="M14.5 3.5 9.5 20.5" stroke-width="1.2" opacity="0.6"/><path d="M17 11.5c1.7 2.2 2.9 3.8 2.9 5.5a2.9 2.9 0 0 1-5.8 0c0-1.7 1.2-3.3 2.9-5.5z" fill="currentColor" fill-opacity="0.2"/>'),
+    hut: svgI('<path d="M4.5 20.5V11.8L12 5.5l7.5 6.3v8.7z" fill="currentColor" fill-opacity="0.2"/><path d="M2.5 20.5h19"/><path d="M2.5 13.2 12 5l9.5 8.2"/><path d="M10 20.5v-4.5h4v4.5"/>'),
+    tag: svgI('<path d="M4 12.5V4.5h8l8 8-8 8z" fill="currentColor" fill-opacity="0.2"/><circle cx="8.3" cy="8.3" r="1.3" fill="currentColor" stroke="none"/>'),
     // Tourenplanung
-    route: svgI('<circle cx="5.5" cy="18.5" r="2.2"/><circle cx="18.5" cy="5.5" r="2.2"/><path d="M7.7 18.5H15a3.2 3.2 0 0 0 0-6.4H9a3.2 3.2 0 0 1 0-6.4h7.3"/>'),
+    route: svgI('<circle cx="5.5" cy="18.5" r="2.3" fill="currentColor" fill-opacity="0.2"/><circle cx="18.5" cy="5.5" r="2.3" fill="currentColor" stroke="none"/><path d="M7.8 18.5H15a3.2 3.2 0 0 0 0-6.4H9a3.2 3.2 0 0 1 0-6.4h7.2"/>'),
     undo: svgI('<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>'),
     swap: svgI('<path d="M7 4 3.5 7.5 7 11"/><path d="M3.5 7.5H17"/><path d="m17 13 3.5 3.5L17 20"/><path d="M20.5 16.5H7"/>'),
-    save: svgI('<path d="M6 3.5h10l3.5 3.5v12A1.5 1.5 0 0 1 18 20.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5z"/><path d="M8 3.5v5h7v-5"/><rect x="7.5" y="13" width="9" height="7.5" rx="1"/>'),
+    save: svgI('<path d="M6 3.5h10l3.5 3.5v12A1.5 1.5 0 0 1 18 20.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5z" fill="currentColor" fill-opacity="0.2"/><path d="M8 3.5v5h7v-5"/><rect x="7.5" y="13" width="9" height="7.5" rx="1"/>'),
     share: svgI('<path d="M12 3v12"/><path d="m7.5 7.5 4.5-4.5 4.5 4.5"/><path d="M5 11v8.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V11"/>'),
     imp: svgI('<path d="M12 3.5v11"/><path d="m7.5 10 4.5 4.5 4.5-4.5"/><path d="M4 15v4.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V15"/>'),
-    folder: svgI('<path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.5l2 2.5H19a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/>'),
+    folder: svgI('<path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.5l2 2.5H19a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z" fill="currentColor" fill-opacity="0.2"/>'),
     fit: svgI('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
-    gear: svgI('<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.6"/>'),
+    gear: svgI('<path d="M10.3 5L10.7 2.7L13.3 2.7L13.7 5L15.7 5.8L17.7 4.5L19.5 6.3L18.2 8.3L19 10.3L21.3 10.7L21.3 13.3L19 13.7L18.2 15.7L19.5 17.7L17.7 19.5L15.7 18.2L13.7 19L13.3 21.3L10.7 21.3L10.3 19L8.3 18.2L6.3 19.5L4.5 17.7L5.8 15.7L5 13.7L2.7 13.3L2.7 10.7L5 10.3L5.8 8.3L4.5 6.3L6.3 4.5L8.3 5.8z" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="12" r="3"/>'),
     // Aktivitäten (eigene Piktogramme)
-    hike: svgI('<circle cx="12.5" cy="4.2" r="1.9"/><path d="M11.8 7.6 10 13.4l3.2 2.4.9 5.2M11.8 7.6l2.9 3.1 2.8.9M10 13.4l-2.6 7.6M9.8 8.4 7.6 12.8M17.9 9.6l1.3 11.4"/>'),
-    bike: svgI('<circle cx="6" cy="16.5" r="3.8"/><circle cx="18" cy="16.5" r="3.8"/><path d="M6 16.5 9.6 9.5h6.2L18 16.5M9.6 9.5l3.4 7h-7M12.4 6.5h3.2M15.8 9.5l-1.3-3"/>'),
-    mtb: svgI('<circle cx="6" cy="14.5" r="3.4"/><circle cx="18" cy="14.5" r="3.4"/><path d="M6 14.5 9.2 8.5h5.6l3.2 6M9.2 8.5l3 6H6M11.8 5.8h3M2 21.5l4-2.6 3.2 1.8 4-3.2 3.6 2.6 5.2-2.8"/>'),
-    ski: svgI('<circle cx="14" cy="4.2" r="1.9"/><path d="M13.2 7.4 10.4 12l3.6 2.2-1.2 4.6M13.2 7.4l3.2 2.8 2.9-.4M10.4 12l-3.6 2.2M3 20.5 21 15.6M8.2 5.2 6.6 17.6"/>'),
-    snowshoe: svgI('<circle cx="12.5" cy="4.2" r="1.9"/><path d="M11.8 7.6 10 13.2l3.2 2.3.6 3.6M11.8 7.6l2.9 3.1 2.8.9M10 13.2l-2.8 5.2"/><ellipse cx="7" cy="20.4" rx="3.4" ry="1.3"/><ellipse cx="15.8" cy="20.4" rx="3.4" ry="1.3"/>'),
-    turtle: svgI('<path d="M3.5 15.5c0-4.2 3.8-7.2 8.2-7.2s8 3 8 7.2z"/><path d="M19.7 14.2l2.3-.7M6 15.5v2.3M17.2 15.5v2.3M3.4 14.5 1.8 13.4M8.4 9.2l2.4 6.3M15 9.2l-2.4 6.3"/>'),
-    hare: svgI('<path d="M4.5 17.5c1.2-3.8 5-5.8 10.5-5.2l2.4-5.6 1.3 5.2c1.6.8 2.3 2.5 1.6 4.2l-2.3 1.4H8.5"/><path d="M4.5 17.5 2.3 18.4M17.8 17.5l1.8 2.3M13.6 12.3l1.6-6"/>'),
-    lock: svgI('<rect x="5" y="10.5" width="14" height="10" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/>'),
-    bell: svgI('<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.2H4.4z"/><path d="M10 20.8a2.1 2.1 0 0 0 4 0"/>'),
-    alert: svgI('<path d="M12 3.6 2.6 19.8h18.8z"/><path d="M12 10v4.6"/><circle cx="12" cy="17.2" r="0.45" fill="currentColor"/>'),
-    aurora: svgI('<path d="M3 20.5h18"/><path d="M5 17.5c-.3-4.6 1.4-8.6 4.2-11"/><path d="M9.2 17.5c-.1-4.2 1.4-7.8 4.4-9.8"/><path d="M13.6 17.5c.2-3.4 2-6.4 5.4-7.6"/><circle cx="18.6" cy="4.6" r="0.55" fill="currentColor"/><circle cx="4.5" cy="4" r="0.45" fill="currentColor"/>'),
-    quake: svgI('<path d="M2 12.5h3.6l1.8-4.6 3 10.6 3.2-14 2.6 11.2 1.6-3.2H22"/>'),
-    pano: svgI('<path d="M2 20 8.2 11l3.6 4.6 3.4-5.2L22 20z"/><path d="M8.2 8V4.6M15.2 7.4V3.4"/><circle cx="8.2" cy="4.4" r="0.5" fill="currentColor"/><circle cx="15.2" cy="3.2" r="0.5" fill="currentColor"/>'),
-    copy: svgI('<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6A1.8 1.8 0 0 0 13.7 4.2H6A1.8 1.8 0 0 0 4.2 6v7.7a1.8 1.8 0 0 0 1.8 1.8h2.5"/>'),
-    aval: svgI('<path d="M3 20.5 14.2 5.5l6.8 15z"/><circle cx="9.3" cy="16" r="1.5"/><circle cx="12.8" cy="18" r="1.1"/><circle cx="6.9" cy="18.7" r="1"/>'),
+    hike: svgI('<circle cx="12.6" cy="4" r="2.1" fill="currentColor" stroke="none"/><path d="M12 8 10.2 13.4l3.2 2.6.9 5M12 8l2.9 3.2 2.8.9M10.2 13.4 7.6 21M11.8 8.3 8.4 11.6" stroke-width="2.2"/><path d="M18.6 9v12.5" stroke-width="1.3"/>'),
+    bike: svgI('<circle cx="5.8" cy="16.2" r="4" fill="currentColor" fill-opacity="0.2"/><circle cx="18.2" cy="16.2" r="4" fill="currentColor" fill-opacity="0.2"/><path d="M5.8 16.2 9.4 9.4h6.2l2.6 6.8M9.4 9.4l3.2 6.8H5.8M12.6 16.2l3-6.8" stroke-width="1.6"/><path d="M8.2 6.6h2.9M15.6 9.4l-1.2-3.2h2.8"/>'),
+    mtb: svgI('<circle cx="5.8" cy="13.6" r="3.6" fill="currentColor" fill-opacity="0.2"/><circle cx="18.2" cy="13.6" r="3.6" fill="currentColor" fill-opacity="0.2"/><path d="M5.8 13.6 9.2 7.6h5.6l3.4 6M9.2 7.6l3 6H5.8" stroke-width="1.6"/><path d="M8.2 5h2.8M14.8 7.6 13.8 4.6h2.6"/><path d="M1.5 21.5 6 19l3.2 1.8 4-3.3 3.6 2.7 5.7-3"/>'),
+    ski: svgI('<circle cx="15.2" cy="4.2" r="2.1" fill="currentColor" stroke="none"/><path d="M14 7.8 10.4 12.2l3.8 2.3-1.5 4.2M14 7.8l3 3 3.2-.4M10.4 12.2l-3.6 1.6" stroke-width="2.2"/><path d="M2.5 20.8 21.5 15.6"/><path d="M8.8 6.2 7 17.4" stroke-width="1.3"/>'),
+    snowshoe: svgI('<circle cx="12.6" cy="4" r="2.1" fill="currentColor" stroke="none"/><path d="M12 8 10.2 13.2l3.2 2.3.6 3.3M12 8l2.9 3.2 2.8.9M10.2 13.2l-2.8 5.2" stroke-width="2.2"/><ellipse cx="6.8" cy="20.4" rx="3.6" ry="1.4" fill="currentColor" fill-opacity="0.2"/><ellipse cx="15.8" cy="20.4" rx="3.6" ry="1.4" fill="currentColor" fill-opacity="0.2"/>'),
+    turtle: svgI('<path d="M3.5 15.5c0-4.2 3.8-7.2 8.2-7.2s8 3 8 7.2z" fill="currentColor" fill-opacity="0.2"/><path d="M19.7 14.2l2.3-.7M6 15.5v2.3M17.2 15.5v2.3M3.4 14.5 1.8 13.4M8.4 9.2l2.4 6.3M15 9.2l-2.4 6.3"/>'),
+    hare: svgI('<path d="M4.5 17.5c1.2-3.8 5-5.8 10.5-5.2l2.4-5.6 1.3 5.2c1.6.8 2.3 2.5 1.6 4.2l-2.3 1.4H8.5z" fill="currentColor" fill-opacity="0.2"/><path d="M4.5 17.5 2.3 18.4M17.8 17.5l1.8 2.3M13.6 12.3l1.6-6"/>'),
+    lock: svgI('<rect x="5" y="10.5" width="14" height="10" rx="2.2" fill="currentColor" fill-opacity="0.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/><circle cx="12" cy="15.5" r="1.3" fill="currentColor" stroke="none"/>'),
+    bell: svgI('<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.2H4.4z" fill="currentColor" fill-opacity="0.2"/><path d="M10 20.8a2.1 2.1 0 0 0 4 0M12 3v2"/>'),
+    alert: svgI('<path d="M12 3.6 2.6 19.8h18.8z" fill="currentColor" fill-opacity="0.2"/><path d="M12 10v4.6"/><circle cx="12" cy="17.2" r="1" fill="currentColor" stroke="none"/>'),
+    aurora: svgI('<path d="M3 8.5c3-4 6-4.5 9-2.5s6 1.5 9-2.5"/><path d="M5.5 9.5V14M9.5 7.5V13M13.5 9v5M17.5 8v4.5" stroke-width="1.3" opacity="0.75"/><path d="m2 21.5 5-4.5 3.5 3 4-4 7.5 5.5z" fill="currentColor" fill-opacity="0.2"/>'),
+    quake: svgI('<path d="M2 11.5h3.6l1.8-4.6 3 10.6 3.2-14 2.6 11.2 1.6-3.2H22"/><path d="M4 21h16" opacity="0.6"/>'),
+    pano: svgI('<path d="m1.8 20 5.7-8.8 3.5 5.2 3.6-7.4L22.2 20z" fill="currentColor" fill-opacity="0.2"/><path d="m12.9 12.3 1.7-1.3 1.5 1.7"/><circle cx="5.8" cy="5.8" r="2.3" fill="currentColor" fill-opacity="0.2"/>'),
+    copy: svgI('<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2" fill="currentColor" fill-opacity="0.2"/><path d="M15.5 8.5V6A1.8 1.8 0 0 0 13.7 4.2H6A1.8 1.8 0 0 0 4.2 6v7.7a1.8 1.8 0 0 0 1.8 1.8h2.5"/>'),
+    aval: svgI('<path d="M2.5 20.5 13 4.5l8.5 16z" fill="currentColor" fill-opacity="0.2"/><path d="m9.3 10.2 2.3 1.7 1.7-1.9 2.7 2.3"/><circle cx="8" cy="17.3" r="1.5" fill="currentColor" stroke="none"/><circle cx="11.9" cy="18.6" r="1.1" fill="currentColor" stroke="none"/><circle cx="5.7" cy="19.3" r="0.9" fill="currentColor" stroke="none"/>'),
     snowflake: svgI('<path d="M12 2.8v18.4M4 7.4l16 9.2M4 16.6l16-9.2"/><path d="m9.4 4.6 2.6 2 2.6-2M9.4 19.4l2.6-2 2.6 2M4.9 10.6l3.1-.9-.8-3.1M19.1 13.4l-3.1.9.8 3.1M4.9 13.4l3.1.9-.8 3.1M19.1 10.6l-3.1-.9.8-3.1"/>'),
-    powder: svgI('<path d="M7 12.6a3.6 3.6 0 0 1-.3-7.2 5 5 0 0 1 9.6-.8 3.6 3.6 0 0 1 1.1 8z"/><path d="M7.6 15.6v4M5.9 16.6l3.4 2M9.3 16.6l-3.4 2M16.4 15.6v4M14.7 16.6l3.4 2M18.1 16.6l-3.4 2M12 18v3.4M10.5 18.85l3 1.7M13.5 18.85l-3 1.7"/>'),
+    powder: svgI('<path d="M7 12.6a3.6 3.6 0 0 1-.3-7.2 5 5 0 0 1 9.6-.8 3.6 3.6 0 0 1 1.1 8z" fill="currentColor" fill-opacity="0.2"/><path d="M7.6 15.6v4M5.9 16.6l3.4 2M9.3 16.6l-3.4 2M16.4 15.6v4M14.7 16.6l3.4 2M18.1 16.6l-3.4 2M12 18v3.4M10.5 18.85l3 1.7M13.5 18.85l-3 1.7"/>'),
     grip: svgI('<circle cx="9" cy="6" r="1.1" fill="currentColor"/><circle cx="15" cy="6" r="1.1" fill="currentColor"/><circle cx="9" cy="12" r="1.1" fill="currentColor"/><circle cx="15" cy="12" r="1.1" fill="currentColor"/><circle cx="9" cy="18" r="1.1" fill="currentColor"/><circle cx="15" cy="18" r="1.1" fill="currentColor"/>'),
-    heli: svgI('<path d="M3 5.5h16"/><path d="M11 5.5v3"/><path d="M6.5 13a4.5 4.5 0 0 1 4.5-4.5h1.5a4.5 4.5 0 0 1 0 9H11"/><path d="M6.5 13h-3.5l-1-2"/><path d="M9 17.5l-1 2.5h8"/>'),
-    compass: svgI('<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8z"/>'),
-    camera: svgI('<path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.6"/>'),
+    heli: svgI('<path d="M5 4.5h16M13 4.5v3"/><path d="M8.5 12.2A4.7 4.7 0 0 1 13.2 7.5h1a5 5 0 0 1 0 10h-2.7a3 3 0 0 1-3-3z" fill="currentColor" fill-opacity="0.2"/><path d="M8.5 12.5H2.8V9.8M14 11.5h4.8"/><path d="M8.5 21h9.5M11.5 17.5V21M15 17.3V21"/>'),
+    compass: svgI('<circle cx="12" cy="12" r="9" fill="currentColor" fill-opacity="0.2"/><path d="m15.8 8.2-2.4 5.2-5.2 2.4 2.4-5.2z" fill="currentColor" stroke="none"/>'),
+    camera: svgI('<path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2L8 5h8l1.5 2h2A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="13" r="3.6"/><circle cx="17.8" cy="9.8" r="0.8" fill="currentColor" stroke="none"/>'),
     r360: svgI('<ellipse cx="12" cy="12" rx="9.5" ry="4.2"/><path d="M16.6 17.2 19 16l-1.6-2"/><path d="M12 7.8v8.4"/>'),
-    wx: svgI('<circle cx="8.2" cy="8.4" r="3.1"/><path d="M8.2 2.6v1.2M3.6 4.6l.9.9M2.4 8.9h1.2M12.4 4.2l-.6.7"/><path d="M8.6 19.6h8.3a3.6 3.6 0 0 0 .5-7.2 5 5 0 0 0-9.5 1.2 3 3 0 0 0 .7 6z"/>'),
-    report: svgI('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.6V3.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1.1M8.6 10h6.8M8.6 13.5h6.8M8.6 17h4.2"/>'),
-    radar: svgI('<path d="M4.2 17.8A9.5 9.5 0 1 1 12 21.5"/><path d="M7.6 15.2A5.3 5.3 0 1 1 12 17.3"/><path d="M12 12 18.6 6.4"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>'),
+    wx: svgI('<circle cx="8.2" cy="8" r="3.3" fill="currentColor" fill-opacity="0.2"/><path d="M8.2 1.8v1.5M3.8 3.6l1.1 1.1M2 8h1.5M12.6 3.6l-1.1 1.1"/><path d="M9 20.2h8.2a3.8 3.8 0 0 0 .6-7.55 5.2 5.2 0 0 0-9.9 1.1A3.3 3.3 0 0 0 9 20.2z" fill="currentColor" fill-opacity="0.2"/>'),
+    report: svgI('<rect x="5" y="4" width="14" height="17" rx="2" fill="currentColor" fill-opacity="0.2"/><path d="M9 4.6V3.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1.1M8.6 10h6.8M8.6 13.5h6.8M8.6 17h4.2"/>'),
+    radar: svgI('<circle cx="12" cy="12" r="9.3" fill="currentColor" fill-opacity="0.2"/><circle cx="12" cy="12" r="5"/><path d="M12 12 18.6 5.4"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="15.5" r="1" fill="currentColor" stroke="none"/>'),
   };
   // Windsack-Logo (Schlauch in Rot/Weiss)
   const LOGO = '<svg viewBox="0 0 30 22" aria-hidden="true"><rect x="1" y="1" width="2.4" height="20" rx="1.2" fill="currentColor" opacity=".7"/>'
