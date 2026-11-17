@@ -242,6 +242,27 @@ function shFdsn(txt) {
 
 /* ───── SLF-Messnetz ───── */
 // Jüngster gültiger Wert je Feld (Sensoren fallen einzeln aus); älter als 3 h vor dem letzten Wert zählt nicht
+// Neuschnee der letzten 24 Stunden aus der Schneehöhe der automatischen Stationen (30-min-Werte): Zuwachs von der
+// tiefsten Schneehöhe der letzten 24 h bis jetzt. So ändert der Wert laufend, nicht nur einmal am Morgen (HN_1D).
+// Unter 1 cm zählt als 0 (Messrauschen); es braucht mindestens drei Viertel der Werte und einen jungen letzten Wert.
+function shSlfHn24(rows) {
+  const by = new Map();
+  for (const r of Array.isArray(rows) ? rows : []) {
+    const t = shIso(r && r.measure_date), v = r && r.HS;
+    if (!r || !r.station_code || !Number.isFinite(t) || v == null || v === '' || !Number.isFinite(+v)) continue;
+    (by.get(r.station_code) || by.set(r.station_code, []).get(r.station_code)).push([t, +v]);
+  }
+  const out = new Map();
+  for (const [code, a] of by) {
+    a.sort((x, y) => x[0] - y[0]);
+    const [tl, hl] = a[a.length - 1], w = a.filter((p) => p[0] >= tl - 24 * 36e5);
+    if (w.length < 36 || w[0][0] > tl - 22 * 36e5) continue;
+    const hn = hl - Math.min(...w.map((p) => p[1]));
+    out.set(code, { t: tl, HN: hn < 1 ? 0 : Math.round(hn) });
+  }
+  return out;
+}
+
 function shSlfLatest(rows) {
   const F = [['HS', 'HS'], ['TA', 'TA_30MIN_MEAN'], ['RH', 'RH_30MIN_MEAN'], ['TSS', 'TSS_30MIN_MEAN'], ['VW', 'VW_30MIN_MEAN'], ['VWX', 'VW_30MIN_MAX'], ['DW', 'DW_30MIN_MEAN'], ['RSWR', 'RSWR_30MIN_MEAN']];
   const m = new Map();
@@ -619,12 +640,13 @@ async function doSlf() {
   if (st.status !== 'fulfilled') throw st.reason;
   const ok = (r) => (r.status === 'fulfilled' && Array.isArray(r.value) ? r.value : []);
   const valid = (arr) => arr.filter((x) => x && x.code && Number.isFinite(+x.lat) && Number.isFinite(+x.lon));
-  const out = { v: 1, at: iso(NOW), src: 'SLF (CC BY 4.0)', st: [], sp: [], f: ['t', 'HS', 'TA', 'RH', 'TSS', 'VW', 'VWX', 'DW', 'RSWR'], last: {}, hn: {}, daily: {}, spm: {} };
+  const out = { v: 1, at: iso(NOW), src: 'SLF (CC BY 4.0)', st: [], sp: [], f: ['t', 'HS', 'TA', 'RH', 'TSS', 'VW', 'VWX', 'DW', 'RSWR'], last: {}, hn: {}, hn24: {}, daily: {}, spm: {} };
   const ele = (x) => (x.elevation != null && Number.isFinite(+x.elevation) ? Math.round(+x.elevation) : null);
   for (const x of valid(ok(st))) out.st.push([String(x.code), String(x.label || x.code), +(+x.lat).toFixed(5), +(+x.lon).toFixed(5), ele(x), String(x.canton_code || ''), String(x.type || '')]);
   for (const x of valid(ok(sp))) out.sp.push([String(x.code), String(x.label || x.code), +(+x.lat).toFixed(5), +(+x.lon).toFixed(5), ele(x), String(x.canton_code || '')]);
   const rows = ok(ms);
   const last = shSlfLatest(rows);
+  for (const [code, o] of shSlfHn24(rows)) out.hn24[code] = [sec(o.t), o.HN];
   for (const [code, o] of last) out.last[code] = [sec(o.t), r1(o.HS), r1(o.TA), r1(o.RH), r1(o.TSS), r1(o.VW), r1(o.VWX), o.DW == null ? null : Math.round(o.DW), o.RSWR == null ? null : Math.round(o.RSWR)];
   const daily = {};
   for (const r of ok(ds)) {
