@@ -1,7 +1,7 @@
 WINDSACK – Wind, Föhn, Animationen, Webcams, Karten, Schnee, Skitouren und Meldungen (Web-App fürs iPhone)
 =====================================================================================
 
-Inhalt dieses Ordners (Version 11.9)
+Inhalt dieses Ordners (Version 12.0)
   index.html               die komplette App (seit Version 11 vorläufig wieder ohne Passwort, siehe 4)
   sw.js                    Hintergrunddienst für Mitteilungen (gehört neben index.html)
   windsack-bot.mjs         Skript der GitHub-Aktion (gehört neben index.html)
@@ -9,6 +9,18 @@ Inhalt dieses Ordners (Version 11.9)
   windsack-workflow.yml    dieselbe Datei, sichtbar (der Ordner .github ist auf dem iPhone versteckt)
   matterhorn.jpg           Foto im Himmel der Startseite (gehört neben index.html, seit Version 11.5)
   apple-touch-icon.png, icon-512.png, manifest.webmanifest   Symbole und App-Beschreibung (unverändert)
+
+Neu in Version 12.0
+  Ersetzen auf GitHub: index.html (zusammen mit den Dateien von Version 11.9, falls noch nicht geschehen).
+  - Neues Erscheinungsbild «Glas»: tiefer, ruhiger Grund mit zartem Lichtschein, Flächen mit heller Kante und
+    grösseren Rundungen; Kopfzeile, Leisten, Knöpfe und Blätter über Foto und Karte als mattes Glas. Gilt für
+    hell und dunkel; die Themenfarben (Wetter, Karten, Winter, Fliegen, Meldungen) sind kräftiger.
+  - Dock unten auf der Startseite (in Daumenreichweite): die fünf Themen springen zum Abschnitt, das aktuelle
+    zeigt seinen Namen. Die Leiste war bisher oben.
+  - Schnellwahl (Knopf mit vier Feldern rechts im Dock, in jeder Ansicht ein Tipp auf den Titel): alle Blätter
+    nach Thema, «Meine Orte» und «Start» – von überall in zwei Tipps zu jeder Funktion. Das Suchfeld findet
+    auch die Teile der Blätter (z. B. «Powder», «Föhnindex», «Erdbeben», «Radar») und «Meine Orte»; zuunterst
+    führt «Ort suchen» mit demselben Text in die Ortssuche. Eingabetaste öffnet den ersten Treffer.
 
 Neu in Version 11.9
   Ersetzen auf GitHub: index.html, windsack-bot.mjs UND .github/workflows/windsack.yml (neuer Zeitplan).

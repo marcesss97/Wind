@@ -9,9 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Windsack">
-<meta name="theme-color" content="#102237">
+<meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="11.9 · 17.11.2026">
+<meta name="windsack-version" content="12.0 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -686,20 +686,28 @@ svg.leaflet-image-layer.leaflet-interactive path {
    Meldungen rot) in drei Stufen: kräftig (Flächen, Symbole), dunkler (Schrift, Knöpfe), zart (Hintergründe). */
 :root {
   color-scheme: light;
-  --bg: #f5f2ed;
+  --bg: #e9eef5;
   --surface: #ffffff;
-  --surface-2: #f1eee8;
-  --glass: rgba(255, 255, 255, 0.95);
-  --ink: #17202a;
-  --ink-2: #46515c;
-  --muted: #656d77;
-  --hair: #e8e3db;
-  --hair-strong: #cfc9bf;
-  --c-wetter: #2b7de9; --c-wetter-i: #1c66cc; --c-wetter-s: #e4effd; --c-wetter-a: rgba(43, 125, 233, 0.14);
-  --c-karten: #1f9a55; --c-karten-i: #16794a; --c-karten-s: #e0f5e8; --c-karten-a: rgba(31, 154, 85, 0.15);
-  --c-winter: #6f66f6; --c-winter-i: #5549d9; --c-winter-s: #ecebfe; --c-winter-a: rgba(111, 102, 246, 0.14);
-  --c-fliegen: #e07408; --c-fliegen-i: #a85504; --c-fliegen-s: #feefdc; --c-fliegen-a: rgba(224, 116, 8, 0.16);
-  --c-meld: #e94b41; --c-meld-i: #c5302a; --c-meld-s: #fde7e4; --c-meld-a: rgba(233, 75, 65, 0.14);
+  --surface-2: #eef2f7;
+  --glass: rgba(255, 255, 255, 0.74);
+  --ink: #0f1a26;
+  --ink-2: #435061;
+  --muted: #627080;
+  --hair: #e2e8ef;
+  --hair-strong: #c4cedb;
+  --c-wetter: #1f7cf2; --c-wetter-i: #1463d0; --c-wetter-s: #e1eefe; --c-wetter-a: rgba(31, 124, 242, 0.14);
+  --c-karten: #12a35f; --c-karten-i: #0d7d49; --c-karten-s: #dcf6e8; --c-karten-a: rgba(18, 163, 95, 0.15);
+  --c-winter: #6c5cf5; --c-winter-i: #5243d6; --c-winter-s: #eae8ff; --c-winter-a: rgba(108, 92, 245, 0.14);
+  --c-fliegen: #e97a0c; --c-fliegen-i: #a85504; --c-fliegen-s: #ffeedb; --c-fliegen-a: rgba(233, 122, 12, 0.16);
+  --c-meld: #ee4654; --c-meld-i: #c62b3a; --c-meld-s: #ffe5e7; --c-meld-a: rgba(238, 70, 84, 0.14);
+  /* Glas: Kante (heller Rand), Kartenfläche, Weichzeichner, Lichtschein im Hintergrund */
+  --edge: rgba(255, 255, 255, 0.9); --edge-2: rgba(20, 45, 90, 0.07);
+  --card: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78));
+  --glass-strong: rgba(250, 252, 255, 0.86); --glass-map: rgba(255, 255, 255, 0.82);
+  --blur: blur(18px) saturate(1.7);
+  --amb-1: rgba(60, 140, 255, 0.16); --amb-2: rgba(150, 110, 255, 0.12);
+  --glow: 0 6px 20px;
+  --r-card: 22px;
   --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a);
   --accent: var(--tci);
   --accent-soft: var(--tca);
@@ -719,14 +727,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --lp-fz: #d9481c; --lp-sl: #2f6fd0;
   --lp-sun: #f2d24a; --lp-wind: #6a5ad6; --lp-gust: #a99ff0; --lp-pp: #2f6fd0; --lp-pill: #e3edf9;
   --ph-1: rgba(44, 54, 84, 0.62); --ph-2: rgba(44, 54, 84, 0.34); --ph-3: rgba(44, 54, 84, 0.10); --ph-4: rgba(22, 30, 46, 0.42);
-  --fab: rgba(143, 175, 187, 0.92); --fab-on: #4e7f8f; --fab-ink: #ffffff;
+  --fab: rgba(255, 255, 255, 0.82); --fab-on: var(--tci); --fab-ink: #0f1a26;
   --tl-obs: #c9cdd1; --tl-fc: #6b96a3; --tl-bubble: #b6d4d9; --tl-bubble-ink: #173640; --tl-bubble-fc: #4e7f8f; --tl-bubble-fc-ink: #ffffff;
   --tile-map-filter: none;
   --night: rgba(30, 50, 90, 0.09);
   --map-filter: none;
   --meta-ink: #6f7a84; --meta-halo: #ffffff;
-  --shadow: 0 1px 2px rgba(60, 45, 20, 0.07), 0 6px 18px rgba(60, 45, 20, 0.09);
-  --shadow-lg: 0 10px 30px rgba(60, 45, 20, 0.16);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 1px rgba(20, 45, 90, 0.05), 0 1px 2px rgba(20, 45, 90, 0.05), 0 10px 28px rgba(20, 45, 90, 0.09);
+  --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 1px rgba(20, 45, 90, 0.06), 0 18px 44px rgba(20, 45, 90, 0.18);
   --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --safe-t: env(safe-area-inset-top, 0px);
@@ -737,29 +745,33 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* Dunkles Design: Standard. «Hell» oder «Wie iPhone» im Info-Blatt der Startseite (Windsack-Logo). */
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0d1319; --surface: #17212b; --surface-2: #1e2a35; --glass: rgba(23, 33, 43, 0.95);
-    --ink: #e8eef2; --ink-2: #a9b6c0; --muted: #8b98a3; --hair: #27343f; --hair-strong: #3a4956;
-    --c-wetter: #5ea5f5; --c-wetter-i: #7db6f7; --c-wetter-s: #1b2f47; --c-wetter-a: rgba(94, 165, 245, 0.20);
-    --c-karten: #4fcf87; --c-karten-i: #6bdc9c; --c-karten-s: #18372a; --c-karten-a: rgba(79, 207, 135, 0.18);
-    --c-winter: #9a94ff; --c-winter-i: #b0abff; --c-winter-s: #272a52; --c-winter-a: rgba(154, 148, 255, 0.20);
-    --c-fliegen: #f7a94f; --c-fliegen-i: #f9b966; --c-fliegen-s: #3d2c18; --c-fliegen-a: rgba(247, 169, 79, 0.18);
-    --c-meld: #f4776e; --c-meld-i: #f7918a; --c-meld-s: #40211f; --c-meld-a: rgba(244, 119, 110, 0.18);
+    --bg: #060a11; --surface: #111a26; --surface-2: #1a2533; --glass: rgba(14, 22, 34, 0.66);
+    --ink: #eef3f8; --ink-2: #b3bfcc; --muted: #8795a6; --hair: #212d3b; --hair-strong: #384a5e;
+    --c-wetter: #4da3ff; --c-wetter-i: #82beff; --c-wetter-s: #12273f; --c-wetter-a: rgba(77, 163, 255, 0.22);
+    --c-karten: #34d98f; --c-karten-i: #6fe7b0; --c-karten-s: #0f3024; --c-karten-a: rgba(52, 217, 143, 0.20);
+    --c-winter: #9b8cff; --c-winter-i: #b9aeff; --c-winter-s: #221f4b; --c-winter-a: rgba(155, 140, 255, 0.22);
+    --c-fliegen: #ffa64d; --c-fliegen-i: #ffc07c; --c-fliegen-s: #3a2813; --c-fliegen-a: rgba(255, 166, 77, 0.20);
+    --c-meld: #ff6b70; --c-meld-i: #ff9497; --c-meld-s: #3e1c21; --c-meld-a: rgba(255, 107, 112, 0.20);
+    --edge: rgba(255, 255, 255, 0.11); --edge-2: rgba(255, 255, 255, 0.05);
+    --card: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 62%), var(--surface);
+    --glass-strong: rgba(13, 20, 31, 0.84); --glass-map: rgba(12, 19, 30, 0.80);
+    --amb-1: rgba(50, 130, 255, 0.20); --amb-2: rgba(130, 90, 255, 0.15);
     --on-accent: #06121c; --on-slate: #0b1218; --on-tc: #0b1218;
     --s-mean: #3f8de6; --s-gust: #e0652f; --s-meas: #e8eef2; --s-fc: #3f8de6; --s-temp: #ff4d4d; --s-band: rgba(255, 77, 77, 0.24); --s-rain: #3f8de6;
     --moon-dark: #2b3a46; --moon-lit: #f2d06b; --moon-edge: rgba(0, 0, 0, 0.35);
     --wx-moon: #c3cedb; --wx-cloud: #c9cfd4; --wx-cloud-s: #8a949c; --wx-dark: #8d979f; --wx-rain: #5aa2ec; --wx-snow: #a7cdf2;
     --halo: #141e27;
     --night: rgba(0, 0, 0, 0.32);
-    --sky-1: #102237; --sky-2: #16304a; --sky-3: #1c3b58; --sky-4: #214463;
+    --sky-1: #08111d; --sky-2: #0e2036; --sky-3: #14304c; --sky-4: #0c1826;
     --lp-past: rgba(255, 255, 255, 0.045); --lp-r1: #a48fb8; --lp-r2: #5c6cff; --lp-r3: #3aa952; --lp-r4: #9cf06a;
     --lp-fz: #f27a4c; --lp-sl: #6fa8f0;
     --lp-sun: #e8c53d; --lp-wind: #a196f7; --lp-gust: #7d72c4; --lp-pp: #7db2f5; --lp-pill: #1d2e44;
     --ph-1: rgba(10, 20, 36, 0.70); --ph-2: rgba(10, 20, 36, 0.42); --ph-3: rgba(10, 20, 36, 0.18); --ph-4: rgba(8, 14, 24, 0.55);
-    --fab: rgba(64, 96, 110, 0.92); --fab-on: #7fb3c2; --fab-ink: #ffffff;
+    --fab: rgba(12, 19, 30, 0.78); --fab-on: var(--tc); --fab-ink: #eef3f8;
     --tl-obs: #56626c; --tl-fc: #7fb3c2; --tl-bubble: #2d5561; --tl-bubble-ink: #e8f3f6; --tl-bubble-fc: #7fb3c2; --tl-bubble-fc-ink: #0b1a20;
     /* Karten bleiben auch im dunklen Design weiss (keine Invertierung) */
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.045), 0 10px 26px rgba(0, 0, 0, 0.40);
+    --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.09), inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 48px rgba(0, 0, 0, 0.58);
 }
 /* Themenfarbe: auf der Startseite je Abschnitt (.th-…), in einer Ansicht für die ganze App (data-th am Wurzelelement) */
 .th-wetter, :root[data-th="wetter"] { --tc: var(--c-wetter); --tci: var(--c-wetter-i); --tcs: var(--c-wetter-s); --tca: var(--c-wetter-a); }
@@ -2403,6 +2415,226 @@ details .as-desc { margin-top: 6px; }
 .upd-x { flex: none; width: 34px; height: 34px; border: 0; background: none; color: var(--muted); border-radius: 50%; display: grid; place-items: center; }
 .upd-x svg { width: 18px; height: 18px; }
 #app.upd-on .toast { bottom: calc(var(--safe-b) + 92px); }
+/* ───────────────────────── Glas (Version 12) ─────────────────────────
+   Klares, leicht gläsernes Erscheinungsbild: tiefer Grund mit zartem Lichtschein, Flächen mit heller Kante,
+   Leisten und Knöpfe über Foto und Karte als mattes Glas (Weichzeichner). Die Regeln stehen bewusst am Schluss
+   und überschreiben die älteren Bausteine weiter oben. */
+#app {
+  background:
+    radial-gradient(110% 55% at 0% 0%, var(--amb-1), transparent 62%),
+    radial-gradient(90% 50% at 100% 38%, var(--amb-2), transparent 64%),
+    var(--bg);
+}
+.home-scroll { background: transparent; }
+.scr.view {
+  background:
+    radial-gradient(120% 46% at 50% 0%, var(--tca), transparent 70%),
+    radial-gradient(90% 50% at 100% 60%, var(--amb-2), transparent 64%),
+    var(--bg);
+}
+.num, .card-title, .topic-t b, .vh-t h1, .now-name, .sheet h2.sheet-t { letter-spacing: -0.02em; }
+
+/* ── Startseite: Himmel ── */
+.sky { padding-bottom: 26px; }
+.sky-in { z-index: 1; }
+:root[data-theme="dark"] .sky::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--bg));
+}
+.sky-logo { font-weight: 700; letter-spacing: 0.02em; }
+.sky-status {
+  font-size: 11px; line-height: 1.2; padding: 5px 10px; border-radius: 12px; opacity: 1;
+  background: rgba(10, 18, 30, 0.30); border: 1px solid rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); text-shadow: none;
+}
+.sky-status:empty { display: none; }
+.sky-btn {
+  width: 42px; height: 42px; border-radius: 50%; margin-left: 6px;
+  background: rgba(10, 18, 30, 0.30); border: 1px solid rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.sky-btn svg { width: 21px; height: 21px; }
+.sky-btn:active { background: rgba(255, 255, 255, 0.26); }
+.now-name { font-size: 27px; }
+.now-temp { font-size: 30px; font-weight: 750; }
+.hours {
+  border: 1px solid rgba(255, 255, 255, 0.24); border-radius: 20px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03)), rgba(10, 18, 30, 0.38);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+.loc {
+  border-radius: var(--r-card, 22px); background: var(--glass); border: 1px solid var(--edge);
+  -webkit-backdrop-filter: var(--blur, blur(18px)); backdrop-filter: var(--blur, blur(18px));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
+}
+:root[data-theme="dark"] .loc { background: rgba(12, 19, 30, 0.60); }
+.loc-live { border-radius: 999px; background: var(--edge-2); border: 1px solid var(--edge-2); padding: 2px 10px 2px 2px; }
+.loc-days > div { border-left-color: var(--edge-2); }
+.locs-dots i { width: 6px; height: 6px; transition: width 0.2s; }
+.locs-dots i.on { width: 18px; border-radius: 3px; }
+.all-locs { font-size: 13px; opacity: 0.9; }
+
+/* ── Startseite: Themen und Blätter ── */
+.home-body { gap: 22px; padding-top: 10px; padding-bottom: calc(var(--safe-b) + 104px); }
+.tiles { gap: 30px; }
+.topic-h { gap: 12px; }
+.topic-ic { width: 42px; height: 42px; border-radius: 14px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.topic-t b { font-size: 22px; }
+.topic-t small { font-size: 12px; letter-spacing: 0.01em; }
+.topic-h::after { content: ""; flex: 1; height: 1px; margin-left: 4px; background: linear-gradient(90deg, var(--tca), transparent); }
+.topic-t { flex: none; max-width: 78%; }
+.tile {
+  border-radius: var(--r-card, 22px); background: var(--card); box-shadow: var(--shadow);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+/* helle Glaskante über Karte und Kopfband */
+.tile::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none;
+  border: 1px solid var(--edge); -webkit-mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.35)); mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.35));
+}
+.tile:active { transform: scale(0.975); }
+.tile-h {
+  background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
+  border-bottom: 1px solid var(--edge-2); padding: 12px 14px 9px;
+}
+.tile-h::after { display: none; }
+.tile-h .h2 { font-size: 17px; letter-spacing: -0.01em; }
+.tile-h small { font-size: 11.5px; font-weight: 600; margin-top: 3px; }
+.tile-ic { right: 10px; top: 10px; width: 28px; height: 28px; border-radius: 10px; background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.tile.wide .tile-h { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; }
+.tile-f { padding: 9px 14px 13px; }
+.tile-badge { border-radius: 999px; padding: 3px 9px; box-shadow: 0 4px 12px var(--tca); }
+.tile-ph { border-radius: var(--r-card, 22px); }
+.tiles-edit.on { bottom: calc(var(--safe-b) + 84px); border-radius: 20px; background: var(--glass-strong); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); border: 1px solid var(--edge); }
+
+/* ── Dock: Themen und Schnellwahl, immer in Daumenreichweite ── */
+.dock {
+  position: absolute; z-index: 9; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 10px);
+  width: min(560px, calc(100% - 20px - var(--safe-l) - var(--safe-r))); display: flex; align-items: center; gap: 8px; pointer-events: none;
+}
+.dock > * { pointer-events: auto; }
+.dock .topics-bar {
+  position: static; flex: 1 1 auto; min-width: 0; margin: 0; padding: 6px; gap: 2px; height: 60px; align-items: center;
+  background: var(--glass); border: 1px solid var(--edge);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.30);
+}
+.tb { height: 46px; transition: background 0.2s, flex 0.2s; }
+.tb-ic { width: 36px; height: 36px; background: none; }
+.tb-ic svg { width: 22px; height: 22px; }
+.tb[aria-current="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); padding: 0 16px 0 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 18px var(--tca); }
+.tb[aria-current="true"] .tb-ic { background: none; }
+.dock-btn {
+  flex: none; width: 60px; height: 60px; border-radius: 50%; padding: 0; display: grid; place-items: center; color: var(--ink);
+  background: var(--glass); border: 1px solid var(--edge);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.30);
+}
+.dock-btn svg { width: 24px; height: 24px; }
+.dock-btn:active { transform: scale(0.94); }
+#home:not([hidden]) ~ .toast, #home:not([hidden]) ~ .upd { bottom: calc(var(--safe-b) + 84px); }
+
+/* ── Schnellwahl ── */
+.qj-body { display: flex; flex-direction: column; gap: 14px; }
+.qj-locs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px; }
+.qj-locs::-webkit-scrollbar { display: none; }
+.qj-chip {
+  flex: none; display: inline-flex; align-items: center; gap: 6px; max-width: 220px; border-radius: 999px; padding: 9px 14px 9px 10px;
+  background: var(--surface-2); border: 1px solid var(--edge-2); color: var(--ink); font: 600 14px/1 var(--font-ui);
+}
+.qj-chip svg { width: 17px; height: 17px; flex: none; color: var(--accent); }
+.qj-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qj-g { display: flex; flex-direction: column; gap: 8px; }
+.qj-g h3 { margin: 4px 2px 0; display: flex; align-items: center; gap: 8px; font: 700 11.5px/1 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--tci); }
+.qj-g h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--tca), transparent); }
+.qj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.qj-it {
+  display: flex; align-items: center; gap: 9px; min-width: 0; min-height: 56px; padding: 8px 9px; text-align: left; color: var(--ink);
+  border-radius: 16px; background: var(--surface-2); border: 1px solid var(--edge-2);
+}
+.qj-it:active { transform: scale(0.97); }
+.qj-it[aria-current="true"] { border-color: var(--tc); background: var(--tca); }
+.qj-ic { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: var(--on-tc); background: linear-gradient(145deg, var(--tc), var(--tci)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px var(--tca); }
+.qj-ic svg { width: 20px; height: 20px; }
+.qj-t { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.qj-t b { font: 650 14px/1.15 var(--font-ui); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.qj-t small { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qj-res { display: flex; flex-direction: column; gap: 6px; }
+.qj-res .qj-it { min-height: 52px; }
+.qj-none { font-size: 13px; color: var(--muted); padding: 4px 2px; }
+
+/* ── Ansicht: Kopf aus Glas, Titel öffnet die Schnellwahl ── */
+.vh {
+  background: linear-gradient(180deg, var(--tca), transparent 85%), var(--glass);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  border-radius: 0 0 26px 26px; border-bottom: 1px solid var(--edge);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+}
+.vh-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--edge-2); border: 1px solid var(--edge-2); justify-self: center; }
+.vh-btn svg { width: 23px; height: 23px; }
+.vh-t { cursor: pointer; border-radius: 14px; padding: 2px 4px; -webkit-user-select: none; user-select: none; }
+.vh-t:active { background: var(--tca); }
+.vh-tt { display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 0; }
+.vh-tt h1 { min-width: 0; }
+.vh-chev { flex: none; width: 18px; height: 18px; color: var(--tci); opacity: 0.85; }
+.vh-chev svg { width: 18px; height: 18px; display: block; }
+.vh-t p { font-size: 12.5px; }
+.segs { background: var(--edge-2); border: 1px solid var(--edge-2); padding: 4px; }
+.seg { min-height: 42px; transition: background 0.18s, color 0.18s; }
+.seg[aria-selected="true"], .seg[aria-checked="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.vbody { margin-top: -26px; }
+.vpage { padding-top: 26px; }
+.xcwrap { top: 26px; }
+
+/* ── Karte: Leisten und Knöpfe als Glas ── */
+.chip-b, .gauge, .fstrip, .legend, .chipbar, .sn-scale, .an-note {
+  background: var(--glass-map); border: 1px solid var(--edge);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+}
+.chip-b[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 16px var(--tca); }
+.gauge, .fstrip, .legend, .sn-scale { border-radius: 18px; }
+.fab {
+  border: 1px solid var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+.fab[aria-pressed="true"] { background: linear-gradient(145deg, var(--tc), var(--tci)); color: var(--on-tc); border-color: transparent; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.tl, .rl, .kinfo, .tourp, .mbot.legend.card {
+  background: var(--glass-strong); border: 1px solid var(--edge);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+}
+.kinfo, .tourp, .mbot.legend.card { border-radius: 20px; }
+.kpanel { background: var(--glass-strong); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); border-top: 1px solid var(--edge); border-radius: 26px 26px 0 0; }
+
+/* ── Seiten: Karten, Listen, Knöpfe, Suche ── */
+.card { border-radius: var(--r-card, 22px); background: var(--card); padding: 16px 16px 14px; }
+.card .card { background: var(--surface-2); box-shadow: none; }
+.eyebrow { letter-spacing: 0.1em; }
+.list, .link, .promo { background: var(--card); border-radius: 18px; }
+.card .list { background: none; }
+.btn { border-radius: 14px; border-color: var(--edge-2); background: var(--surface-2); transition: transform 0.12s; }
+.btn:active { transform: scale(0.98); }
+.btn.primary { background: linear-gradient(145deg, var(--tc), var(--tci)); border-color: transparent; color: var(--on-tc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px var(--tca); }
+.icon-btn { border-radius: 50%; border-color: var(--edge-2); }
+.search { border-radius: 16px; background: var(--card); border-color: var(--edge-2); }
+.search:focus-within { border-color: var(--tc); box-shadow: 0 0 0 4px var(--tca); }
+.chip { border: 1px solid var(--edge-2); }
+.msg { border-radius: 14px; border: 1px solid var(--edge-2); }
+
+/* ── Blatt, Hinweise ── */
+.backdrop { background: rgba(4, 8, 14, 0.5); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+.sheet {
+  background: var(--glass-strong); -webkit-backdrop-filter: blur(26px) saturate(1.7); backdrop-filter: blur(26px) saturate(1.7);
+  border-radius: 28px 28px 0 0; border-top: 1px solid var(--edge); box-shadow: 0 -16px 50px rgba(0, 0, 0, 0.35);
+}
+.grab { width: 44px; background: var(--hair-strong); opacity: 0.8; }
+.toast {
+  background: var(--glass-strong); color: var(--ink); border: 1px solid var(--edge); border-radius: 999px; padding: 11px 18px;
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+}
+.upd { border-radius: 22px; border-color: var(--edge); -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur); }
+@media (prefers-reduced-motion: reduce) { .tile, .tb, .seg, .btn { transition: none; } }
 </style>
 </head>
 <body>
@@ -2436,11 +2668,15 @@ details .as-desc { margin-top: 6px; }
         </div>
       </div>
       <div class="home-body">
-        <nav class="topics-bar" id="topics-bar" aria-label="Themen"></nav>
         <div class="tiles" id="tiles"></div>
         <div class="tiles-edit" id="tiles-edit"></div>
         <footer class="home-foot" id="home-foot"></footer>
       </div>
+    </div>
+    <!-- Dock: Themen (springt zum Abschnitt) und Schnellwahl (alle Funktionen, Suche) -->
+    <div class="dock" id="dock">
+      <nav class="topics-bar" id="topics-bar" aria-label="Themen"></nav>
+      <button class="dock-btn" id="dock-quick" aria-label="Schnellwahl: alle Funktionen und Suche" data-ic="grid"></button>
     </div>
   </section>
 
@@ -2449,7 +2685,7 @@ details .as-desc { margin-top: 6px; }
     <header class="vh" id="vh">
       <div class="vh-row">
         <button class="vh-btn" id="vh-back" aria-label="Zurück" data-ic="back"></button>
-        <div class="vh-t"><h1 id="vh-title">–</h1><p id="vh-sub"></p></div>
+        <div class="vh-t" id="vh-t" role="button" tabindex="0" aria-label="Schnellwahl: zu einer anderen Funktion wechseln"><div class="vh-tt"><h1 id="vh-title">–</h1><span class="vh-chev" data-ic="chevD"></span></div><p id="vh-sub"></p></div>
         <button class="vh-btn" id="vh-act" aria-label="Info"></button>
       </div>
       <div class="segs" id="vh-segs" role="tablist" hidden></div>
@@ -9337,7 +9573,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '11.9 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '12.0 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -9670,6 +9906,7 @@ pako/dist/pako.esm.mjs:
     therm: svgI('<path d="M10 14.5V5a2 2 0 1 1 4 0v9.5a4 4 0 1 1-4 0z"/><path d="M12 9v8"/>'),
     xc: svgI('<path d="M4 17c2-1 3.5-1 5 0s3 1 5 0 3.5-1 6 0"/><path d="M7 12.5c1.5-3.5 3-5.5 5-5.5s3.5 2 5 5.5"/><path d="M12 3v2.5"/>'),
     home: svgI('<path d="m3.5 11 8.5-7 8.5 7"/><path d="M6 9.5V20h12V9.5"/>'),
+    grid: svgI('<rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/>'),
     plus: svgI('<path d="M12 5v14M5 12h14"/>'),
     gps: svgI('<path d="m3 11 18-7-7 18-2-9z"/>'),
     gpsOn: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-7-7 18-2-9z"/></svg>',
@@ -20163,7 +20400,7 @@ ${wpts}
     topicsBar();
     arrangeBar();
   }
-  /* ───── Sprungleiste: fünf Themen, das aktuelle mit Namen; bleibt beim Rollen oben stehen ───── */
+  /* ───── Sprungleiste im Dock (unten): fünf Themen, das aktuelle mit Namen ───── */
   function topicsBar() {
     $('#topics-bar').innerHTML = TOPICS.map((g) => `<button class="tb th-${g.k}" data-go="${g.k}" aria-label="${esc(g.t)}" aria-current="false"><span class="tb-ic">${IC[g.ic]}</span><span class="tb-l">${esc(g.t)}</span></button>`).join('');
     topicsSync();
@@ -20171,11 +20408,10 @@ ${wpts}
   function topicsSync() {
     const sc = $('#home-scroll'), bar = $('#topics-bar');
     if (S.view || !bar.firstChild) return;
-    const br = bar.getBoundingClientRect(), top = sc.getBoundingClientRect().top;
-    const stuck = br.top - top <= (parseFloat(getComputedStyle(bar).top) || 0) + 0.5 && sc.scrollTop > 4;
-    bar.classList.toggle('stuck', stuck);
-    let cur = TOPICS[0].k;
-    for (const sec of document.querySelectorAll('#tiles .topic')) if (sec.getBoundingClientRect().top <= br.bottom + 28) cur = sec.dataset.topic;
+    // aktuell ist das Thema, dessen Abschnitt die obere Bildschirmhälfte erreicht hat (im Himmel: keines)
+    const r = sc.getBoundingClientRect(), line = r.top + r.height * 0.45;
+    let cur = '';
+    for (const sec of document.querySelectorAll('#tiles .topic')) if (sec.getBoundingClientRect().top <= line) cur = sec.dataset.topic;
     // Angetipptes Thema bleibt markiert, bis man selbst weiterrollt (das letzte lässt sich nicht bis oben rollen)
     if (topicsGoal) cur = topicsGoal;
     bar.querySelectorAll('[data-go]').forEach((b) => b.setAttribute('aria-current', String(b.dataset.go === cur)));
@@ -20189,10 +20425,64 @@ ${wpts}
     if (!sec) return;
     topicsGoal = b.dataset.go;
     topicsSync();
-    const sc = $('#home-scroll'), bar = $('#topics-bar');
-    const y = sec.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - bar.offsetHeight - (parseFloat(getComputedStyle(bar).top) || 0) - 8;
+    const sc = $('#home-scroll');
+    const y = sec.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - $('#safe-probe').offsetHeight - 12;
     sc.scrollTo({ top: Math.max(0, y), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   });
+  /* ───── Schnellwahl: jede Funktion in zwei Tipps – vom Dock der Startseite und vom Titel jeder Ansicht ─────
+     Ohne Suchtext: «Meine Orte» und alle Blätter nach Thema. Mit Suchtext: Blätter, ihre Teile (z. B. «Powder»,
+     «Föhnindex», «Erdbeben») und «Meine Orte»; zuunterst die Ortssuche mit demselben Text. */
+  function quickItems() {
+    const out = [];
+    for (const d of TILES) {
+      const vw = d.nav.split('/')[0], cfg = V[vw];
+      out.push({ nav: d.nav, vw, t: d.t, s: d.s, ic: d.ic, th: d.th, top: true });
+      if (cfg && cfg.segs && d.k !== 'skitour') for (const sg of cfg.segs) out.push({ nav: `${vw}/${sg.k}`, vw, seg: sg.k, t: sg.label, s: d.t, ic: sg.ic, th: d.th });
+    }
+    out.push({ nav: 'orte', vw: 'orte', t: 'Orte', s: 'Suchen und «Meine Orte» verwalten', ic: 'pin', th: 'wetter', top: true, extra: true });
+    return out;
+  }
+  const qjNorm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const qjItem = (it, cur) => `<button class="qj-it th-${it.th}" data-nav="${esc(it.nav)}" aria-current="${cur}"><span class="qj-ic">${IC[it.ic] || ''}</span><span class="qj-t"><b>${esc(it.t)}</b><small>${esc(it.s)}</small></span></button>`;
+  function quickBody(q) {
+    const items = quickItems(), n = qjNorm(q.trim());
+    const isCur = (it) => !!S.view && it.vw === S.view && (it.seg ? it.seg === S.seg : true);
+    if (!n) {
+      const locs = FAV.list.slice(0, 12).map((e) => `<button class="qj-chip" data-nav="${esc(entryRoute(e))}">${IC[e.k === 's' ? 'antenna' : 'pin']}<span>${esc(e.name)}</span></button>`).join('');
+      const start = S.view ? `<button class="qj-chip" data-nav="">${IC.home}<span>Start</span></button>` : '';
+      return `<div class="qj-locs">${start}${locs}<button class="qj-chip" data-nav="orte">${IC.search}<span>Orte</span></button></div>`
+        + TOPICS.map((g) => `<section class="qj-g th-${g.k}"><h3>${esc(g.t)}</h3><div class="qj-grid">${items.filter((it) => it.top && !it.extra && it.th === g.k).map((it) => qjItem(it, String(!!S.view && it.vw === S.view))).join('')}</div></section>`).join('');
+    }
+    const hit = (it) => qjNorm(`${it.t} ${it.s}`).includes(n);
+    const res = items.filter(hit).sort((a, b) => (qjNorm(b.t).startsWith(n) - qjNorm(a.t).startsWith(n)) || (!!b.top - !!a.top)).slice(0, 12);
+    const locs = FAV.list.filter((e) => qjNorm(e.name).includes(n)).slice(0, 6)
+      .map((e) => qjItem({ nav: entryRoute(e), t: e.name, s: entrySub(e), ic: e.k === 's' ? 'antenna' : 'pin', th: 'wetter' }, 'false'));
+    return `<div class="qj-res">${res.map((it) => qjItem(it, String(isCur(it)))).join('')}${locs.join('')}
+      <button class="qj-it th-wetter" data-qj-orte><span class="qj-ic">${IC.search}</span><span class="qj-t"><b>Ort suchen: «${esc(q.trim())}»</b><small>Orte, Gipfel, Postleitzahlen, Messstationen</small></span></button></div>`;
+  }
+  function openQuick() {
+    const inner = openSheet(`<h2 class="sheet-t">Schnellwahl</h2>
+      <label class="search"><span class="s-ic">${IC.search}</span><input id="qj-q" type="search" placeholder="Funktion oder Ort suchen" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" aria-label="Funktion oder Ort suchen"></label>
+      <div id="qj-body" class="qj-body"></div>`, { cls: 'quick', label: 'Schnellwahl' });
+    const inp = inner.querySelector('#qj-q'), body = inner.querySelector('#qj-body');
+    const draw = () => { body.innerHTML = quickBody(inp.value); };
+    const toOrte = () => {
+      const q = inp.value.trim();
+      navigate('orte');
+      setTimeout(() => { const o = $('#orte-q'); o.value = q; if (S.view === 'orte') renderOrte(); o.focus(); }, 80);
+    };
+    inp.addEventListener('input', draw);
+    inp.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const first = body.querySelector('.qj-res [data-nav]');
+      if (first) first.click(); else if (inp.value.trim()) toOrte();
+    });
+    body.addEventListener('click', (e) => { if (e.target.closest('[data-qj-orte]')) toOrte(); });
+    draw();
+  }
+  $('#dock-quick').addEventListener('click', openQuick);
+  $('#vh-t').addEventListener('click', openQuick);
+  $('#vh-t').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuick(); } });
   function renderTiles() {
     const st = allStations();
     // Wind: Messung, dazu die Böen der Prognose (das Blatt enthält beide)
