@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="15.7 · 17.11.2026">
+<meta name="windsack-version" content="15.8 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2879,12 +2879,12 @@ details .as-desc { margin-top: 6px; }
 .bl-core { font-size: 13.5px !important; color: var(--ink-2) !important; }
 .bl-pic { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: none; width: 76px; }
 .bl-rose { width: 76px; height: 76px; }
-.bl-rose path { fill: #ffffff; stroke: #8c96a0; stroke-width: 0.8; }
+.bl-rose path { fill: #ffffff; stroke: #1b1b1b; stroke-width: 0.9; stroke-linejoin: round; }
 .bl-rose path.on { fill: #111111; }
-.bl-rose text { font: 700 7px/1 var(--font-ui); fill: var(--ink-2); text-anchor: middle; }
+.bl-rose text { font: 700 6.5px/1 var(--font-ui); fill: var(--ink); text-anchor: middle; }
 .bl-elv { width: 70px; height: 51px; }
 .bl-rose.sm { width: 48px; height: 48px; flex: none; order: 9; }
-.bl-rose.sm text { font-size: 9px; }
+.bl-rose.sm text { font-size: 8px; }
 .tg-bull .bl-rose.sm { order: 0; }
 .bl-elv .m { fill: #ffffff; stroke: #8c96a0; stroke-width: 0.9; }
 .bl-elv .on { fill: #111111; }
@@ -9837,7 +9837,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.7 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.8 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -16296,16 +16296,16 @@ pako/dist/pako.esm.mjs:
   }
   /* ───── Bulletin lesen: ganzer Text des SLF in der App (Gefahrenstufen, Lawinenprobleme, Schneedecke, Tendenz, Wetter) ───── */
   const ASPECTS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-  // Expositionsrose wie im Bulletin des SLF: acht Sektoren, die betroffenen Hangrichtungen schwarz, N/O/S/W ringsum
+  // Expositionsrose wie im Bulletin des SLF: Kompassstern aus acht Dreiecken (Haupt­richtungen länger),
+  // die betroffenen Hangrichtungen schwarz, die übrigen weiss; N oben
   function aspRose(list, cls = '') {
-    const on = new Set(list || []), c = 30, R = 21;
-    const seg = ASPECTS.map((a, i) => {
-      const a0 = ((i * 45 - 22.5 - 90) * Math.PI) / 180, a1 = ((i * 45 + 22.5 - 90) * Math.PI) / 180;
-      return `<path d="M${c} ${c}L${(c + R * Math.cos(a0)).toFixed(2)} ${(c + R * Math.sin(a0)).toFixed(2)}A${R} ${R} 0 0 1 ${(c + R * Math.cos(a1)).toFixed(2)} ${(c + R * Math.sin(a1)).toFixed(2)}Z" class="${on.has(a) ? 'on' : ''}"/>`;
-    }).join('');
-    const lab = [['N', 0], ['O', 90], ['S', 180], ['W', 270]].map(([l, m]) => { const q = ((m - 90) * Math.PI) / 180; return `<text x="${(c + (R + 6) * Math.cos(q)).toFixed(1)}" y="${(c + (R + 6) * Math.sin(q) + 3).toFixed(1)}">${l}</text>`; }).join('');
+    const on = new Set(list || []), c = 30, ri = 7.5;
+    const P = (deg, r) => { const q = ((deg - 90) * Math.PI) / 180; return `${(c + r * Math.cos(q)).toFixed(2)} ${(c + r * Math.sin(q)).toFixed(2)}`; };
+    const tri = (a, i) => { const m = i * 45, R = i % 2 ? 19 : 25; return `<path d="M${c} ${c}L${P(m - 22.5, ri)}L${P(m, R)}L${P(m + 22.5, ri)}Z" class="${on.has(a) ? 'on' : ''}"/>`; };
+    // erst die kurzen Zwischenrichtungen, darüber die langen Hauptrichtungen
+    const seg = ASPECTS.map((a, i) => (i % 2 ? tri(a, i) : '')).join('') + ASPECTS.map((a, i) => (i % 2 ? '' : tri(a, i))).join('');
     const names = (list || []).map((a) => ASP_DE[a] || a);
-    return `<svg class="bl-rose${cls ? ' ' + cls : ''}" viewBox="0 0 60 60" role="img" aria-label="Betroffene Expositionen: ${esc(names.length === 8 ? 'alle' : names.join(', ') || 'keine Angabe')}">${seg}${lab}</svg>`;
+    return `<svg class="bl-rose${cls ? ' ' + cls : ''}" viewBox="0 0 60 60" role="img" aria-label="Betroffene Expositionen: ${esc(names.length === 8 ? 'alle' : names.join(', ') || 'keine Angabe')}">${seg}<text x="${c}" y="4.6">N</text></svg>`;
   }
   // Höhenpiktogramm wie im Bulletin: Berg, der betroffene Teil (über bzw. unter der Grenze) dunkel, mit der Höhe
   function elvIcon(e) {
