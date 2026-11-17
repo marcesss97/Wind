@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Windsack">
 <meta name="theme-color" content="#08111d">
 <meta name="format-detection" content="telephone=no">
-<meta name="windsack-version" content="15.6 · 17.11.2026">
+<meta name="windsack-version" content="15.7 · 17.11.2026">
 <script>/* Darstellung vor dem ersten Bild setzen: wie das iPhone (Standard, wie die MeteoSchweiz-App), hell oder dunkel */
 (function () { try { var p = JSON.parse(localStorage.getItem('windsack.theme2') || '"auto"');
   var d = p === 'auto' ? matchMedia('(prefers-color-scheme: dark)').matches : p !== 'light';
@@ -2877,7 +2877,19 @@ details .as-desc { margin-top: 6px; }
 .bl-pr > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .bl-pr b { font-size: 16px; } .bl-pr small { font-size: 13px; color: var(--muted); }
 .bl-core { font-size: 13.5px !important; color: var(--ink-2) !important; }
-.bl-rose { width: 50px; height: 59px; flex: none; }
+.bl-pic { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: none; width: 76px; }
+.bl-rose { width: 76px; height: 76px; }
+.bl-rose path { fill: #ffffff; stroke: #8c96a0; stroke-width: 0.8; }
+.bl-rose path.on { fill: #111111; }
+.bl-rose text { font: 700 7px/1 var(--font-ui); fill: var(--ink-2); text-anchor: middle; }
+.bl-elv { width: 70px; height: 51px; }
+.bl-rose.sm { width: 48px; height: 48px; flex: none; order: 9; }
+.bl-rose.sm text { font-size: 9px; }
+.tg-bull .bl-rose.sm { order: 0; }
+.bl-elv .m { fill: #ffffff; stroke: #8c96a0; stroke-width: 0.9; }
+.bl-elv .on { fill: #111111; }
+.bl-elv line { stroke: var(--ink-2); stroke-width: 0.8; stroke-dasharray: 2 1.5; }
+.bl-elv text { font: 700 7.5px/1 var(--font-ui); fill: var(--ink); text-anchor: end; }
 .bl-wx summary, .bl-g summary { cursor: pointer; list-style: none; }
 .bl-wx summary::-webkit-details-marker, .bl-g summary::-webkit-details-marker { display: none; }
 .bl-wx { border-top: 1px solid var(--hair); padding-top: 10px; }
@@ -9825,7 +9837,7 @@ pako/dist/pako.esm.mjs:
 /* ── 00-config.js ── */
   /* ═════════════════════════ Config ═════════════════════════ */
   // Version: steht im Kopf (meta windsack-version) – daran erkennt die App eine neue Fassung auf dem Server
-  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.6 · 17.11.2026';
+  const APP_VERSION = (document.querySelector('meta[name="windsack-version"]') || {}).content || '15.7 · 17.11.2026';
   // Zugangsschutz (Passwort, verschlüsselte Auslieferung): beim Bauen geschaltet (build/zugang.json)
   const ZUGANG_ON = '0' === '1';
   const GEO = 'https://data.geo.admin.ch/';
@@ -16284,14 +16296,25 @@ pako/dist/pako.esm.mjs:
   }
   /* ───── Bulletin lesen: ganzer Text des SLF in der App (Gefahrenstufen, Lawinenprobleme, Schneedecke, Tendenz, Wetter) ───── */
   const ASPECTS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-  // Expositionsrose wie im Bulletin: betroffene Hangrichtungen dunkel
-  function aspRose(list) {
-    const on = new Set(list || []);
+  // Expositionsrose wie im Bulletin des SLF: acht Sektoren, die betroffenen Hangrichtungen schwarz, N/O/S/W ringsum
+  function aspRose(list, cls = '') {
+    const on = new Set(list || []), c = 30, R = 21;
     const seg = ASPECTS.map((a, i) => {
-      const a0 = ((i * 45 - 22.5 - 90) * Math.PI) / 180, a1 = ((i * 45 + 22.5 - 90) * Math.PI) / 180, r = 17;
-      return `<path d="M20 20L${(20 + r * Math.cos(a0)).toFixed(1)} ${(20 + r * Math.sin(a0)).toFixed(1)}A${r} ${r} 0 0 1 ${(20 + r * Math.cos(a1)).toFixed(1)} ${(20 + r * Math.sin(a1)).toFixed(1)}Z" fill="${on.has(a) ? 'var(--acc)' : 'var(--hair)'}" stroke="var(--surface)" stroke-width="1.2"/>`;
+      const a0 = ((i * 45 - 22.5 - 90) * Math.PI) / 180, a1 = ((i * 45 + 22.5 - 90) * Math.PI) / 180;
+      return `<path d="M${c} ${c}L${(c + R * Math.cos(a0)).toFixed(2)} ${(c + R * Math.sin(a0)).toFixed(2)}A${R} ${R} 0 0 1 ${(c + R * Math.cos(a1)).toFixed(2)} ${(c + R * Math.sin(a1)).toFixed(2)}Z" class="${on.has(a) ? 'on' : ''}"/>`;
     }).join('');
-    return `<svg class="bl-rose" viewBox="0 -7 40 47" role="img" aria-label="Expositionen: ${esc((list || []).map((a) => ASP_DE[a] || a).join(', ') || 'keine')}">${seg}<text x="20" y="1.2" text-anchor="middle" font-size="7" font-weight="700" fill="var(--muted)">N</text></svg>`;
+    const lab = [['N', 0], ['O', 90], ['S', 180], ['W', 270]].map(([l, m]) => { const q = ((m - 90) * Math.PI) / 180; return `<text x="${(c + (R + 6) * Math.cos(q)).toFixed(1)}" y="${(c + (R + 6) * Math.sin(q) + 3).toFixed(1)}">${l}</text>`; }).join('');
+    const names = (list || []).map((a) => ASP_DE[a] || a);
+    return `<svg class="bl-rose${cls ? ' ' + cls : ''}" viewBox="0 0 60 60" role="img" aria-label="Betroffene Expositionen: ${esc(names.length === 8 ? 'alle' : names.join(', ') || 'keine Angabe')}">${seg}${lab}</svg>`;
+  }
+  // Höhenpiktogramm wie im Bulletin: Berg, der betroffene Teil (über bzw. unter der Grenze) dunkel, mit der Höhe
+  function elvIcon(e) {
+    e = e || {};
+    const lo = e.lowerBound, hi = e.upperBound, y = 27;
+    const clip = 'wb' + (++wxSeq);
+    const part = lo ? `<rect x="0" y="0" width="60" height="${y}"/>` : hi ? `<rect x="0" y="${y}" width="60" height="${44 - y}"/>` : '<rect x="0" y="0" width="60" height="44"/>';
+    const txt = lo || hi ? `<text x="54" y="${y + 3.5}">${esc(/^\d+$/.test(String(lo || hi)) ? lo || hi : lo === 'treeline' || hi === 'treeline' ? 'Wald' : String(lo || hi))}</text><line x1="2" x2="40" y1="${y}" y2="${y}"/>` : '';
+    return `<svg class="bl-elv" viewBox="0 0 60 44" role="img" aria-label="${lo ? 'über ' + esc(elvTxt(lo)) : hi ? 'unter ' + esc(elvTxt(hi)) : 'alle Höhen'}"><clipPath id="${clip}"><path d="M2 42 21 6 40 42z"/></clipPath><path d="M2 42 21 6 40 42z" class="m"/><g clip-path="url(#${clip})" class="on">${part}</g>${txt}</svg>`;
   }
   // Wettertext des SLF (HTML) nur als Überschriften und Listen übernehmen – nie als HTML einsetzen
   function slfWx(html) {
@@ -16318,7 +16341,7 @@ pako/dist/pako.esm.mjs:
       const e = a.elevation || {}, d = DANGER[a.dangerRatingValue];
       const where = e.lowerBound ? `über ${elvTxt(e.lowerBound)}` : e.upperBound ? `unter ${elvTxt(e.upperBound)}` : 'alle Höhen';
       const core = a.customData && a.customData.CH && a.customData.CH.coreZoneText;
-      return `<div class="bl-pr">${aspRose(a.aspects)}<div><b>${esc(PROBLEM[a.problemType] || a.problemType || 'Lawinenproblem')}</b>
+      return `<div class="bl-pr"><div class="bl-pic">${aspRose(a.aspects)}${elvIcon(e)}</div><div><b>${esc(PROBLEM[a.problemType] || a.problemType || 'Lawinenproblem')}</b>
         <small>${esc(where)}${a.aspects && a.aspects.length ? ' · ' + esc(a.aspects.map((x) => ASP_DE[x] || x).join(', ')) : ''}${d ? ' · Stufe ' + d[0] : ''}</small>
         ${a.comment ? `<p>${esc(shPlain(a.comment))}</p>` : ''}${core ? `<p class="bl-core">${esc(shPlain(core))}</p>` : ''}</div></div>`;
     }).join('');
@@ -17289,7 +17312,7 @@ pako/dist/pako.esm.mjs:
     const i0 = ASP_ORDER.findIndex((a, i) => asp.has(a) && !asp.has(ASP_ORDER[(i + 7) % 8]));
     const aspects = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => ASP_ORDER[(Math.max(0, i0) + k) % 8]).filter((a) => asp.has(a)).map((a) => ASP_DE[a]);
     const probs = [...new Set((p.avalancheProblems || []).map((a) => PROBLEM[a.problemType]).filter(Boolean))];
-    return { d, where, aspects, probs };
+    return { d, where, aspects, asp8: [...asp], probs };
   }
   function snTourUi() {
     if (S.mode !== 'schnee-touren') return;
@@ -17301,7 +17324,7 @@ pako/dist/pako.esm.mjs:
       if (f) {
         const b = bullHere(f.properties || {}), x = b.d;
         const asp = b.aspects.length === 8 ? 'alle Expositionen' : b.aspects.join(', ');
-        here = `<div class="sg-here"><i class="av-lvl" style="background:${x[1]};color:${x[0] >= 4 ? '#fff' : '#1b1b1b'}">${x[0] || '–'}</i><span><b>${x[0] ? `Hier heute: ${esc(x[2])}, ${esc(b.where)}` : `Hier: ${esc(x[2])}`}</b><small>${esc([asp, b.probs.join(', ')].filter(Boolean).join(' · ') || 'Lawinenbulletin SLF')}</small></span></div>`;
+        here = `<div class="sg-here">${b.asp8.length ? aspRose(b.asp8, 'sm') : ''}<i class="av-lvl" style="background:${x[1]};color:${x[0] >= 4 ? '#fff' : '#1b1b1b'}">${x[0] || '–'}</i><span><b>${x[0] ? `Hier heute: ${esc(x[2])}, ${esc(b.where)}` : `Hier: ${esc(x[2])}`}</b><small>${esc([asp, b.probs.join(', ')].filter(Boolean).join(' · ') || 'Lawinenbulletin SLF')}</small></span></div>`;
       } else here = '<span class="sg-note">Die Kartenmitte liegt ausserhalb der Regionen des Lawinenbulletins.</span>';
     } else if (BULL.n === 0) {
       here = '<span class="sg-note">Ausserhalb der Saison – die Tagesbewertung gibt es, sobald das SLF das Lawinenbulletin herausgibt (etwa ab November).</span>';
@@ -22718,7 +22741,7 @@ ${wpts}
     const b = d.bull, x = b.d;
     const asp = b.aspects.length === 8 ? 'alle Expositionen' : b.aspects.length ? 'Exposition ' + b.aspects.join(', ') : '';
     return `<button class="tg-bull" data-tg-go="bulletin" data-lat="${d.lat}" data-lon="${d.lon}">
-        <i class="av-lvl tg-lvl" style="background:${x[1]};color:${x[0] >= 4 ? '#fff' : '#1b1b1b'}">${x[0] || '–'}</i>
+        <i class="av-lvl tg-lvl" style="background:${x[1]};color:${x[0] >= 4 ? '#fff' : '#1b1b1b'}">${x[0] || '–'}</i>${b.asp8.length ? aspRose(b.asp8, 'sm') : ''}
         <span class="tg-bt"><b>${esc(x[0] ? x[2].charAt(0).toUpperCase() + x[2].slice(1) : x[2])}${x[0] ? ' · ' + esc(b.where) : ''}</b>
         <small>${esc([asp, b.probs.join(', ')].filter(Boolean).join(' · ') || 'Lawinenbulletin SLF')}</small></span>${IC.chevR}</button>
       ${BULL.until ? tgNote(`Gültig bis ${esc(wd(BULL.until))} ${hm(BULL.until)} · SLF`) : ''}`;
